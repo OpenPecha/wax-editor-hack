@@ -1,0 +1,26 @@
+{
+    "name": "cokodocs",
+    "version": "1.0.0",
+    "private": false,
+    "description": "CokoDocs Platform",
+    "repository": {
+        "type": "git",
+        "url": "git@gitlab.coko.foundation:cokoapps/cokodocs.git"
+    },
+    "license": "MIT",
+    "author": "Kuldeep Upreti",
+    "scripts": {
+        "cz": "git-cz",
+        "prepare": "husky install",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "config": {
+        "commitizen": {
+            "path": "cz-customizable"
+        }
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@coko/lint": "^2.0.0"
+    }
+}
