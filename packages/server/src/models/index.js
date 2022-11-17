@@ -1,7 +1,14 @@
-const File = require("./file/file.model");
-// const ServiceCredential = require('./serviceCredential/serviceCredential.model')
+const file = require('./file')
+// const user = require('./user')
+const doc = require('./doc')
 
 module.exports = {
-  File,
-  // ServiceCredential,
-};
+  file,
+  user,
+  doc,
+  models: {
+    File: file.model,
+    // User: user.model,
+    Doc: doc.model,
+  },
+}

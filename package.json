@@ -19,7 +19,6 @@
             "path": "cz-customizable"
         }
     },
-    "dependencies": {},
     "devDependencies": {
         "@coko/lint": "^2.0.0"
     }

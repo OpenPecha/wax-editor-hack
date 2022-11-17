@@ -1,54 +1,148 @@
-const config = require("config");
+const { WebSocketServer } = require('ws')
+const map = require('lib0/dist/map.cjs')
+const levelDb = require('y-leveldb')
+const Y = require('yjs')
 
-const { URL } = require("url");
+const { logger } = require('@pubsweet/logger')
+const WSSharedDoc = require('./services/yjs/wsSharedDoc')
+const utils = require('./services/yjs/utils')
 
-const { WebSocketServer } = require("ws");
+const docs = new Map()
+const pingTimeout = 30000
+const persistenceDir = process.env.YPERSISTENCE || './dbDir'
+let persistence = null
 
-// const { authenticateWS } = require('./helpers')
+const initializeWS = async server => {
+  const wss = new WebSocketServer({ server })
+  wss.on('connection', (ws, request) => {
+    logger.info('connection established on websocket')
+    const docName = request.url.slice(1).split('?')[0]
+    const gc = true
+    const doc = getYDoc(docName, gc)
+    doc.conns.set(ws, new Set())
+    ws.on('message', message =>
+      messageListener(ws, doc, new Uint8Array(message)),
+    )
 
-const initializeWS = async (httpServer) => {
-  const createdWS = {};
-  const specificPurposeWebSockets = [];
+    let pingReceived = true
 
-  if (config.has("pubsweet-server.websocketPaths")) {
-    const deconstructedPaths = config
-      .get("pubsweet-server.websocketPaths")
-      .split(",");
-    deconstructedPaths.forEach((wsPathname) => {
-      console.log("wssssss", wsPathname);
-      specificPurposeWebSockets.push(wsPathname.trim());
-    });
+    const pingInterval = setInterval(() => {
+      if (!pingReceived) {
+        if (doc.conns.has(ws)) {
+          utils.closeConn(doc, ws)
+        }
+
+        clearInterval(pingInterval)
+      } else if (doc.conns.has(ws)) {
+        pingReceived = false
+
+        try {
+          ws.ping()
+        } catch (e) {
+          utils.closeConn(doc, ws)
+          clearInterval(pingInterval)
+        }
+      }
+    }, pingTimeout)
+
+    ws.on('close', () => {
+      utils.closeConn(doc, ws)
+      clearInterval(pingInterval)
+    })
+    ws.on('ping', () => {
+      pingReceived = true
+    })
+
+    {
+      const encoder = utils.encoding.createEncoder()
+      utils.encoding.writeVarUint(encoder, utils.messageSync)
+      utils.syncProtocol.writeSyncStep1(encoder, doc)
+      utils.send(doc, ws, utils.encoding.toUint8Array(encoder))
+      const awarenessStates = doc.awareness.getStates()
+
+      if (awarenessStates.size > 0) {
+        utils.encoding.writeVarUint(encoder, utils.messageAwareness)
+        utils.encoding.writeVarUint8Array(
+          encoder,
+          utils.awarenessProtocol.encodeAwarenessUpdate(
+            doc.awareness,
+            Array.from(awarenessStates.keys()),
+          ),
+        )
+        utils.send(doc, ws, utils.encoding.toUint8Array(encoder))
+      }
+    }
+  })
+
+  const getYDoc = (docName, gc = true) =>
+    map.setIfUndefined(docs, docName, () => {
+      const doc = new WSSharedDoc(docName)
+      doc.gc = gc
+
+      if (persistence !== null) {
+        persistence.bindState(docName, doc)
+      }
+
+      docs.set(docName, doc)
+      return doc
+    })
+
+  /**
+   * @param {any} conn
+   * @param {WSSharedDoc} doc
+   * @param {Uint8Array} message
+   */
+  const messageListener = (conn, doc, message) => {
+    try {
+      const encoder = utils.encoding.createEncoder()
+      const decoder = utils.decoding.createDecoder(message)
+      const messageType = utils.decoding.readVarUint(decoder)
+
+      // eslint-disable-next-line default-case
+      switch (messageType) {
+        case utils.messageSync:
+          utils.encoding.writeVarUint(encoder, utils.messageSync)
+          utils.syncProtocol.readSyncMessage(decoder, encoder, doc, null)
+
+          if (utils.encoding.length(encoder) > 1) {
+            utils.send(doc, conn, utils.encoding.toUint8Array(encoder))
+          }
+
+          break
+
+        case utils.messageAwareness: {
+          utils.awarenessProtocol.applyAwarenessUpdate(
+            doc.awareness,
+            utils.decoding.readVarUint8Array(decoder),
+            conn,
+          )
+          break
+        }
+      }
+    } catch (err) {
+      console.error(err)
+      doc.emit('error', [err])
+    }
   }
 
-  specificPurposeWebSockets.forEach((path) => {
-    createdWS[path] = new WebSocketServer({ noServer: true });
-  });
+  if (typeof persistenceDir === 'string') {
+    console.log(`Persisting documents to "${persistenceDir}"`)
+    const LevelDbPersistence = levelDb.LeveldbPersistence
+    const ldb = new LevelDbPersistence(persistenceDir)
+    persistence = {
+      provider: ldb,
+      bindState: async (docName, ydoc) => {
+        const persistedYdoc = await ldb.getYDoc(docName)
+        const newUpdates = Y.encodeStateAsUpdate(ydoc)
+        ldb.storeUpdate(docName, newUpdates)
+        Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
+        ydoc.on('update', update => {
+          ldb.storeUpdate(docName, update)
+        })
+      },
+      writeState: async (docName, ydoc) => {},
+    }
+  }
+}
 
-  httpServer.on("upgrade", async (req, socket, head) => {
-    console.log(`http://${req.headers.host}/`);
-    const serverURL = config.has("pubsweet-server.publicURL")
-      ? config.get("pubsweet-server.publicURL")
-      : config.get("pubsweet-server.baseUrl");
-    const { pathname } = new URL(req.url, serverURL);
-    console.log("1", req.url);
-    // if (!authenticateWS(req)) {
-    //   socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n')
-    //   socket.destroy()
-    //   return
-    // }
-
-    specificPurposeWebSockets.forEach((path) => {
-      if (pathname === `/${path}`) {
-        return createdWS[path].handleUpgrade(req, socket, head, (ws) => {
-          // console.log('3', req.client)
-          createdWS[path].emit("connection", ws, req, req.client);
-        });
-      }
-      return null;
-    });
-  });
-
-  return createdWS;
-};
-
-module.exports = { initializeWS };
+module.exports = { initializeWS }

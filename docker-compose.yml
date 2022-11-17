@@ -9,7 +9,19 @@ services:
     depends_on:
       - db
       - s3
-    entrypoint: [ 'sh', 'scripts/wait-for-it', 'db:5432', '--', 'sh' ]
+    entrypoint:
+      [
+        'sh',
+        'scripts/wait-for-it',
+        'db:5432',
+        '--',
+        'sh',
+        'scripts/wait-for-it',
+        'http://s3:9001',
+        '--',
+        'sh',
+        'scripts/setupDevServer.sh'
+      ]
     command:
       [
         'node_modules/.bin/nodemon',
@@ -17,10 +29,12 @@ services:
         '--',
         'config',
         '--',
-        'app.js'
+        'src',
+        '--',
+        'scripts'
       ]
     ports:
-      - ${SERVER_PORT:-3000}:${SERVER_PORT:-3000}
+      - ${SERVER_PORT:-4000}:${SERVER_PORT:-4000}
     environment:
       - NODE_ENV=development
       - POSTGRES_HOST=db
@@ -28,12 +42,15 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:-cokodocs_dev}
       - POSTGRES_USER=${POSTGRES_USER:-dev_user}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-dev_user_password}
-      - SERVER_PORT=${SERVER_PORT:-3000}
+      - SERVER_PORT=${SERVER_PORT:-4000}
       - SERVER_HOST=${SERVER_HOST:-localhost}
       - SERVER_PROTOCOL=${SERVER_PROTOCOL:-http}
     volumes:
-      - ./packages/server/src/startServer.js:/home/node/cokodocs/startServer.js
-
+      - ./packages/server/src/startServer.js:/home/node/cokodocs/src/startServer.js
+      - ./packages/server/src/initializeWS.js:/home/node/cokodocs/src/initializeWS.js
+      - ./packages/server/src/services/yjs/callback.js:/home/node/cokodocs/src/services/yjs/callback.js
+      - ./packages/server/src/services/yjs/utils.js:/home/node/cokodocs/src/services/yjs/utils.js
+      - ./packages/server/src/services/yjs/wsSharedDoc.js:/home/node/cokodocs/src/services/yjs/wsSharedDoc.js
   db:
     image: postgres:14-alpine
     ports:
