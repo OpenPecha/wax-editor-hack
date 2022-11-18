@@ -1071,9 +1071,9 @@ available-typed-arrays@^1.0.5:
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
 aws-sdk@^2.1046.0:
-  version "2.1256.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1256.0.tgz#4cac62e8bbd1f8a363cd506328103b3498bfa767"
-  integrity sha512-/Dh81PZdjqyZwA3BMBUO2PMUakv0hqjxCReE59sskIFdQJdSOW+26EQ4LcV07YP6umz3n5TKC28bEfx6l2kTJQ==
+  version "2.1257.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1257.0.tgz#8ed8ca99f97dc642fce98dac7d5eb18e94ae9833"
+  integrity sha512-SNfKIVlJdLyBbUSGgvsBOuV4iOE1modoKOhnV/bIi2F7DJkq4SCPmrN1nwLNBnOQQvZRlPwFbHPVrJ3clTXLDQ==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -4177,10 +4177,10 @@ levelup@^4.3.2:
     level-supports "~1.0.0"
     xtend "~4.0.0"
 
-lib0@0.2.45:
-  version "0.2.45"
-  resolved "https://registry.yarnpkg.com/lib0/-/lib0-0.2.45.tgz#712033cf4980b4b884d2fa355c7a5aefb5b07dae"
-  integrity sha512-/TYriF82XPUxqNFH1AppQh0jy1qWR3+sL1dd7JUcCElZIsRjLjnW+EPC7acI0+S8oRPLNIdZiGgJJLmgUr3+SA==
+lib0@0.2.49:
+  version "0.2.49"
+  resolved "https://registry.yarnpkg.com/lib0/-/lib0-0.2.49.tgz#7addb5075063d66ea2c55749e5aeaa48e36278c8"
+  integrity sha512-ziwYLe/pmI9bjHsAehm4ApuVfZ+q+sbC+vO6Z5+KM+0Fe0MrTLwZSDkJ+cElnhFNQ0P6z/wVkRmc5+vTmImJ9A==
   dependencies:
     isomorphic.js "^0.2.4"
 
@@ -5538,7 +5538,7 @@ promise-inflight@^1.0.1:
   resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
   integrity sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==
 
-prompt@flatiron/prompt#1c95d1d8d333b5fbc13fa5f0619f3dcf0d514f87:
+"prompt@github:flatiron/prompt#1c95d1d8d333b5fbc13fa5f0619f3dcf0d514f87":
   version "1.0.0"
   resolved "https://codeload.github.com/flatiron/prompt/tar.gz/1c95d1d8d333b5fbc13fa5f0619f3dcf0d514f87"
   dependencies:
@@ -5841,9 +5841,9 @@ referrer-policy@1.2.0:
   integrity sha512-LgQJIuS6nAy1Jd88DCQRemyE3mS+ispwlqMk3b0yjZ257fI1v9c+/p6SD5gP5FGyXUIgrNOAfmyioHwZtYv2VA==
 
 regenerator-runtime@^0.13.10, regenerator-runtime@^0.13.4:
-  version "0.13.10"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.10.tgz#ed07b19616bcbec5da6274ebc75ae95634bfc2ee"
-  integrity sha512-KepLsg4dU12hryUO7bp/axHAKvwGOCV0sGloQtpagJ12ai+ojVDqkeGSiRX1zlq+kjIMZ1t7gpze+26QqtdGqw==
+  version "0.13.11"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
+  integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
 
 regex-cache@^0.4.2:
   version "0.4.4"

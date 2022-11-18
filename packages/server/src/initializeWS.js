@@ -15,7 +15,6 @@ let persistence = null
 const initializeWS = async server => {
   const wss = new WebSocketServer({ server })
   wss.on('connection', (ws, request) => {
-    logger.info('connection established on websocket')
     const docName = request.url.slice(1).split('?')[0]
     const gc = true
     const doc = getYDoc(docName, gc)

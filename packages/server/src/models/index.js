@@ -4,7 +4,7 @@ const doc = require('./doc')
 
 module.exports = {
   file,
-  user,
+  // user,
   doc,
   models: {
     File: file.model,
