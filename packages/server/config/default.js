@@ -1,16 +1,22 @@
 const path = require('path')
 const components = require('./components')
+const { deferConfig } = require('config/defer')
+const permissions = require('./permissions')
 
 module.exports = {
-  publicKeys: ['pubsweet', 'pubsweet-server'],
+  publicKeys: ['pubsweet', 'pubsweet-server', 'authsome'],
   pubsweet: {
     components,
   },
   authsome: {
     mode: path.join(__dirname, 'authsome.js'),
   },
-
+  permissions,
   'pubsweet-server': {
+    baseUrl: deferConfig(cfg => {
+      const { protocol, host, port } = cfg['pubsweet-server']
+      return `${protocol}://${host}${port ? `:${port}` : ''}`
+    }),
     db: {},
     useGraphQLServer: false,
     useJobQueue: false,
@@ -19,6 +25,7 @@ module.exports = {
     tokenExpiresIn: '360 days',
     externalServerURL: undefined,
     useWebSockets: true,
+    websocketPath: 'yjs',
     // logger,
     port: 4000,
     protocol: 'http',
@@ -33,6 +40,7 @@ module.exports = {
       email: 'ADMIN_EMAIL',
     },
   },
+  schema: {},
   'file-server': {
     accessKeyId: 'S3_ACCESS_KEY_ID_USER',
     secretAccessKey: 'S3_SECRET_ACCESS_KEY_USER',

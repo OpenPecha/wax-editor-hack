@@ -1,5 +1,8 @@
-const authsomeMode = async (userId, operation, object, context) => {
-  return true
+const permissions = {
+  // eslint-disable-next-line consistent-return
+  before: () => {
+    return true
+  },
 }
 
-module.exports = authsomeMode
+module.exports = permissions

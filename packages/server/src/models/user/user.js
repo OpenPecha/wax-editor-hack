@@ -1,6 +1,6 @@
-const user = require('@pubsweet/model-user')
+const userModel = require('@pubsweet/model-user')
 
-const User = user.model
+const User = userModel.model
 
 const { ValidationError } = require('@pubsweet/errors')
 

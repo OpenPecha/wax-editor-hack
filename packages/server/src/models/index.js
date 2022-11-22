@@ -1,14 +1,14 @@
 const file = require('./file')
-// const user = require('./user')
+const user = require('./user')
 const doc = require('./doc')
 
 module.exports = {
   file,
-  // user,
+  user,
   doc,
   models: {
     File: file.model,
-    // User: user.model,
+    User: user.model,
     Doc: doc.model,
   },
 }
