@@ -1,0 +1,19 @@
+{
+    "name": "client",
+    "version": "0.0.1",
+    "private": false,
+    "description": "Cokodocs client",
+    "repository": {
+        "type": "git",
+        "url": "git@gitlab.coko.foundation:cokoapps/cokodocs.git"
+    },
+    "license": "MIT",
+    "author": "Kuldeep Upreti",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "ws": "^8.11.0"
+    },
+    "devDependencies": {}
+}

@@ -1,0 +1,79 @@
+// THIS IS JUST AN EXAMPLE IF YOU NEED TO EXTEND THE PROVIDED USER MODEL.
+// IT IS NOT NEEDED IF THE PROVIDED USER MODEL FITS THE PROJECT'S NEEDS
+
+// const user = require('@pubsweet/model-user')
+
+// const User = user.model
+
+// const { ValidationError } = require('@pubsweet/errors')
+
+// class CokoDocsUser extends User {
+//   static get schema() {
+//     return {
+//       type: 'object',
+//       properties: {
+//         password: {
+//           type: 'string',
+//         },
+//         givenName: {
+//           type: 'string',
+//         },
+//         surname: {
+//           type: 'string',
+//         },
+//         deleted: {
+//           type: 'boolean',
+//           default: false,
+//         },
+//       },
+//     }
+//   }
+
+//   static async findById(id) {
+//     return this.find(id)
+//   }
+
+//   async hashPassword(pwd) {
+//     this.passwordHash = await User.hashPassword(pwd)
+//     delete this.password
+//   }
+
+//   async $beforeInsert() {
+//     super.$beforeInsert()
+//     if (this.password) await this.hashPassword(this.password)
+//   }
+
+//   static async updatePassword(
+//     userId,
+//     currentPassword,
+//     newPassword,
+//     options = {},
+//   ) {
+//     const { trx } = options
+//     const foundUser = await User.query(trx).findById(userId)
+
+//     const isCurrentPasswordValid = await foundUser.validPassword(
+//       currentPassword,
+//     )
+
+//     if (!isCurrentPasswordValid) {
+//       throw new ValidationError(
+//         'Update password: Current password is not valid',
+//       )
+//     }
+
+//     if (await foundUser.validPassword(newPassword)) {
+//       throw new ValidationError(
+//         'Update password: New password must be different from current password',
+//       )
+//     }
+
+//     const passwordHash = await User.hashPassword(newPassword)
+
+//     return user.$query(trx).patchAndFetch({
+//       passwordHash,
+//     })
+//   }
+// }
+
+// module.exports = CokoDocsUser

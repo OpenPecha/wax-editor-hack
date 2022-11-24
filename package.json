@@ -1,8 +1,8 @@
 {
     "name": "cokodocs",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "private": false,
-    "description": "CokoDocs Platform",
+    "description": "CokoDocs",
     "repository": {
         "type": "git",
         "url": "git@gitlab.coko.foundation:cokoapps/cokodocs.git"
@@ -19,6 +19,12 @@
             "path": "cz-customizable"
         }
     },
+    "husky": {
+        "hooks": {
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS && lint-staged"
+        }
+    },
+    "dependencies": {},
     "devDependencies": {
         "@coko/lint": "^2.0.0"
     }
