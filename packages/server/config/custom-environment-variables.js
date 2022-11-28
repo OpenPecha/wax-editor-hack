@@ -18,6 +18,7 @@ module.exports = {
     secret: 'PUBSWEET_SECRET',
     serveClient: 'SERVER_SERVE_CLIENT',
     publicURL: 'PUBLIC_URL',
+    baseURL: 'BASE_URL',
     db: {
       host: 'POSTGRES_HOST',
       port: 'POSTGRES_PORT',

@@ -64,6 +64,8 @@ services:
       - MAILER_SENDER=${MAILER_SENDER:-dev@example.com}
       - MAILER_HOSTNAME=${MAILER_HOSTNAME}
       - PASSWORD_RESET_PATH=${PASSWORD_RESET_PATH:-password-reset}
+      - USE_WEBSOCKET=${USE_WEBSOCKET:-true}
+      - WEB_SOCKET_PATH=${WEB_SOCKET_PATH:-yjs}
     volumes:
       - ./packages/server/config:/home/node/cokodocs/config
       - ./packages/server/api:/home/node/cokodocs/api

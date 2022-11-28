@@ -1,23 +1,23 @@
 const { URL } = require('url')
 const { startServer } = require('@coko/server')
+const { WebSocketServer } = require('ws')
 const config = require('config')
 
-const serverURL = config.has('pubsweet-server.publicURL')
-  ? config.get('pubsweet-server.publicURL')
-  : config.get('pubsweet-server.baseURL')
+const serverURL = 'http://localhost:3000'
 
 const init = async () => {
-  const { createdWS } = await startServer()
+  const { server } = await startServer()
+  const wss = new WebSocketServer({ server })
 
-  const heartbeat = ws => {
-    const argumentWS = ws
+  const heartbeat = wss => {
+    const argumentWS = wss
     console.log('ping')
     argumentWS.isAlive = true
   }
 
   const clients = []
 
-  createdWS.yjs.on('connection', (ws, request, client) => {
+  wss.on('connection', (ws, request, client) => {
     const injectedWS = ws
     clients.push(client)
     injectedWS.isAlive = true
@@ -50,7 +50,7 @@ const init = async () => {
   })
 
   const interval = setInterval(() => {
-    createdWS.yjs.clients.forEach(client => {
+    wss.clients.forEach(client => {
       const clientArgument = client
 
       if (clientArgument.isAlive === false) {
@@ -63,7 +63,7 @@ const init = async () => {
     })
   }, 5000)
 
-  createdWS.yjs.on('close', () => {
+  wss.on('close', () => {
     console.log('server died')
     clearInterval(interval)
   })
