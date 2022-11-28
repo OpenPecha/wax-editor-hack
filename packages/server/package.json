@@ -25,15 +25,14 @@
         "@pubsweet/logger": "^0.2.56",
         "authsome": "^0.1.0",
         "config": "^3.2.5",
-        "knex": "^0.15.2",
         "lib0": "0.1.7",
+        "knex": "^0.15.2",
         "objection": "^2.2.15",
         "pubsweet": "^5.1.31",
         "uuid": "^3.3.2",
-        "yjs": "^13.5.42",
+        "yjs": "11.0.0",
         "y-protocols": "^1.0.5",
-        "ws": "^8.11.0",
-        "y-leveldb": "^0.1.1"
+        "ws": "^8.11.0"
     },
     "devDependencies": {
         "nodemon": "^1.19.1"

@@ -1,14 +1,14 @@
 const { startServer } = require('@coko/server')
 const { WebSocketServer } = require('ws')
-const leveldb = require('y-leveldb')
+// const leveldb = require('y-leveldb')
 const Y = require('yjs')
-const { map } = require('./config/components')
+const map = require('lib0/dist/map')
 const WSSharedDoc = require('./services/yjs/wsSharedDoc')
 const utils = require('./services/yjs/utils')
 
 const persistenceDir = process.env.YPERSISTENCE || './docDir'
 
-let persistence = null
+const persistence = null
 const docs = new Map()
 const pingTimeout = 30000
 
@@ -23,6 +23,7 @@ const init = async () => {
     const gc = true
     const doc = getYDoc(docName, gc)
     doc.conns.set(injectedWS, new Set())
+    console.log('Client connected', client)
     clients.push(client)
     injectedWS.isAlive = true
     let pingReceived = true
@@ -80,24 +81,24 @@ const init = async () => {
     }
   })
 
-  if (typeof persistenceDir === 'string') {
-    console.log(`Persisting documents to "${persistenceDir}"`)
-    const LevelDbPersistence = leveldb.LeveldbPersistence
-    const ldb = new LevelDbPersistence(persistenceDir)
-    persistence = {
-      provider: ldb,
-      bindState: async (docName, ydoc) => {
-        const persistedYdoc = await ldb.getYDoc(docName)
-        const newUpdates = Y.encodeStateAsUpdate(ydoc)
-        ldb.storeUpdate(docName, newUpdates)
-        Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
-        ydoc.on('update', update => {
-          ldb.storeUpdate(docName, update)
-        })
-      },
-      writeState: async (docName, ydoc) => {},
-    }
-  }
+  // if (typeof persistenceDir === 'string') {
+  //   console.log(`Persisting documents to "${persistenceDir}"`)
+  //   const LevelDbPersistence = leveldb.LeveldbPersistence
+  //   const ldb = new LevelDbPersistence(persistenceDir)
+  //   persistence = {
+  //     provider: ldb,
+  //     bindState: async (docName, ydoc) => {
+  //       const persistedYdoc = await ldb.getYDoc(docName)
+  //       const newUpdates = Y.encodeStateAsUpdate(ydoc)
+  //       ldb.storeUpdate(docName, newUpdates)
+  //       Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
+  //       ydoc.on('update', update => {
+  //         ldb.storeUpdate(docName, update)
+  //       })
+  //     },
+  //     writeState: async (docName, ydoc) => {},
+  //   }
+  // }
 
   const getYDoc = (docName, gc = true) =>
     map.setIfUndefined(docs, docName, () => {

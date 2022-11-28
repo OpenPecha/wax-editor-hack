@@ -22,16 +22,19 @@ class WSSharedDoc extends Y.Doc {
      */
     this.awareness = new utils.awarenessProtocol.Awareness(this);
     this.awareness.setLocalState(null);
+
     /**
      * @param {{ added: Array<number>, updated: Array<number>, removed: Array<number> }} changes
      * @param {Object | null} conn Origin is the connection that made the change
      */
     const awarenessChangeHandler = ({ added, updated, removed }, conn) => {
       const changedClients = added.concat(updated, removed);
+
       if (conn !== null) {
         const connControlledIDs = /** @type {Set<number>} */ (
           this.conns.get(conn)
         );
+
         if (connControlledIDs !== undefined) {
           added.forEach((clientID) => {
             connControlledIDs.add(clientID);
@@ -41,6 +44,7 @@ class WSSharedDoc extends Y.Doc {
           });
         }
       }
+
       // broadcast awareness update
       const encoder = utils.encoding.createEncoder();
       utils.encoding.writeVarUint(encoder, utils.messageAwareness);
@@ -56,8 +60,10 @@ class WSSharedDoc extends Y.Doc {
         utils.send(this, c, buff);
       });
     };
+
     this.awareness.on("update", awarenessChangeHandler);
     this.on("update", utils.updateHandler);
+
     if (callback.isCallbackSet) {
       this.on(
         "update",
