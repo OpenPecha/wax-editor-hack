@@ -1,1 +1,5 @@
-module.exports = ['@pubsweet/model-user', '@pubsweet/model-team']
+module.exports = [
+  '@pubsweet/model-user',
+  './models/user/index.js',
+  './models/doc/index.js',
+]

@@ -10,7 +10,6 @@
     "license": "MIT",
     "author": "Kuldeep Upreti",
     "resolutions": {
-        "@pubsweet/model-team": "^3.0.3",
         "@pubsweet/model-user": "^5.1.10",
         "@pubsweet/base-model": "^4.0.8",
         "objection": "^2.2.15",
@@ -21,7 +20,6 @@
         "@coko/server": "https://gitlab.coko.foundation/cokoapps/server.git#413f8d70cb4923769618ce34d787e387348bfc3b",
         "@pubsweet/db-manager": "^3.1.5",
         "@pubsweet/errors": "^2.0.51",
-        "@pubsweet/model-team": "^3.0.3",
         "@pubsweet/model-user": "^5.1.10",
         "@pubsweet/models": "^0.3.26",
         "@pubsweet/logger": "^0.2.56",
