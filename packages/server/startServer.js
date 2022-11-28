@@ -1,72 +1,147 @@
-const { URL } = require('url')
 const { startServer } = require('@coko/server')
 const { WebSocketServer } = require('ws')
-const config = require('config')
+const leveldb = require('y-leveldb')
+const Y = require('yjs')
+const { map } = require('./config/components')
+const WSSharedDoc = require('./services/yjs/wsSharedDoc')
+const utils = require('./services/yjs/utils')
 
-const serverURL = 'http://localhost:3000'
+const persistenceDir = process.env.YPERSISTENCE || './docDir'
+
+let persistence = null
+const docs = new Map()
+const pingTimeout = 30000
 
 const init = async () => {
   const { server } = await startServer()
   const wss = new WebSocketServer({ server })
-
-  const heartbeat = wss => {
-    const argumentWS = wss
-    console.log('ping')
-    argumentWS.isAlive = true
-  }
-
   const clients = []
 
   wss.on('connection', (ws, request, client) => {
     const injectedWS = ws
+    const docName = request.url.slice('1').split('?')[0]
+    const gc = true
+    const doc = getYDoc(docName, gc)
+    doc.conns.set(injectedWS, new Set())
     clients.push(client)
     injectedWS.isAlive = true
+    let pingReceived = true
 
-    const url = new URL(request.url, serverURL)
+    const pingInterval = setInterval(() => {
+      if (!pingReceived) {
+        if (doc.conns.has(injectedWS)) {
+          utils.closeConn(doc, injectedWS)
+        }
 
-    const documentId = url.searchParams.get('documentId')
+        clearInterval(pingInterval)
+      } else if (doc.conns.has(injectedWS)) {
+        pingReceived = false
 
-    console.log('documentId', documentId)
+        try {
+          injectedWS.ping()
+        } catch (error) {
+          utils.closeConn(doc, injectedWS)
+          clearInterval(pingInterval)
+        }
+      }
+    }, pingTimeout)
 
-    injectedWS.on('pong', () => {
-      heartbeat(injectedWS)
-    })
-
-    injectedWS.on('message', data => {
-      const retrieved = JSON.parse(data)
-      console.log(`Received message ${retrieved} from user ${client}`)
-      injectedWS.send(data)
-    })
+    injectedWS.on('message', message =>
+      messageListener(injectedWS, doc, new Uint8Array(message)),
+    )
 
     injectedWS.on('close', () => {
-      console.log(`ws close ${client}`)
-      clients = clients.filter(item => item !== client)
-      console.log('clients', clients)
+      utils.closeConn(doc, injectedWS)
+      clearInterval(pingInterval)
     })
 
-    injectedWS.on('error', err => {
-      console.log('error', err)
+    injectedWS.on('ping', () => {
+      pingReceived = true
     })
+
+    {
+      const encoder = utils.encoding.createEncoder()
+      utils.encoding.writeVarUint(encoder, utils.messageSync)
+      utils.syncProtocol.writeSyncStep1(encoder, doc)
+      utils.send(doc, injectedWS, utils.encoding.toUint8Array(encoder))
+      const awarenessStates = doc.awareness.getStates()
+
+      if (awarenessStates.size > 0) {
+        utils.encoding.writeVarUint(encoder, utils.messageAwareness)
+        utils.encoding.writeVarUint8Array(
+          encoder,
+          utils.awarenessProtocol.encodeAwarenessUpdate(
+            doc.awareness,
+            Array.from(awarenessStates.keys()),
+          ),
+        )
+        utils.send(doc, injectedWS, utils.encoding.toUint8Array(encoder))
+      }
+    }
   })
 
-  const interval = setInterval(() => {
-    wss.clients.forEach(client => {
-      const clientArgument = client
+  if (typeof persistenceDir === 'string') {
+    console.log(`Persisting documents to "${persistenceDir}"`)
+    const LevelDbPersistence = leveldb.LeveldbPersistence
+    const ldb = new LevelDbPersistence(persistenceDir)
+    persistence = {
+      provider: ldb,
+      bindState: async (docName, ydoc) => {
+        const persistedYdoc = await ldb.getYDoc(docName)
+        const newUpdates = Y.encodeStateAsUpdate(ydoc)
+        ldb.storeUpdate(docName, newUpdates)
+        Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
+        ydoc.on('update', update => {
+          ldb.storeUpdate(docName, update)
+        })
+      },
+      writeState: async (docName, ydoc) => {},
+    }
+  }
 
-      if (clientArgument.isAlive === false) {
-        console.log('broken connection')
-        return clientArgument.terminate()
+  const getYDoc = (docName, gc = true) =>
+    map.setIfUndefined(docs, docName, () => {
+      const doc = new WSSharedDoc(docName)
+      doc.gc = gc
+
+      if (persistence !== null) {
+        persistence.bindState(docName, doc)
       }
 
-      clientArgument.isAlive = false
-      return clientArgument.ping()
+      docs.set(docName, doc)
+      return doc
     })
-  }, 5000)
 
-  wss.on('close', () => {
-    console.log('server died')
-    clearInterval(interval)
-  })
+  const messageListener = (conn, doc, message) => {
+    try {
+      const encoder = utils.encoding.createEncoder()
+      const decoder = utils.decoding.createDecoder(message)
+      const messageType = utils.decoding.readVarUint(decoder)
+
+      // eslint-disable-next-line default-case
+      switch (messageType) {
+        case utils.messageSync:
+          utils.encoding.writeVarUint(encoder, utils.messageSync)
+          utils.syncProtocol.readSyncMessage(decoder, encoder, doc, null)
+
+          if (utils.encoding.length(encoder) > 1) {
+            utils.send(doc, conn, utils.encoding.toUint8Array(encoder))
+          }
+
+          break
+        case utils.messageAwareness:
+          utils.awarenessProtocol.applyAwarenessUpdate(
+            doc.awareness,
+            utils.decoding.readVarUint8Array(decoder),
+            conn,
+          )
+          break
+      }
+    } catch (error) {
+      console.error(error)
+      doc.emit('error', [error])
+    }
+  }
 }
 
 init()
