@@ -2,7 +2,8 @@ const { startServer } = require('@coko/server')
 const { WebSocketServer } = require('ws')
 // const leveldb = require('y-leveldb')
 const Y = require('yjs')
-const map = require('lib0/dist/map')
+// eslint-disable-next-line import/no-unresolved
+const map = require('lib0/map')
 const WSSharedDoc = require('./services/yjs/wsSharedDoc')
 const utils = require('./services/yjs/utils')
 

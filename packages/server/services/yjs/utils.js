@@ -1,7 +1,7 @@
 const syncProtocol = require('y-protocols/dist/sync.cjs')
 const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
-const encoding = require('lib0/dist/encoding')
-const decoding = require('lib0/dist/decoding')
+const encoding = require('lib0/encoding')
+const decoding = require('lib0/decoding')
 
 const persistence = null
 

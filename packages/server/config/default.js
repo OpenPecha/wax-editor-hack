@@ -1,5 +1,4 @@
 const path = require('path')
-const { deferConfig } = require('config/defer')
 const components = require('./components')
 const permissions = require('./permissions')
 
@@ -14,25 +13,18 @@ module.exports = {
     path: 'password-reset',
   },
   mailer: {
-    from: 'info@hhmi.com',
+    from: 'info@cokodocs.com',
     path: path.join(__dirname, 'mailer'),
   },
   permissions,
-  publicKeys: [
-    'authsome',
-    'pubsweet',
-    'pubsweet-client',
-    'pubsweet-server',
-    'validations',
-  ],
+  publicKeys: ['authsome', 'pubsweet', 'pubsweet-client', 'pubsweet-server'],
   'pubsweet-client': {
-    API_ENDPOINT: '/api',
+    'login-redirect': '/',
+    port: 3000,
+    protocol: 'http',
+    host: 'localhost',
   },
   'pubsweet-server': {
-    baseUrl: deferConfig(cfg => {
-      const { protocol, host, port } = cfg['pubsweet-server']
-      return `${protocol}://${host}${port ? `:${port}` : ''}`
-    }),
     db: {},
     useGraphQLServer: false,
     useJobQueue: false,

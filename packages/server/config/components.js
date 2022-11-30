@@ -1,5 +1,6 @@
 module.exports = [
   '@pubsweet/model-user',
-  './models/user/index.js',
-  './models/doc/index.js',
+  './models/user',
+  './models/doc',
+  '@pubsweet/component-password-reset-server',
 ]

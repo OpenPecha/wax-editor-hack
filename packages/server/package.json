@@ -10,31 +10,31 @@
     "license": "MIT",
     "author": "Kuldeep Upreti",
     "resolutions": {
-        "@pubsweet/model-user": "^5.1.10",
-        "@pubsweet/base-model": "^4.0.8",
-        "objection": "^2.2.15",
-        "pg-boss": "5.2.1",
-        "lib0": "0.1.7"
+        "@pubsweet/model-user": "^6.0.18",
+        "@pubsweet/base-model": "^4.0.15",
+        "objection": "^3.0.1",
+        "pg": "^8.8.0",
+        "lib0": "^0.2.54"
     },
     "dependencies": {
-        "@coko/server": "https://gitlab.coko.foundation/cokoapps/server.git#413f8d70cb4923769618ce34d787e387348bfc3b",
-        "@pubsweet/db-manager": "^3.1.5",
+        "@coko/server": "2.0.0-beta.1",
+        "@pubsweet/db-manager": "^3.1.26",
         "@pubsweet/errors": "^2.0.51",
-        "@pubsweet/model-user": "^5.1.10",
+        "@pubsweet/model-user": "^6.0.18",
         "@pubsweet/models": "^0.3.26",
-        "@pubsweet/logger": "^0.2.56",
-        "authsome": "^0.1.0",
-        "config": "^3.2.5",
-        "lib0": "0.1.7",
-        "knex": "^0.15.2",
-        "objection": "^2.2.15",
+        "@pubsweet/logger": "^0.2.61",
+        "authsome": "0.0.5",
+        "config": "^3.3.8",
+        "lib0": "^0.2.54",
+        "knex": "^2.3.0",
+        "objection": "^3.0.1",
         "pubsweet": "^5.1.31",
-        "uuid": "^3.3.2",
-        "yjs": "11.0.0",
+        "uuid": "^9.0.0",
+        "yjs": "^13.5.42",
         "y-protocols": "^1.0.5",
         "ws": "^8.11.0"
     },
     "devDependencies": {
-        "nodemon": "^1.19.1"
+        "nodemon": "^2.0.20"
     }
 }

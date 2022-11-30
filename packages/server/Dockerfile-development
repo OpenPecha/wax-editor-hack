@@ -1,4 +1,4 @@
-FROM node:12.22-bullseye
+FROM node:16-bullseye
 
 RUN apt-get update \
     && apt-get upgrade -y \
@@ -12,7 +12,7 @@ COPY yarn.lock .
 RUN chown -R node:node .
 USER node
 
-
+RUN yarn cache clean
 RUN yarn install
 # RUN yarn cache clean
 COPY --chown=node:node . .
