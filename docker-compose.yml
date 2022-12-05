@@ -1,8 +1,7 @@
-version: '2'
+version: '3'
 
 services:
   server:
-    restart: unless-stopped
     build:
       context: ./packages/server
       dockerfile: ./Dockerfile-development
@@ -10,8 +9,7 @@ services:
       - db
     entrypoint:
       [
-        'sh',
-        'scripts/wait-for-it',
+        'node_modules/.bin/wait-for-it',
         'db:5432',
         '--',
         'sh',
@@ -21,18 +19,21 @@ services:
       [
         'node_modules/.bin/nodemon',
         'startServer.js',
-        '--',
+        '--watch',
+        'api',
+        '--watch',
         'config',
-        '--',
+        '--watch',
+        'controllers',
+        '--watch',
         'models',
-        '--',
+        '--watch',
+        'services',
+        '--watch',
         'scripts',
-        '--',
-        'startServer.js',
-        '--',
-        'app.js',
+        '--watch',
         '--ext',
-        'js,graphql'
+        'js, graphql'
       ]
     ports:
       - ${SERVER_PORT:-4000}:${SERVER_PORT:-4000}
@@ -63,16 +64,17 @@ services:
       - MAILER_HOSTNAME=${MAILER_HOSTNAME}
       - PASSWORD_RESET_PATH=${PASSWORD_RESET_PATH:-password-reset}
     volumes:
-      - ./packages/server/config:/home/node/cokodocs/config
       - ./packages/server/api:/home/node/cokodocs/api
+      - ./packages/server/config:/home/node/cokodocs/config
+      - ./packages/server/controllers:/home/node/cokodocs/controllers
       - ./packages/server/models:/home/node/cokodocs/models
       - ./packages/server/scripts:/home/node/cokodocs/scripts
-      - ./packages/server/app.js:/home/node/cokodocs/app.js
+      - ./packages/server/services:/home/node/cokodocs/services
       - ./packages/server/startServer.js:/home/node/cokodocs/startServer.js
   db:
-    image: postgres:14-alpine
+    image: postgres:14
     ports:
-      - 5432:5432
+      - ${POSTGRES_PORT:-5432}:5432
     environment:
       - POSTGRES_DB=${POSTGRES_DB:-cokodocs_dev}
       - POSTGRES_USER=${POSTGRES_USER:-dev_user}

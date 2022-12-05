@@ -1,5 +1,5 @@
 const { commitizen } = require('@coko/lint')
 
-commitizen.scopes = ['server', 'models', '*']
+commitizen.scopes = ['client', 'server', 'api', 'models', '*']
 
 module.exports = commitizen

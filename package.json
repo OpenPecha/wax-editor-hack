@@ -12,7 +12,8 @@
     "scripts": {
         "cz": "git-cz",
         "prepare": "husky install",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "clean": "sh clean.sh"
     },
     "config": {
         "commitizen": {

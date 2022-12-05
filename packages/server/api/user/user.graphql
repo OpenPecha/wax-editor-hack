@@ -1,0 +1,35 @@
+extend type User {
+  middleName: String
+  phone: String
+  country: String
+  state: String
+  city: String
+  address: String
+  zipCode: String
+  profileSubmitted: Boolean!
+}
+
+input UserProfileInput {
+  givenNames: String!
+  surname: String!
+  displayName: String!
+  email: String!
+  phone: String!
+  country: String!
+  state: String
+  city: String!
+  address: String
+  zipCode: String
+}
+
+extend input UsersQueryParams {
+  search: String
+}
+
+extend type Query {
+  filterUsers(params: UsersQueryParams, options: PageInput): Users!
+}
+
+extend type Mutation {
+  updateUserProfile(input: UserProfileInput!): User!
+}

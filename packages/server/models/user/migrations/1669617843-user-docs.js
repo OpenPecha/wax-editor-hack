@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-const logger = require('@pubsweet/logger')
+const { logger } = require('@coko/server')
 
 exports.up = async knex => {
   try {

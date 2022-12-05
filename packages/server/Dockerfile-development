@@ -2,7 +2,7 @@ FROM node:16-bullseye
 
 RUN apt-get update \
     && apt-get upgrade -y \
-    && apt-get install -y ranger vim python netcat
+    && apt-get install -y ranger vim python
 
 WORKDIR /home/node/cokodocs
 
@@ -12,7 +12,6 @@ COPY yarn.lock .
 RUN chown -R node:node .
 USER node
 
-RUN yarn cache clean
 RUN yarn install
 # RUN yarn cache clean
 COPY --chown=node:node . .

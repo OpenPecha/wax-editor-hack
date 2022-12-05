@@ -3,9 +3,6 @@ const components = require('./components')
 const permissions = require('./permissions')
 
 module.exports = {
-  pubsweet: {
-    components,
-  },
   authsome: {
     mode: path.join(__dirname, 'authsome.js'),
   },
@@ -17,12 +14,18 @@ module.exports = {
     path: path.join(__dirname, 'mailer'),
   },
   permissions,
-  publicKeys: ['authsome', 'pubsweet', 'pubsweet-client', 'pubsweet-server'],
+  publicKeys: [
+    'authsome',
+    'pubsweet',
+    'pubsweet-client',
+    'pubsweet-server',
+    'validations',
+  ],
+  pubsweet: {
+    components,
+  },
   'pubsweet-client': {
-    'login-redirect': '/',
-    port: 3000,
-    protocol: 'http',
-    host: 'localhost',
+    API_ENDPOINT: '/api',
   },
   'pubsweet-server': {
     db: {},
@@ -33,6 +36,14 @@ module.exports = {
     useFileStorage: false,
     websocketPath: 'yjs',
     graphiql: false,
+    emailVerificationTokenExpiry: {
+      amount: 24,
+      unit: 'hours',
+    },
+    passwordResetTokenExpiry: {
+      amount: 24,
+      unit: 'hours',
+    },
     externalServerURL: undefined,
     port: 4000,
     protocol: 'http',
@@ -40,5 +51,11 @@ module.exports = {
     uploads: 'uploads',
     pool: { min: 0, max: 10, idleTimeoutMillis: 1000 },
   },
+  teams: {
+    global: {},
+    nonGlobal: {},
+  },
+
   schema: {},
+  validations: path.join(__dirname, 'modules', 'validations'),
 }
