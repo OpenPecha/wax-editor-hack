@@ -90,15 +90,20 @@ const init = async () => {
       persistence = {
         provider: ldb,
         bindState: async (docName, ydoc) => {
+          console.log('hey there how are you')
+          console.log(docName)
           const persistedYdoc = await ldb.getYDoc(docName)
           const newUpdates = Y.encodeStateAsUpdate(ydoc)
+          console.log(newUpdates)
           ldb.storeUpdate(docName, newUpdates)
           Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
           ydoc.on('update', update => {
             ldb.storeUpdate(docName, update)
           })
         },
-        writeState: async (docName, ydoc) => {},
+        writeState: async (docName, ydoc) => {
+          console.log('hey there')
+        },
       }
     }
 
