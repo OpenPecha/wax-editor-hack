@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const logger = require('@pubsweet/logger')
+const { logger } = require('@coko/server')
 
 exports.up = async knex => {
   try {
@@ -7,11 +7,11 @@ exports.up = async knex => {
       table.uuid('id').primary()
       table.text('name').notNullable()
       table.text('identifier').notNullable()
-      table.text('notes_raw_text').notNullable()
-      table.text('notes_html').notNullable()
-      table.json('notes_mdash').notNullable()
-      table.json('notes_wax_delta').notNullable()
-      table.binary('notes_y_doc_state').notNullable()
+      table.text('docs_raw_text').notNullable()
+      table.text('docs_html').notNullable()
+      table.json('docs_mdash').notNullable()
+      table.json('docs_wax_delta').notNullable()
+      table.binary('docs_y_doc_state').notNullable()
       table
         .timestamp('created_at', { useTz: true })
         .notNullable()

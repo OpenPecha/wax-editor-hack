@@ -13,6 +13,7 @@ module.exports = [
   //   './models/questionVersion',
   //   './models/team',
   './models/user',
+  './models/doc',
 
   // local api
   './api',
