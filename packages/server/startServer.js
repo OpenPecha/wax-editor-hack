@@ -1,5 +1,5 @@
 const { startServer } = require('@coko/server')
-const { WebSocketServer } = require('ws')
+const { WebSocket, WebSocketServer } = require('ws')
 const leveldb = require('y-leveldb')
 const Y = require('yjs')
 const map = require('lib0/map')
@@ -16,16 +16,17 @@ const init = async () => {
     const clients = []
     const server = await startServer()
     const wss = new WebSocketServer({ server })
-    wss.on('connection', (ws, request, client) => {
-      console.log(client)
+    wss.on('connection', (ws, request) => {
+      wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+          clients.push(client)
+        }
+      })
       const injectedWS = ws
       const docName = request.url.slice('1').split('?')[0]
-      console.log(docName)
       const gc = true
       const doc = getYDoc(docName, gc)
       doc.conns.set(injectedWS, new Set())
-      console.log('Client connected', client)
-      clients.push(client)
       injectedWS.isAlive = true
       let pingReceived = true
 

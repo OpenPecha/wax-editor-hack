@@ -49,9 +49,7 @@ const callbackRequest = (url, timeout, data) => {
     console.error('Callback request error.', e)
     req.abort()
   })
-  console.log('before writing')
   req.write(dataToSend)
-  console.log('before ending req')
   req.end()
 }
 
