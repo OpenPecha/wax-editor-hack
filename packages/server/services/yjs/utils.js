@@ -124,6 +124,7 @@ if (typeof persistenceDir === 'string') {
       const rawText = ydoc.getText('prosemirror').toString()
       const delta = ydoc.getText('prosemirror').toDelta()
       const deltaJSON = JSON.stringify(delta, null, 2)
+      const timestamp = db.fn.now()
 
       return db
         .select('docs_y_doc_state', 'docs_prosemirror_delta')
@@ -154,6 +155,7 @@ if (typeof persistenceDir === 'string') {
               docs_raw_text: rawText,
               docs_prosemirror_delta: deltaJSON,
               docs_y_doc_state: state,
+              updated_at: timestamp,
             })
             .then(res => {
               console.log('Updated', docName)
