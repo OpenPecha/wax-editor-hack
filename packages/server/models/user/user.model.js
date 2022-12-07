@@ -1,9 +1,7 @@
-const { logger, modelTypes, useTransaction } = require('@coko/server')
+const { modelTypes } = require('@coko/server')
 const UserModel = require('@coko/server/src/models/user/user.model')
 
-const { applyListQueryOptions } = require('../helpers')
-
-const { boolean, stringNullable } = modelTypes
+const { stringNullable } = modelTypes
 
 class User extends UserModel {
   static get schema() {
@@ -11,15 +9,8 @@ class User extends UserModel {
       type: 'object',
       required: [],
       properties: {
-        middleName: stringNullable,
-        displayName: stringNullable,
-        phone: stringNullable, // need formatting rule (only + and numbers?)
-        country: stringNullable,
-        state: stringNullable,
-        city: stringNullable,
-        address: stringNullable,
-        zipCode: stringNullable,
-        profileSubmitted: boolean,
+        email: stringNullable,
+        userName: stringNullable,
       },
     }
   }
@@ -29,38 +20,14 @@ class User extends UserModel {
     return user.getDisplayName()
   }
 
-  static async filter(data = {}, options = {}) {
-    try {
-      const { trx, ...otherOptions } = options
-      const { search = '', ...params } = data
+  static async getEmail(user) {
+    if (user.email) return user.email
+    return user.getEmail()
+  }
 
-      return useTransaction(
-        async tr => {
-          let queryBuilder = this.query(tr)
-
-          if (search) {
-            queryBuilder = queryBuilder
-              .withGraphJoined('defaultIdentity')
-              .where(builder =>
-                builder
-                  .where('defaultIdentity.email', 'ilike', `%${search}%`)
-                  .orWhere('displayName', 'ilike', `%${search}%`),
-              )
-          }
-
-          queryBuilder = queryBuilder.where(params)
-
-          return applyListQueryOptions(queryBuilder, otherOptions)
-        },
-        {
-          trx,
-          passedTrxOnly: true,
-        },
-      )
-    } catch (e) {
-      logger.error('Base model: find failed', e)
-      throw new Error(e)
-    }
+  static async getUsername(user) {
+    if (user.username) return user.username
+    return user.getUsername()
   }
 }
 

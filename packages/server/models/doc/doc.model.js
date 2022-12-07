@@ -1,5 +1,4 @@
 const { modelTypes } = require('@coko/server')
-// const UserModel = require('@coko/server/src/models/user/user.model')
 
 const { stringNullable } = modelTypes
 

@@ -1,5 +1,3 @@
-// const TeamModel = require('@coko/server/src/models/team/team.model')
-
 const User = require('../user/user.model')
 
 class UserDocs {
