@@ -103,26 +103,47 @@ if (typeof persistenceDir === 'string') {
       console.log('writeState for', docName)
 
       const state = Y.encodeStateAsUpdate(ydoc)
-      const rawText = ydoc.getText('').toString()
-      const delta = ydoc.getText('').toDelta()
+      const rawText = ydoc.getText('prosemirror').toString()
+      const delta = ydoc.getText('prosemirror').toDelta()
       const deltaJSON = JSON.stringify(delta, null, 2)
 
-      console.log('state', state)
-      console.log('rawText', rawText)
-      console.log('delta', delta)
-      console.log('deltaJSON', deltaJSON)
+      return db
+        .select('docs_y_doc_state', 'docs_prosemirror_delta')
+        .from('docs')
+        .where('identifier', docName)
+        .limit(1)
+        .then(res => {
+          if (!res.length) {
+            return db
+              .insert({
+                docs_raw_text: rawText,
+                docs_prosemirror_delta: deltaJSON,
+                docs_y_doc_state: state,
+                identifier: docName,
+              })
+              .into('docs')
+              .then(res => {
+                console.log('Inserted', docName)
+              })
+              .catch(e => {
+                console.log('Error to insert', docName, e)
+              })
+          }
 
-      // return db
-      //   .raw(
-      //     'UPDATE documents SET docs_raw_text = $1, docs_wax_delta = $2, docs_y_doc_state = $3 WHERE identifier = $4',
-      //     [rawText, deltaJSON, state, docName],
-      //   )
-      //   .then(res => {
-      //     console.log('updated', docName)
-      //   })
-      //   .catch(e => {
-      //     console.log('failed to update', docName, e)
-      //   })
+          return db('docs')
+            .where({ identifier: docName })
+            .update({
+              docs_raw_text: rawText,
+              docs_prosemirror_delta: deltaJSON,
+              docs_y_doc_state: state,
+            })
+            .then(res => {
+              console.log('Updated', docName)
+            })
+            .catch(e => {
+              console.log('Error to update', docName, e)
+            })
+        })
     },
   }
 }
