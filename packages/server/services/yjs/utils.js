@@ -91,17 +91,35 @@ if (typeof persistenceDir === 'string') {
   persistence = {
     provider: ldb,
     bindState: async (docName, ydoc) => {
-      const persistedYdoc = await ldb.getYDoc(docName)
-      const newUpdates = Y.encodeStateAsUpdate(ydoc)
-      ldb.storeUpdate(docName, newUpdates)
-      Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
-      ydoc.on('update', update => {
-        ldb.storeUpdate(docName, update)
-      })
+      return db
+        .select('docs_y_doc_state', 'docs_prosemirror_delta')
+        .from('docs')
+        .where('identifier', docName)
+        .limit(1)
+        .then(async res => {
+          console.log('loaded state for ', docName)
+          const delta = res[0].docs_prosemirror_delta
+          const initialState = res[0].docs_y_doc_state
+
+          if (initialState) {
+            console.log('applied initial update', docName)
+            Y.applyUpdate(ydoc, initialState)
+          } else {
+            const persistedYdoc = await ldb.getYDoc(docName)
+            const newUpdates = Y.encodeStateAsUpdate(ydoc)
+            ldb.storeUpdate(docName, newUpdates)
+            Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
+          }
+
+          ydoc.on('update', update => {
+            ldb.storeUpdate(docName, update)
+          })
+        })
+        .catch(e => {
+          console.log('failed to load', docName, e)
+        })
     },
     writeState: async (docName, ydoc) => {
-      console.log('writeState for', docName)
-
       const state = Y.encodeStateAsUpdate(ydoc)
       const rawText = ydoc.getText('prosemirror').toString()
       const delta = ydoc.getText('prosemirror').toDelta()

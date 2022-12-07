@@ -2,7 +2,7 @@ const http = require('http')
 
 const CALLBACK_URL = 'http://localhost:3000'
 const CALLBACK_TIMEOUT = 5000
-const CALLBACK_OBJECTS = '{"prosemirror":"XmlFragment"}'
+const CALLBACK_OBJECTS = '{"prosemirror":"Text"}'
 const CALLBACK_DEBOUNCE_WAIT = 2000
 const CALLBACK_DEBOUNCE_MAXWAIT = 10000
 
@@ -21,7 +21,7 @@ const callbackHandler = (update, origin, doc) => {
     const sharedObjectType = CALLBACK_OBJECTS[sharedObjectName]
     dataToSend.data[sharedObjectName] = {
       type: sharedObjectType,
-      content: doc.getXmlFragment(sharedObjectName),
+      content: doc.getText(sharedObjectName),
     }
   })
   callbackRequest(CALLBACK_URL, CALLBACK_TIMEOUT, dataToSend)
