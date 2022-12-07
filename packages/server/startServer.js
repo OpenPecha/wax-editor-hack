@@ -1,13 +1,8 @@
 const { startServer } = require('@coko/server')
 const { WebSocket, WebSocketServer } = require('ws')
-const leveldb = require('y-leveldb')
-const Y = require('yjs')
 const map = require('lib0/map')
 const { WSSharedDoc, utils } = require('./services/index')
 
-const persistenceDir = process.env.YPERSISTENCE || './docDir'
-
-let persistence = null
 const docs = new Map()
 const pingTimeout = 30000
 
@@ -83,37 +78,13 @@ const init = async () => {
       }
     })
 
-    if (typeof persistenceDir === 'string') {
-      console.log(`Persisting documents to "${persistenceDir}"`)
-      const LevelDbPersistence = leveldb.LeveldbPersistence
-      const ldb = new LevelDbPersistence(persistenceDir)
-      persistence = {
-        provider: ldb,
-        bindState: async (docName, ydoc) => {
-          console.log('hey there how are you')
-          console.log(docName)
-          const persistedYdoc = await ldb.getYDoc(docName)
-          const newUpdates = Y.encodeStateAsUpdate(ydoc)
-          console.log(newUpdates)
-          ldb.storeUpdate(docName, newUpdates)
-          Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
-          ydoc.on('update', update => {
-            ldb.storeUpdate(docName, update)
-          })
-        },
-        writeState: async (docName, ydoc) => {
-          console.log('hey there')
-        },
-      }
-    }
-
     const getYDoc = (docName, gc = true) =>
       map.setIfUndefined(docs, docName, () => {
         const doc = new WSSharedDoc(docName)
         doc.gc = gc
 
-        if (persistence !== null) {
-          persistence.bindState(docName, doc)
+        if (utils.persistence !== null) {
+          utils.persistence.bindState(docName, doc)
         }
 
         docs.set(docName, doc)
