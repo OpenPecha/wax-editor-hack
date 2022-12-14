@@ -1,20 +1,28 @@
-const { modelTypes } = require('@coko/server')
+const { modelTypes, BaseModel } = require('@coko/server')
 
-const { stringNullable } = modelTypes
+const { stringNotEmpty, arrayOfObjects } = modelTypes
 
-class Doc {
+class Doc extends BaseModel {
+  
+  constructor(properties) {
+    super(properties)
+    this.type = 'doc'
+  }
+
+  static get tableName() {
+    return 'docs'
+  }
+
+
   static get schema() {
     return {
       type: 'object',
-      required: [],
       properties: {
-        name: stringNullable,
-        identifier: stringNullable,
-        docs_raw_text: stringNullable,
-        docs_html: stringNullable,
-        docs_mdash: stringNullable,
-        docs_wax_delta: stringNullable,
-        docs_y_doc_state: stringNullable,
+        identifier: stringNotEmpty,
+        docs_prosemirror_delta: arrayOfObjects, 
+        docs_y_doc_state: {
+          type: "binary",
+        },
       },
     }
   }

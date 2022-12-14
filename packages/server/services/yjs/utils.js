@@ -1,10 +1,12 @@
+/* eslint-disable no-return-await */
 const syncProtocol = require('y-protocols/dist/sync.cjs')
 const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
 const encoding = require('lib0/encoding')
 const decoding = require('lib0/decoding')
 const leveldb = require('y-leveldb')
 const Y = require('yjs')
-const db = require('@pubsweet/db-manager/src/db')
+const { Doc} = require('@pubsweet/models')
+const { db } = require('@coko/server')
 
 const persistenceDir = process.env.YPERSISTENCE || './docDir'
 
@@ -85,85 +87,52 @@ const closeConn = (doc, conn) => {
 }
 
 if (typeof persistenceDir === 'string') {
-  console.log(`Persisting documents to "${persistenceDir}"`)
   const LevelDbPersistence = leveldb.LeveldbPersistence
   const ldb = new LevelDbPersistence(persistenceDir)
   persistence = {
     provider: ldb,
-    bindState: async (docName, ydoc) => {
-      return db
-        .select('docs_y_doc_state', 'docs_prosemirror_delta')
-        .from('docs')
-        .where('identifier', docName)
-        .limit(1)
-        .then(async res => {
-          console.log('loaded state for ', docName)
-          const delta = res[0].docs_prosemirror_delta
-          const initialState = res[0].docs_y_doc_state
+    bindState: async (identifier, ydoc) => {
+      const docInstance = await Doc.query().findOne({ identifier })
 
-          if (initialState) {
-            console.log('applied initial update', docName)
-            Y.applyUpdate(ydoc, initialState)
-          } else {
-            const persistedYdoc = await ldb.getYDoc(docName)
-            const newUpdates = Y.encodeStateAsUpdate(ydoc)
-            ldb.storeUpdate(docName, newUpdates)
-            Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
-          }
+      if (!docInstance) {
+        const persistedYdoc = await ldb.getYDoc(identifier)
+        const newUpdates = Y.encodeStateAsUpdate(ydoc)
+        ldb.storeUpdate(identifier, newUpdates)
+        Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
+      } else {
+        const initialState = docInstance.docsYDocState
 
-          ydoc.on('update', update => {
-            ldb.storeUpdate(docName, update)
-          })
-        })
-        .catch(e => {
-          console.log('failed to load', docName, e)
-        })
+        if (initialState) {
+          Y.applyUpdate(ydoc, initialState)
+        }
+      }
+
+      ydoc.on('update', update => {
+        ldb.storeUpdate(identifier, update)
+      })
     },
-    writeState: async (docName, ydoc) => {
+    writeState: async (identifier, ydoc) => {
       const state = Y.encodeStateAsUpdate(ydoc)
-      const rawText = ydoc.getText('prosemirror').toString()
       const delta = ydoc.getText('prosemirror').toDelta()
-      const deltaJSON = JSON.stringify(delta, null, 2)
       const timestamp = db.fn.now()
 
-      return db
-        .select('docs_y_doc_state', 'docs_prosemirror_delta')
-        .from('docs')
-        .where('identifier', docName)
-        .limit(1)
-        .then(res => {
-          if (!res.length) {
-            return db
-              .insert({
-                docs_raw_text: rawText,
-                docs_prosemirror_delta: deltaJSON,
-                docs_y_doc_state: state,
-                identifier: docName,
-              })
-              .into('docs')
-              .then(res => {
-                console.log('Inserted', docName)
-              })
-              .catch(e => {
-                console.log('Error to insert', docName, e)
-              })
-          }
+      const docYjs = await Doc.query().findOne({ identifier })
 
-          return db('docs')
-            .where({ identifier: docName })
-            .update({
-              docs_raw_text: rawText,
-              docs_prosemirror_delta: deltaJSON,
-              docs_y_doc_state: state,
-              updated_at: timestamp,
-            })
-            .then(res => {
-              console.log('Updated', docName)
-            })
-            .catch(e => {
-              console.log('Error to update', docName, e)
-            })
+      if (!docYjs) {
+        await Doc.query().insert({
+          docs_prosemirror_delta: delta,
+          docs_y_doc_state: state,
+          identifier,
         })
+      } else {
+        await Doc.query()
+          .patch({
+            docs_prosemirror_delta: delta,
+            docs_y_doc_state: state,
+            updated: timestamp,
+          })
+          .findOne({ identifier })
+      }
     },
   }
 }

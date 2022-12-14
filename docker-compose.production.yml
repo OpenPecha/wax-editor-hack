@@ -7,7 +7,7 @@ services:
       context: ./packages/server
       dockerfile: ./Dockerfile-production
     ports:
-      - ${SERVER_PORT:-4000}:${SERVER_PORT:-4000}
+      - ${SERVER_PORT:-3000}:${SERVER_PORT:-3000}
     environment:
       - NODE_ENV=production
       - POSTGRES_HOST=${POSTGRES_HOST}

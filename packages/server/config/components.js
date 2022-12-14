@@ -14,6 +14,7 @@ module.exports = [
   //   './models/team',
   './models/user',
   './models/doc',
+  './models/userDocs',
 
   // local api
   './api',

@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@coko/server": "https://gitlab.coko.foundation/cokoapps/server.git#cced62ab12c6c059cc7d2b1a55574743b25a3eb3",
+        "@pubsweet/models": "^0.3.26",
         "config": "^3.3.6",
         "knex": "^2.3.0",
         "lib0": "^0.2.54",

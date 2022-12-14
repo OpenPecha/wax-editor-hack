@@ -1,8 +1,13 @@
 const http = require('http')
 
-const CALLBACK_URL = 'http://localhost:3000'
+const CALLBACK_URL = {
+  hostname: 'localhost',
+  port: '3000',
+  path: 'callback',
+}
+
 const CALLBACK_TIMEOUT = 5000
-const CALLBACK_OBJECTS = '{"prosemirror":"Text"}'
+const CALLBACK_OBJECTS = '{"prosemirror":"XMLFragment"}'
 const CALLBACK_DEBOUNCE_WAIT = 2000
 const CALLBACK_DEBOUNCE_MAXWAIT = 10000
 
@@ -31,7 +36,9 @@ const callbackRequest = (url, timeout, data) => {
   const dataToSend = JSON.stringify(data)
 
   const options = {
-    url,
+    hostname: url.hostname,
+    port: url.port,
+    path: url.path,
     timeout,
     method: 'POST',
     headers: {
