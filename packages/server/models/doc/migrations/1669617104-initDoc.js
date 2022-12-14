@@ -4,17 +4,16 @@ const { logger } = require('@coko/server')
 exports.up = async knex => {
   try {
     return knex.schema.createTable('docs', table => {
-      table.increments('id').primary()
-      table.string('name')
+      table.uuid('id').primary()
+      table.string('type')
       table.string('identifier').notNullable()
-      table.text('docs_raw_text').notNullable()
       table.json('docs_prosemirror_delta').notNullable()
       table.binary('docs_y_doc_state').notNullable()
       table
-        .timestamp('created_at', { useTz: true })
+        .timestamp('created', { useTz: true })
         .notNullable()
         .defaultTo(knex.fn.now())
-      table.timestamp('updated_at', { useTz: true })
+      table.timestamp('updated', { useTz: true })
     })
   } catch (e) {
     logger.error('Doc: Initial: Migration failed!')

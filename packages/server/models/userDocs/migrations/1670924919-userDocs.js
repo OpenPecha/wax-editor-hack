@@ -16,6 +16,12 @@ exports.up = async knex => {
         .references('id')
         .inTable('docs')
         .onDelete('CASCADE')
+      table.text('type')
+      table
+        .timestamp('created', { useTz: true })
+        .notNullable()
+        .defaultTo(knex.fn.now())
+      table.timestamp('updated', { useTz: true })
     })
   } catch (e) {
     logger.error('UserDocs: Initial: Migration failed!')

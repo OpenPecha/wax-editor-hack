@@ -1,22 +1,22 @@
-const User = require('../user/user.model')
+const { BaseModel, uuid } = require('@coko/server')
 
-class UserDocs {
-  static async searchForUserDocs(userId, query, options = {}) {
-    try {
-      if (!query) return []
+class UserDocs extends BaseModel {
+  constructor(properties) {
+    super(properties)
+    this.type = 'UserDocs'
+  }
 
-      return User.query(options.trx)
-        .where('id', builder => {
-          return builder.select('doc_id.id').from('docs')
-        })
-        .whereIn(builder => {
-          return builder
-            .select('user_docs.doc_id')
-            .from('user_docs')
-            .where({ userId })
-        })
-    } catch (e) {
-      throw new Error(e)
+  static get tableName() {
+    return 'user_docs'
+  }
+
+  static get schema() {
+    return {
+      type: 'object',
+      properties: {
+        user_id: uuid,
+        doc_id: uuid,
+      },
     }
   }
 }

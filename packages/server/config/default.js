@@ -45,7 +45,7 @@ module.exports = {
       unit: 'hours',
     },
     externalServerURL: undefined,
-    port: 4000,
+    port: 3000,
     protocol: 'http',
     host: 'localhost',
     uploads: 'uploads',
