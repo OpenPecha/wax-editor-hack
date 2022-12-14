@@ -119,20 +119,21 @@ if (typeof persistenceDir === 'string') {
       const docYjs = await Doc.query().findOne({ identifier })
 
       if (!docYjs) {
-        await Doc.query().insert({
+        return Doc.query().insert({
           docs_prosemirror_delta: delta,
           docs_y_doc_state: state,
           identifier,
         })
-      } else {
-        await Doc.query()
+      }
+ 
+        return Doc.query()
           .patch({
             docs_prosemirror_delta: delta,
             docs_y_doc_state: state,
             updated: timestamp,
           })
           .findOne({ identifier })
-      }
+      
     },
   }
 }

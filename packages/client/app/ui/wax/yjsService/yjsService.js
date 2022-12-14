@@ -9,6 +9,7 @@ class YjsService extends Service {
         const { connectionUrl, docIdentifier } = this.config   
         const ydoc = new Y.Doc();
 
+        // const provider = new WebsocketProvider('wss://demos.yjs.dev', 'prosemirror-demo', ydoc)
         const provider = new WebsocketProvider(
             connectionUrl,
             docIdentifier,
