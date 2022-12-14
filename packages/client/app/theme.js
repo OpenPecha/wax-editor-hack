@@ -1,7 +1,7 @@
 module.exports = {
   colorBackground: 'white',
   colorBackgroundHue: '#e9e9e9',
-  colorBody: '#000', // gray
+  colorBody: 'white', // gray
   colorPrimary: '#178387', // 'cornflowerblue',
   colorSecondary: '#0a5c5f', // 'gainsboro',
   colorTertiary: '#8ac341',
@@ -14,7 +14,7 @@ module.exports = {
 
   colorText: '#3F3F3F',
   colorTextDark: '#222222',
-  colorTextReverse: 'white',
+  colorTextReverse: 'black',
 
   fontInterface: 'Arial, sans-serif',
   // font sizes

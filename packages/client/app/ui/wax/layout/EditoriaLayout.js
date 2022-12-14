@@ -86,6 +86,13 @@ const SideMenu = styled.div`
   border-right: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
   min-width: 250px;
   height: calc(100% - 16px);
+
+  div > div:nth-child(2) > div > div:nth-child(5)  {
+    display:none;
+  }
+  div > div:nth-child(2) > div > div:nth-child(6)  {
+    display:none;
+  }
 `;
 
 const EditorArea = styled.div`
@@ -104,7 +111,7 @@ const WaxSurfaceScroll = styled.div`
 `;
 
 const EditorContainer = styled.div`
-  width: 65%;
+  width: 100%;
   height: 100%;
 
   .ProseMirror {

@@ -1,15 +1,13 @@
+/* eslint-disable import/no-duplicates */
 /* stylelint-disable string-quotes */
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { grid, th } from '@coko/client'
-import { DownOutlined, UpOutlined } from '@ant-design/icons'
+// import { DownOutlined, UpOutlined } from '@ant-design/icons'
 import logoMobile from '../../../static/cokoDocs-logo-alt.png'
 import logo from '../../../static/cokoDocs-logo-alt.png'
-import menuOpen from '../../../static/waffle-white.svg'
-import menuClose from '../../../static/close-white.svg'
-import Button from './Button'
 
 // #region styles
 const StyledHeader = styled.header`
@@ -121,13 +119,6 @@ const StyledList = styled.ul`
   }
 `
 
-const LeftNavContainer = styled.div`
-  @media screen and (min-width: ${th('mediaQueries.large')}) {
-    display: flex;
-    flex-direction: row;
-  }
-`
-
 const NavLinks = styled.div`
   background-color: ${th('colorBackground')};
   display: none;
@@ -195,83 +186,6 @@ const StyledLink = styled(Link)`
   }
 `
 
-const StyledLogin = styled(Link)`
-  align-items: center;
-  background-color: ${th('colorPrimary')};
-  border-color: ${th('colorPrimary')};
-  border-radius: 3px;
-  color: ${th('colorTextReverse')};
-  display: flex;
-  font-size: ${th('fontSizeBase')};
-  height: 40px;
-  padding: ${grid(1)} ${grid(4)};
-  text-align: left;
-  transition: all cubic-bezier(0.645, 0.045, 0.355, 1) 0.3s;
-  width: 100%;
-
-  && {
-    line-height: 38px;
-  }
-
-  &:hover,
-  &:focus {
-    background-color: ${th('colorSecondary')};
-    border-color: ${th('colorSecondary')};
-    color: ${th('colorTextReverse')};
-  }
-
-  @media screen and (min-width: ${th('mediaQueries.large')}) {
-    height: 32px;
-    margin-top: ${grid(-1)};
-
-    && {
-      line-height: 30px;
-    }
-  }
-`
-
-const MobileMenuToggle = styled.button`
-  background-color: ${th('colorBody')};
-  background-image: linear-gradient(transparent, transparent),
-    ${() => `url(${menuOpen})`};
-
-  &[aria-expanded='true'] {
-    background-image: linear-gradient(transparent, transparent),
-      ${() => `url(${menuClose})`};
-  }
-
-  /* control display of NavLinks only for < medium screens */
-  @media screen and (max-width: ${th('mediaQueries.large')}) {
-    &[aria-expanded='true'] ~ ${NavLinks} {
-      display: block;
-    }
-
-    &[aria-expanded='false'] ~ ${NavLinks} {
-      display: none;
-    }
-  }
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: 31px 31px;
-  border: none;
-  cursor: pointer;
-  display: block;
-  height: 35px;
-  overflow: hidden;
-  padding: 0;
-  transition: outline 200ms cubic-bezier(0.645, 0.045, 0.355, 1);
-  width: 35px;
-
-  &:hover,
-  &:focus {
-    outline: 1px solid ${th('colorTextReverse')};
-  }
-
-  @media screen and (min-width: ${th('mediaQueries.large')}) {
-    display: none;
-  }
-`
-
 const Separator = styled.hr`
   margin: 0 0 ${grid(4)} 0;
   padding: 0;
@@ -323,8 +237,6 @@ const Header = props => {
     ...rest
   } = props
 
-  const [showMenu, setShowMenu] = useState(false)
-
   return (
     <StyledHeader role="banner" {...rest}>
       <SkipLink
@@ -341,120 +253,6 @@ const Header = props => {
       <Branding to={homepage}>
         <h1>Coko Docs</h1>
       </Branding>
-      <Navigation role="navigation">
-        <MobileMenuToggle
-          aria-controls="main-nav"
-          aria-expanded={showMenu}
-          aria-label="Menu"
-          onClick={() => setShowMenu(!showMenu)}
-        />
-        <NavLinks id="main-nav">
-          <StyledList>
-            {loggedin && (
-              <>
-                <li>
-                  <StyledLink
-                    aria-current={currentPath === dashboard ? 'page' : false}
-                    onClick={() => setShowMenu(false)}
-                    to={dashboard}
-                  >
-                    Dashboard
-                  </StyledLink>
-                </li>
-              </>
-            )}
-          </StyledList>
-          <Separator />
-          {/*<LeftNavContainer>
-            <StyledList>
-              <li>
-                {loggedin ? (
-                  <UserMenuWrapper
-                    onBlur={userMenuOnBlur}
-                    onKeyDown={userMenuOnKeyDown}
-                  >
-                    <UserMenuButton
-                      aria-controls="user-menu"
-                      aria-expanded="false"
-                      aria-haspopup="true"
-                      icon={openUserMenu ? <UpOutlined /> : <DownOutlined />}
-                      onClick={() => setOpenUserMenu(!openUserMenu)}
-                      type="primary"
-                    >
-                      {displayName}
-                    </UserMenuButton>
-                    <CollapsableMenu
-                      aria-label="User menu"
-                      id="user-menu"
-                      role="menu"
-                      style={{ display: openUserMenu ? 'flex' : 'none' }}
-                    >
-                      {canManageUsers && (
-                        <li role="none">
-                          <StyledLink
-                            aria-current={
-                              currentPath === manageUsers ? 'page' : false
-                            }
-                            onClick={() => {
-                              setShowMenu(false)
-                              setOpenUserMenu(false)
-                            }}
-                            role="menuitem"
-                            to={manageUsers}
-                          >
-                            Manage Users
-                          </StyledLink>
-                        </li>
-                      )}
-                      {canManageTeams && (
-                        <li role="none">
-                          <StyledLink
-                            aria-current={
-                              currentPath === manageTeams ? 'page' : false
-                            }
-                            onClick={() => {
-                              setShowMenu(false)
-                              setOpenUserMenu(false)
-                            }}
-                            role="menuitem"
-                            to={manageTeams}
-                          >
-                            Manage Teams
-                          </StyledLink>
-                        </li>
-                      )}
-                      <li role="none">
-                        <StyledLink
-                          aria-current={
-                            currentPath === profile ? 'page' : false
-                          }
-                          onClick={() => {
-                            setShowMenu(false)
-                            setOpenUserMenu(false)
-                          }}
-                          role="menuitem"
-                          to={profile}
-                        >
-                          Profile
-                        </StyledLink>
-                      </li>
-                      <li role="none">
-                        <StyledLink onClick={onLogout} role="menuitem" to="#">
-                          Logout
-                        </StyledLink>
-                      </li>
-                    </CollapsableMenu>
-                  </UserMenuWrapper>
-                ) : (
-                  <StyledLogin onClick={() => setShowMenu(false)} to={login}>
-                    Loginzz
-                  </StyledLogin>
-                )}
-              </li>
-            </StyledList>
-                </LeftNavContainer>*/}
-        </NavLinks>
-      </Navigation>
     </StyledHeader>
   )
 }
