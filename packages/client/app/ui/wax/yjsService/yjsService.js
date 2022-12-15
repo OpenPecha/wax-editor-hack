@@ -16,6 +16,23 @@ class YjsService extends Service {
             ydoc
         );
 
+        
+        provider.on('sync', args => {
+            console.log({sync: args})
+        })
+        
+        provider.on('status', args => {
+            console.log({status: args})
+        })
+
+        provider.on('connection-close', (args) => {
+            console.log({connectioClose: args})
+        })
+
+        provider.on('connection-error', (args) => {
+            console.log({connectioError: args})
+        })
+
     const type = ydoc.getXmlFragment('prosemirror')
 
     this.app.PmPlugins.add('ySyncPlugin', ySyncPlugin(type))

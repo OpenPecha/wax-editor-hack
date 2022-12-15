@@ -59,10 +59,7 @@ const PmEditor = props => {
   let identifier = docIdentifier
 
   if (!docIdentifier) {
-    identifier = [...Array(15).keys()].slice(1).map(() => {
-      const random = Math.floor(Math.random() * 27);
-      return String.fromCharCode(97 + random);
-    }).join('')
+    identifier = Array.from(Array(20), () => Math.floor(Math.random() * 36).toString(36)).join('');
 
     history.push(`/dashboard/${identifier}`, { replace: true });
     return true
