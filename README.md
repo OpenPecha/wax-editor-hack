@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://gitlab.coko.foundation/cokoapps/cokodocs.git
+git remote add origin https://gitlab.coko.foundation/cokodocs/cokodocs.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://gitlab.coko.foundation/cokoapps/cokodocs/-/settings/integrations)
+- [ ] [Set up project integrations](https://gitlab.coko.foundation/cokodocs/cokodocs/-/settings/integrations)
 
 ## Collaborate with your team
 
