@@ -95,7 +95,8 @@ const closeConn = (doc, conn) => {
       const docInstance = await Doc.query().findOne({ identifier })
 
       if (docInstance && docInstance.docs_y_doc_state) {
-        Y.applyUpdate(doc, docInstance);
+        console.log(docInstance)
+        Y.applyUpdate(doc, docInstance.docs_y_doc_state);
       }
     },
     // writeState: async (identifier, ydoc) => {
