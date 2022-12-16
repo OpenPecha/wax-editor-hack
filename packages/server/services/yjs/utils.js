@@ -91,25 +91,12 @@ if (typeof persistenceDir === 'string') {
   const ldb = new LevelDbPersistence(persistenceDir)
   persistence = {
     provider: ldb,
-    bindState: async (identifier, ydoc) => {
+    bindState: async (identifier, doc) => {
       const docInstance = await Doc.query().findOne({ identifier })
 
-      if (!docInstance) {
-        const persistedYdoc = await ldb.getYDoc(identifier)
-        const newUpdates = Y.encodeStateAsUpdate(ydoc)
-        ldb.storeUpdate(identifier, newUpdates)
-        Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
-      } else {
-        const initialState = docInstance.docsYDocState
-
-        if (initialState) {
-          Y.applyUpdate(ydoc, initialState)
-        }
+      if (docInstance && docInstance.docs_y_doc_state) {
+        Y.applyUpdate(doc, docInstance);
       }
-
-      ydoc.on('update', update => {
-        ldb.storeUpdate(identifier, update)
-      })
     },
     writeState: async (identifier, ydoc) => {
       const state = Y.encodeStateAsUpdate(ydoc)
