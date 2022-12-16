@@ -86,7 +86,7 @@ const closeConn = (doc, conn) => {
   conn.close()
 }
 
-if (typeof persistenceDir === 'string') {
+
   const LevelDbPersistence = leveldb.LeveldbPersistence
   const ldb = new LevelDbPersistence(persistenceDir)
   persistence = {
@@ -146,7 +146,7 @@ if (typeof persistenceDir === 'string') {
       }
     },
   }
-}
+
 
 module.exports = {
   syncProtocol,
