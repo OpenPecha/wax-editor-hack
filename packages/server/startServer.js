@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
 const { startServer } = require('@coko/server')
-const { WebSocket, WebSocketServer } = require('ws')
+const { WebSocketServer } = require('ws')
 const map = require('lib0/map')
 const { WSSharedDoc, utils } = require('./services')
 
 const docs = new Map()
-const pingTimeout = 30000
+const pingTimeout = 1000
 
 const messageListener = (conn, doc, message) => {
   try {
@@ -40,23 +40,17 @@ const messageListener = (conn, doc, message) => {
 
 const init = async () => {
   try {
-    const clients = []
     const server = await startServer()
     const wss = new WebSocketServer({ server, clientTracking: true })
 
     wss.on('connection', (injectedWS, request) => {
       injectedWS.binaryType = 'arraybuffer'
 
-      wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-          clients.push(client)
-        }
-      })
-
       const docName = request.url.slice('1').split('?')[0]
       const gc = true
 
       const doc = getYDoc(docName, gc)
+     
       doc.conns.set(injectedWS, new Set())
 
       injectedWS.on('message', message =>
@@ -95,22 +89,25 @@ const init = async () => {
         pingReceived = true
       })
 
-      const encoder = utils.encoding.createEncoder()
-      utils.encoding.writeVarUint(encoder, utils.messageSync)
-      utils.syncProtocol.writeSyncStep1(encoder, doc)
-      utils.send(doc, injectedWS, utils.encoding.toUint8Array(encoder))
-      const awarenessStates = doc.awareness.getStates()
-
-      if (awarenessStates.size > 0) {
-        utils.encoding.writeVarUint(encoder, utils.messageAwareness)
-        utils.encoding.writeVarUint8Array(
-          encoder,
-          utils.awarenessProtocol.encodeAwarenessUpdate(
-            doc.awareness,
-            Array.from(awarenessStates.keys()),
-          ),
-        )
+      {
+        const encoder = utils.encoding.createEncoder()
+        utils.encoding.writeVarUint(encoder, utils.messageSync)
+        utils.syncProtocol.writeSyncStep1(encoder, doc)
         utils.send(doc, injectedWS, utils.encoding.toUint8Array(encoder))
+        const awarenessStates = doc.awareness.getStates()
+
+        if (awarenessStates.size > 0) {
+          const encoder1 = utils.encoding.createEncoder();
+          utils.encoding.writeVarUint(encoder1, utils.messageAwareness)
+          utils.encoding.writeVarUint8Array(
+            encoder1,
+            utils.awarenessProtocol.encodeAwarenessUpdate(
+              doc.awareness,
+              Array.from(awarenessStates.keys()),
+            ),
+          )
+          utils.send(doc, injectedWS, utils.encoding.toUint8Array(encoder1))
+        }
       }
     })
 
