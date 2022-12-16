@@ -13,11 +13,13 @@ const init = async () => {
     const wss = new WebSocketServer({ server, clientTracking: true })
 
     wss.on('connection', (ws, request) => {
+
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
           clients.push(client)
         }
       })
+      console.log({clients})
       const injectedWS = ws
       const docName = request.url.slice('1').split('?')[0]
       const gc = true

@@ -148,7 +148,6 @@ const closeConn = (doc, conn) => {
     },
   }
 
-
 module.exports = {
   syncProtocol,
   awarenessProtocol,
