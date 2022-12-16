@@ -93,10 +93,10 @@ const closeConn = (doc, conn) => {
     provider: ldb,
     bindState: async (identifier, doc) => {
       const docInstance = await Doc.query().findOne({ identifier })
-      console.log(docInstance)
+      console.log({docInstance})
 
-      if (docInstance && docInstance.docs_y_doc_state) {
-        Y.applyUpdate(doc, docInstance.docs_y_doc_state);
+      if (docInstance && docInstance.docsYDocState) {
+        Y.applyUpdate(doc, docInstance.docsYDocState);
       }
     },
     // writeState: async (identifier, ydoc) => {

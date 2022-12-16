@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const { startServer } = require('@coko/server')
 const { WebSocket, WebSocketServer } = require('ws')
 const map = require('lib0/map')
@@ -6,27 +7,62 @@ const { WSSharedDoc, utils } = require('./services')
 const docs = new Map()
 const pingTimeout = 30000
 
+const messageListener = (conn, doc, message) => {
+  try {
+    const encoder = utils.encoding.createEncoder()
+    const decoder = utils.decoding.createDecoder(message)
+    const messageType = utils.decoding.readVarUint(decoder)
+
+    // eslint-disable-next-line default-case
+    switch (messageType) {
+      case utils.messageSync:
+        utils.encoding.writeVarUint(encoder, utils.messageSync)
+        utils.syncProtocol.readSyncMessage(decoder, encoder, doc, null)
+
+        if (utils.encoding.length(encoder) > 1) {
+          utils.send(doc, conn, utils.encoding.toUint8Array(encoder))
+        }
+
+        break
+      case utils.messageAwareness:
+        utils.awarenessProtocol.applyAwarenessUpdate(
+          doc.awareness,
+          utils.decoding.readVarUint8Array(decoder),
+          conn,
+        )
+        break
+    }
+  } catch (error) {
+    console.error(error)
+    doc.emit('error', [error])
+  }
+}
+
 const init = async () => {
   try {
     const clients = []
     const server = await startServer()
     const wss = new WebSocketServer({ server, clientTracking: true })
 
-    wss.on('connection', (ws, request) => {
+    wss.on('connection', (injectedWS, request) => {
+      injectedWS.binaryType = 'arraybuffer'
 
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
           clients.push(client)
         }
       })
-      console.log({clients})
-      const injectedWS = ws
+
       const docName = request.url.slice('1').split('?')[0]
       const gc = true
 
       const doc = getYDoc(docName, gc)
       doc.conns.set(injectedWS, new Set())
-      injectedWS.isAlive = true
+
+      injectedWS.on('message', message =>
+        messageListener(injectedWS, doc, new Uint8Array(message)),
+      )
+      
       let pingReceived = true
 
       const pingInterval = setInterval(() => {
@@ -48,9 +84,7 @@ const init = async () => {
         }
       }, pingTimeout)
 
-      injectedWS.on('message', message =>
-        messageListener(injectedWS, doc, new Uint8Array(message)),
-      )
+      
 
       injectedWS.on('close', () => {
         utils.closeConn(doc, injectedWS)
@@ -92,37 +126,6 @@ const init = async () => {
         docs.set(docName, doc)
         return doc
       })
-
-    const messageListener = (conn, doc, message) => {
-      try {
-        const encoder = utils.encoding.createEncoder()
-        const decoder = utils.decoding.createDecoder(message)
-        const messageType = utils.decoding.readVarUint(decoder)
-
-        // eslint-disable-next-line default-case
-        switch (messageType) {
-          case utils.messageSync:
-            utils.encoding.writeVarUint(encoder, utils.messageSync)
-            utils.syncProtocol.readSyncMessage(decoder, encoder, doc, null)
-
-            if (utils.encoding.length(encoder) > 1) {
-              utils.send(doc, conn, utils.encoding.toUint8Array(encoder))
-            }
-
-            break
-          case utils.messageAwareness:
-            utils.awarenessProtocol.applyAwarenessUpdate(
-              doc.awareness,
-              utils.decoding.readVarUint8Array(decoder),
-              conn,
-            )
-            break
-        }
-      } catch (error) {
-        console.error(error)
-        doc.emit('error', [error])
-      }
-    }
   } catch (error) {
     throw new Error(error)
   }
