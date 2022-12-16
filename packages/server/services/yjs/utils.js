@@ -98,6 +98,30 @@ if (typeof persistenceDir === 'string') {
         Y.applyUpdate(doc, docInstance);
       }
     },
+    // writeState: async (identifier, ydoc) => {
+    //   const state = Y.encodeStateAsUpdate(ydoc)
+    //   const delta = ydoc.getText('prosemirror').toDelta()
+    //   const timestamp = db.fn.now()
+
+    //   const docYjs = await Doc.query().findOne({ identifier })
+
+    //   if (!docYjs) {
+    //     return Doc.query().insert({
+    //       docs_prosemirror_delta: delta,
+    //       docs_y_doc_state: state,
+    //       identifier,
+    //     })
+    //   }
+ 
+    //     return Doc.query()
+    //       .patch({
+    //         docs_prosemirror_delta: delta,
+    //         docs_y_doc_state: state,
+    //         updated: timestamp,
+    //       })
+    //       .findOne({ identifier })
+      
+    // },
     writeState: async (identifier, ydoc) => {
       const state = Y.encodeStateAsUpdate(ydoc)
       const delta = ydoc.getText('prosemirror').toDelta()
@@ -105,22 +129,21 @@ if (typeof persistenceDir === 'string') {
 
       const docYjs = await Doc.query().findOne({ identifier })
 
-      if (!docYjs) {
-        return Doc.query().insert({
-          docs_prosemirror_delta: delta,
-          docs_y_doc_state: state,
-          identifier,
-        })
-      }
- 
-        return Doc.query()
-          .patch({
+      if (delta && delta.length > 0 ) {
+        if (!docYjs) {
+          await Doc.query().insert({
+            docs_prosemirror_delta: delta,
+            docs_y_doc_state: state,
+            identifier,
+          })
+        } else {
+          await Doc.query().patch({
             docs_prosemirror_delta: delta,
             docs_y_doc_state: state,
             updated: timestamp,
-          })
-          .findOne({ identifier })
-      
+          }).findOne({ identifier })
+        }
+      }
     },
   }
 }
