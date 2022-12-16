@@ -4,8 +4,7 @@ const { WebSocketServer } = require('ws')
 const map = require('lib0/map')
 const { WSSharedDoc, utils } = require('./services')
 
-const docs = new Map()
-const pingTimeout = 1000
+const pingTimeout = 30000
 
 const messageListener = (conn, doc, message) => {
   try {
@@ -112,7 +111,7 @@ const init = async () => {
     })
 
     const getYDoc = (docName, gc = true) =>
-      map.setIfUndefined(docs, docName, () => {
+      map.setIfUndefined(utils.docs, docName, () => {
         const doc = new WSSharedDoc(docName)
         doc.gc = gc
 
@@ -120,7 +119,7 @@ const init = async () => {
           utils.persistence.bindState(docName, doc)
         }
 
-        docs.set(docName, doc)
+        utils.docs.set(docName, doc)
         return doc
       })
   } catch (error) {

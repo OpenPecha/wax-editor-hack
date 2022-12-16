@@ -93,36 +93,11 @@ const closeConn = (doc, conn) => {
     provider: ldb,
     bindState: async (identifier, doc) => {
       const docInstance = await Doc.query().findOne({ identifier })
-      console.log({docInstance})
 
       if (docInstance && docInstance.docsYDocState) {
         Y.applyUpdate(doc, docInstance.docsYDocState);
       }
     },
-    // writeState: async (identifier, ydoc) => {
-    //   const state = Y.encodeStateAsUpdate(ydoc)
-    //   const delta = ydoc.getText('prosemirror').toDelta()
-    //   const timestamp = db.fn.now()
-
-    //   const docYjs = await Doc.query().findOne({ identifier })
-
-    //   if (!docYjs) {
-    //     return Doc.query().insert({
-    //       docs_prosemirror_delta: delta,
-    //       docs_y_doc_state: state,
-    //       identifier,
-    //     })
-    //   }
- 
-    //     return Doc.query()
-    //       .patch({
-    //         docs_prosemirror_delta: delta,
-    //         docs_y_doc_state: state,
-    //         updated: timestamp,
-    //       })
-    //       .findOne({ identifier })
-      
-    // },
     writeState: async (identifier, ydoc) => {
       const state = Y.encodeStateAsUpdate(ydoc)
       const delta = ydoc.getText('prosemirror').toDelta()

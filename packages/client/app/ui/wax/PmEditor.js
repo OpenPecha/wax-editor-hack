@@ -54,7 +54,7 @@ const renderImage = file => {
 const PmEditor = props => {
   const history = useHistory();
 
-  const { content, readonly, docIdentifier } = props
+  const { readonly, docIdentifier } = props
 
   let identifier = docIdentifier
 
@@ -65,7 +65,6 @@ const PmEditor = props => {
     return true
   }
 
-
   return (
     <EditorWrapper>
       <Wax
@@ -74,7 +73,6 @@ const PmEditor = props => {
         layout={EditoriaLayout}
         placeholder="Type Something ..."
         readonly={readonly}
-        value={content}
       />
     </EditorWrapper>
   )
@@ -82,13 +80,11 @@ const PmEditor = props => {
 
 PmEditor.propTypes = {
   docIdentifier: PropTypes.string,
-  content: PropTypes.string,
   readonly: PropTypes.bool,
 }
 
 PmEditor.defaultProps = {
   docIdentifier: null,
-  content: '',
   readonly: false,
 }
 
