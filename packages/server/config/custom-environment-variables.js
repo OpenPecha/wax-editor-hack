@@ -27,7 +27,7 @@ module.exports = {
       password: 'POSTGRES_PASSWORD',
     },
     useWebSockets: 'USE_WEB_SOCKETS',
-    websocketPath: 'WEB_SOCKET_PATH',
+    websocketPaths: 'WEB_SOCKET_PATHS',
   },
   'password-reset': {
     path: 'PASSWORD_RESET_PATH',
