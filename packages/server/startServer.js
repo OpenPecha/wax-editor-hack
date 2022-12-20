@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 const { startServer } = require('@coko/server')
-const { WebSocketServer } = require('ws')
 const map = require('lib0/map')
 const { WSSharedDoc, utils } = require('./services')
 
@@ -39,12 +38,10 @@ const messageListener = (conn, doc, message) => {
 
 const init = async () => {
   try {
-    const server = await startServer()
-    const wss = new WebSocketServer({ server, clientTracking: true })
+    const { httpServer, createdWS } = await startServer()
 
-    wss.on('connection', (injectedWS, request) => {
+    createdWS.yjs.on('connection', (injectedWS, request) => {
       injectedWS.binaryType = 'arraybuffer'
-
       const docName = request.url.slice('1').split('?')[0]
       const gc = true
 
@@ -122,6 +119,19 @@ const init = async () => {
         utils.docs.set(docName, doc)
         return doc
       })
+
+    httpServer.on('upgrade', (request, socket, head) => {
+      // You may check auth of request here..
+      // See https://github.com/websockets/ws#client-authentication
+      /**
+       * @param {any} ws
+       */
+      const handleAuth = ws => {
+        createdWS.yjs.emit('connection', ws, request)
+      }
+
+      createdWS.yjs.handleUpgrade(request, socket, head, handleAuth)
+    })
   } catch (error) {
     throw new Error(error)
   }
