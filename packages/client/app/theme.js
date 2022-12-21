@@ -6,7 +6,7 @@ module.exports = {
   colorSecondary: '#0a5c5f', // 'gainsboro',
   colorTertiary: '#8ac341',
   colorBorder: 'gainsboro',
-  colorSelection: '#3fc2cd',
+  colorSelection: '#C5D7FE',
 
   colorSuccess: '#00763a',
   colorError: '#d43131',

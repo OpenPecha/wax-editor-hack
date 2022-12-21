@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import styled, { css, ThemeProvider } from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 import { WaxContext, ComponentPlugin } from 'wax-prosemirror-core'
 import { grid, th } from '@coko/client'
 import theme from '../../../theme'
@@ -109,26 +109,20 @@ const Layout = ({ editor }) => {
     };
   }
 
-
-
   return (
     <ThemeProvider theme={theme}>
-
-<Wrapper id="wax-container"  style={fullScreenStyles} >
-        <TopMenu>
-          <MainMenuToolBar />
-        </TopMenu>
-
-        <Main>
-          <EditorArea>
-            <WaxSurfaceScroll>
-              <EditorContainer>{editor}</EditorContainer>
-            </WaxSurfaceScroll>
-          </EditorArea>
-        </Main>
-      </Wrapper>
-
-        
+        <Wrapper id="wax-container"  style={fullScreenStyles} >
+            <TopMenu>
+                <MainMenuToolBar />
+            </TopMenu>
+            <Main>
+                <EditorArea>
+                    <WaxSurfaceScroll>
+                        <EditorContainer>{editor}</EditorContainer>
+                    </WaxSurfaceScroll>
+                </EditorArea>
+            </Main>
+        </Wrapper>
     </ThemeProvider>
   )
 }
