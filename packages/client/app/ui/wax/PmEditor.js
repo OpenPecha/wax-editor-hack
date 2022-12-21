@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Wax } from 'wax-prosemirror-core'
 
@@ -7,37 +6,7 @@ import { useHistory } from "react-router-dom";
 
 
 import { config } from './config'
-import { EditoriaLayout } from "./layout"
-
-const EditorWrapper = styled.div`
-  border: none;
-  display: flex;
-  flex: 2 1 auto;
-  justify-content: left;
-  margin-right: 15px;
-
-  .ProseMirror {
-    white-space: break-spaces;
-    width: 100%;
-    word-wrap: break-word;
-
-    &:focus {
-      outline: none;
-    }
-
-    p.empty-node:first-child::before {
-      content: attr(data-content);
-    }
-
-    .empty-node::before {
-      color: rgb(170 170 170);
-      float: left;
-      font-style: italic;
-      height: 0;
-      pointer-events: none;
-    }
-  }
-`
+import layout from "./layout"
 
 const renderImage = file => {
 
@@ -54,38 +23,34 @@ const renderImage = file => {
 const PmEditor = props => {
   const history = useHistory();
 
-  const { readonly, docIdentifier } = props
+  const { docIdentifier } = props
 
   let identifier = docIdentifier
 
   if (!docIdentifier) {
     identifier = Array.from(Array(20), () => Math.floor(Math.random() * 36).toString(36)).join('');
 
-    history.push(`/dashboard/${identifier}`, { replace: true });
+    history.push(`/${identifier}`, { replace: true });
     return true
   }
 
   return (
-    <EditorWrapper>
       <Wax
+        autoFocus
         config={config(identifier)}
         fileUpload={file => renderImage(file)}
-        layout={EditoriaLayout}
+        layout={layout}
         placeholder="Type Something ..."
-        readonly={readonly}
       />
-    </EditorWrapper>
   )
 }
 
 PmEditor.propTypes = {
   docIdentifier: PropTypes.string,
-  readonly: PropTypes.bool,
 }
 
 PmEditor.defaultProps = {
   docIdentifier: null,
-  readonly: false,
 }
 
 export default PmEditor

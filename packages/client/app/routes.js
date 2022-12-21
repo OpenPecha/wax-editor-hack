@@ -17,7 +17,7 @@ const LayoutWrapper = styled.div`
 
 const regexPaths = [
   {
-    path: /^\/dashboard$/,
+    path: /^\/$/,
     name: 'Dashboard',
   },
 ]
@@ -69,7 +69,6 @@ const StyledPage = styled(Page)`
 const SiteHeader = () => {
   const headerLinks = {
     homepage: '/',
-    dashboard: '/dashboard',
   }
 
   const history = useHistory()
@@ -104,10 +103,10 @@ const routes = (
         <Switch>
           <Route
             exact
-            path={['/dashboard', '/dashboard/:docIdentifier']}
+            path={['/', '/:docIdentifier']}
             render={() => <Dashboard />}
           />
-          <Route component={() => <Redirect to="/dashboard" />} path="*" />
+          <Route component={() => <Redirect to="/" />} path="*" />
         </Switch>
       </StyledMain>
     </StyledPage>
