@@ -4,6 +4,8 @@ import { emDash, ellipsis } from 'prosemirror-inputrules';
 import {
   InlineAnnotationsService,
   AnnotationToolGroupService,
+  BaseService,
+  BaseToolGroupService,
   ImageService,
   ImageToolGroupService,
   LinkService,
@@ -18,7 +20,6 @@ import {
   DisplayTextToolGroupService,
   MathService,
   FindAndReplaceService,
-  EditingSuggestingService,
   FullScreenService,
   FullScreenToolGroupService,
   SpecialCharactersService,
@@ -31,18 +32,27 @@ import {
   TransformToolGroupService,
   CustomTagBlockToolGroupService,
   CustomTagService,
+  BlockDropDownToolGroupService,
 } from 'wax-prosemirror-services';
 
 import { EditoriaSchema } from 'wax-prosemirror-core';
 
 import YjService from '../yjsService/yjsService'
 
+import CharactersList from './characterList'
+
 const config = docIdentifier => ({
   MenuService: [
     {
       templateArea: 'mainMenuToolBar',
       toolGroups: [
-        // 'Base',
+        {
+          name: 'Base',
+          exclude: [
+            'Save'
+          ]
+        },
+        'BlockDropDown',
         {
           name: 'Annotations',
           more: [
@@ -52,14 +62,15 @@ const config = docIdentifier => ({
             'Underline',
             'StrikeThrough',
           ],
+          exclude: ['Code']
         },
         'HighlightToolGroup',
         'TransformToolGroup',
         'Lists',
         'Images',
-        // 'CodeBlock',
+        'SpecialCharacters',
         'Tables',
-        'FullScreen',
+        'FullScreen'
       ],
     },
     {
@@ -72,7 +83,8 @@ const config = docIdentifier => ({
     },
   ],
   SchemaService: EditoriaSchema,
-  TitleService: { updateTitle: () => {} },
+  TitleService: { updateTitle: () => {}, },
+  SpecialCharactersService: CharactersList,
   RulesService: [emDash, ellipsis],
   ShortCutsService: {},
   YjsService: {
@@ -82,6 +94,9 @@ const config = docIdentifier => ({
   },
   services: [
     new YjService(),
+    new BaseToolGroupService(),
+    new BaseService(),
+    new BlockDropDownToolGroupService(),
     new DisplayBlockLevelService(),
     new DisplayToolGroupService(),
     new TextBlockLevelService(),
@@ -95,7 +110,6 @@ const config = docIdentifier => ({
     new ImageToolGroupService(),
     new AnnotationToolGroupService(),
     new ListToolGroupService(),
-    new EditingSuggestingService(),
     new DisplayTextToolGroupService(),
     new MathService(),
     new FindAndReplaceService(),

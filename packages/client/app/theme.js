@@ -2,7 +2,7 @@ module.exports = {
   colorBackground: 'white',
   colorBackgroundHue: '#e9e9e9',
   colorBody: 'white', // gray
-  colorPrimary: '#178387', // 'cornflowerblue',
+  colorPrimary: '#525E76', // 'cornflowerblue',
   colorSecondary: '#0a5c5f', // 'gainsboro',
   colorTertiary: '#8ac341',
   colorBorder: 'gainsboro',
@@ -12,13 +12,13 @@ module.exports = {
   colorError: '#d43131',
   colorWarning: '#a65b00',
 
-  colorText: '#3F3F3F',
+  colorText: '#525E76',
   colorTextDark: '#222222',
-  colorTextReverse: 'black',
+  colorTextReverse: 'white',
 
-  fontInterface: 'Arial, sans-serif',
+  fontInterface: 'Montserrat-Light',
   // font sizes
-  fontSizeBase: '16px',
+  fontSizeBase: '18px',
   fontSizeBaseSmall: '14px',
   fontSizeHeading1: '96px',
   fontSizeHeading2: '81px',
@@ -47,7 +47,7 @@ module.exports = {
   borderStyle: 'solid',
 
   // #region header variables
-  mobileLogoHeight: '84px',
+  mobileLogoHeight: '100px',
   headerPaddingVertical: '16px',
   headerPaddingHorizontal: '24px',
   // #endregion header variables

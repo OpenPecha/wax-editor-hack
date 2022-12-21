@@ -10,6 +10,8 @@ export default createGlobalStyle`
     text-shadow: none;
   }
 
+  @import url('https://fonts.googleapis.com/css?family=Montserrat-Light');
+
   body {
     font-family: ${th('fontInterface')};
     line-height: ${th('lineHeightBase')} !important;
@@ -25,7 +27,7 @@ export default createGlobalStyle`
 
     .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
       border-color: ${th('colorPrimary')};
-      box-shadow: 0 0 0 2px #17838722;
+      box-shadow: 0 0 0 2px #525E76;
     }
 
     .ant-select-status-error.ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
@@ -36,13 +38,13 @@ export default createGlobalStyle`
     .ant-input:not(.ant-input-status-error):focus,
     .ant-input-focused:not(.ant-input-status-error) {
       border-color: ${th('colorPrimary')};
-      box-shadow: 0 0 0 2px #17838722;
+      box-shadow: 0 0 0 2px #525E76;
     }
 
     .ant-input-affix-wrapper:focus,
     .ant-input-affix-wrapper-focused {
       border-color: ${th('colorPrimary')};
-      box-shadow: 0 0 0 2px #17838722;
+      box-shadow: 0 0 0 2px #1783872;
     }
 
     .ant-form-item-has-error :not(.ant-input-disabled):not(.ant-input-borderless).ant-input:focus,
