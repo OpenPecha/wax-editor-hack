@@ -36,7 +36,7 @@ const PmEditor = props => {
 
   return (
       <Wax
-        autoFocus
+        // autoFocus
         config={config(identifier)}
         fileUpload={file => renderImage(file)}
         layout={layout}
