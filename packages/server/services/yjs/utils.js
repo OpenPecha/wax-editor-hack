@@ -1,9 +1,7 @@
-/* eslint-disable no-return-await */
 const syncProtocol = require('y-protocols/dist/sync.cjs')
 const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
 const encoding = require('lib0/encoding')
 const decoding = require('lib0/decoding')
-const leveldb = require('y-leveldb')
 const Y = require('yjs')
 const { Doc} = require('@pubsweet/models')
 const { db } = require('@coko/server')
@@ -87,10 +85,7 @@ const closeConn = (doc, conn) => {
 }
 
 
-  const LevelDbPersistence = leveldb.LeveldbPersistence
-  const ldb = new LevelDbPersistence(persistenceDir)
   persistence = {
-    provider: ldb,
     bindState: async (identifier, doc) => {
       const docInstance = await Doc.query().findOne({ identifier })
 
