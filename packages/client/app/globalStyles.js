@@ -2,12 +2,19 @@
 /* stylelint-disable declaration-no-important */
 import { createGlobalStyle } from 'styled-components'
 import { th } from '@coko/client'
+import Monserat from '../static/Montserrat-VariableFont_wght.ttf'
 
 export default createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css?family=Montserrat-Light');
-
+  @font-face {
+    font-family: '${th('fontInterface')}';
+    src: url(${Monserat}) format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: auto;
+  }
+  
   body {
-    font-family: ${th('fontInterface')};
+    font-family: '${th('fontInterface')}';
     line-height: ${th('lineHeightBase')} !important;
     overflow: auto;
 

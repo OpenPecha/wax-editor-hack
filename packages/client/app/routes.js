@@ -15,32 +15,11 @@ const LayoutWrapper = styled.div`
   height: 100%;
 `
 
-const regexPaths = [
-  {
-    path: /^\/$/,
-    name: 'Dashboard',
-  },
-]
-
 const Layout = props => {
   const { children } = props
 
-  const history = useHistory()
-
   useEffect(() => {
-    const title = regexPaths.find(p => p.name)
-
-    document.title = `${title?.name} - CokoDocs`
-
-    const unlisten = history.listen(val => {
-      const pathTitle = regexPaths.find(p => p.name)
-
-      document.getElementById('page-announcement').innerHTML = pathTitle?.name
-
-      document.title = `${pathTitle?.name} - Coko Docs`
-    })
-
-    return unlisten
+    document.title = `CokoDocs`
   }, [])
 
   return (
@@ -63,8 +42,6 @@ const StyledPage = styled(Page)`
     height: calc(100% - 76px - 60px);
   }
 `
-
-// const Loader = () => <Spin spinning />
 
 const SiteHeader = () => {
   const headerLinks = {

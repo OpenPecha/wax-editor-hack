@@ -2,7 +2,7 @@ import { css } from 'styled-components'
 import { th } from '@coko/client'
 
 export default css`
-  font-family: ${th('fontInterface')};
+  font-family: '${th('fontInterface')}';
   font-size: ${th('fontSizeBase')};
 
   color: ${th('colorPrimary')};
@@ -12,7 +12,7 @@ export default css`
   }
 
   .ProseMirror {
-    font-family: ${th('fontInterface')};
+    font-family: '${th('fontInterface')}';
     font-size: ${th('fontSizeBase')};
   }
 

@@ -52,7 +52,19 @@ const config = docIdentifier => ({
             'Save'
           ]
         },
-        'BlockDropDown',
+        {
+          name: 'BlockDropDown',
+          exclude: [
+            'Author',
+            'SubTitle',
+            'EpigraphProse',
+            'EpigraphPoetry',
+            'Heading4',
+            'ParagraphContinued',
+            'ExtractProse',
+            'SourceNote',
+          ]
+        },
         {
           name: 'Annotations',
           more: [

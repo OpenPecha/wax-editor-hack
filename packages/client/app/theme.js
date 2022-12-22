@@ -16,7 +16,7 @@ module.exports = {
   colorTextDark: '#222222',
   colorTextReverse: 'white',
 
-  fontInterface: 'Montserrat-Light',
+  fontInterface: 'Montserrat',
   // font sizes
   fontSizeBase: '18px',
   fontSizeBaseSmall: '14px',

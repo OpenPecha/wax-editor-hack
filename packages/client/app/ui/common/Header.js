@@ -85,10 +85,10 @@ const Header = props => {
   return (
     <StyledHeader role="banner" {...rest}>
       <Branding to={homepage}>
-        <h1>Coko Docs</h1>
+        <h1>CokoDocs</h1>
       </Branding>
       <Navigation role="navigation">
-        <span>Coko Docs</span>
+        <span>CokoDocs</span>
       </Navigation>
       <UserMenu />
     </StyledHeader>
