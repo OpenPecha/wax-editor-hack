@@ -5,16 +5,16 @@ services:
     build:
       context: ./packages/client
       dockerfile: ./Dockerfile-development
-    command: [ 'node_modules/.bin/coko-client-dev' ]
+    command: ['node_modules/.bin/coko-client-dev']
     ports:
       - ${CLIENT_PORT:-4000}:${CLIENT_PORT:-4000}
     environment:
       - NODE_ENV=development
       - CLIENT_PORT=${CLIENT_PORT:-4000}
       - CLIENT_FAST_REFRESH=1
-      - CLIENT_PAGE_TITLE=${CLIENT_PAGE_TITLE:-"CokoDocs"}
+      - CLIENT_PAGE_TITLE=${CLIENT_PAGE_TITLE:-CokoDocs}
       - CLIENT_LANGUAGE=${CLIENT_LANGUAGE:-"en-US"}
-      - CLIENT_FAVICON_PATH=${CLIENT_FAVICON_PATH:-"./static/favicon.ico"}
+      - CLIENT_FAVICON_PATH=${CLIENT_FAVICON_PATH:-../static/favicon.ico}
       - SERVER_PROTOCOL=${SERVER_PROTOCOL:-http}
       - SERVER_HOST=${SERVER_HOST:-localhost}
       - SERVER_PORT=${SERVER_PORT:-3000}
@@ -35,7 +35,7 @@ services:
         'db:5432',
         '--',
         'sh',
-        'scripts/setupDevServer.sh'
+        'scripts/setupDevServer.sh',
       ]
     command:
       [
@@ -55,7 +55,7 @@ services:
         'scripts',
         '--watch',
         '--ext',
-        'js, graphql'
+        'js, graphql',
       ]
     ports:
       - ${SERVER_PORT:-3000}:${SERVER_PORT:-3000}
