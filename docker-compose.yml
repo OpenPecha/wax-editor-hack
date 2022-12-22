@@ -14,7 +14,6 @@ services:
       - CLIENT_FAST_REFRESH=1
       - CLIENT_PAGE_TITLE=${CLIENT_PAGE_TITLE:-"CokoDocs"}
       - CLIENT_LANGUAGE=${CLIENT_LANGUAGE:-"en-US"}
-      - CLIENT_FAVICON_PATH=${CLIENT_FAVICON_PATH:-"./static/favicon.ico"}
       - SERVER_PROTOCOL=${SERVER_PROTOCOL:-http}
       - SERVER_HOST=${SERVER_HOST:-localhost}
       - SERVER_PORT=${SERVER_PORT:-3000}
