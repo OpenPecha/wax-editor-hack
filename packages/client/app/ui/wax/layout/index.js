@@ -32,6 +32,7 @@ const Main = styled.div`
 `;
 
 const TopMenu = styled.div`
+  font-size: ${th('fontSizeBaseSmall')};
   background: ${th('colorBackgroundToolBar')};
   border-bottom: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
   border-top: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};

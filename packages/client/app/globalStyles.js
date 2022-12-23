@@ -2,20 +2,19 @@
 /* stylelint-disable declaration-no-important */
 import { createGlobalStyle } from 'styled-components'
 import { th } from '@coko/client'
-import Monserat from '../static/Montserrat-VariableFont_wght.ttf'
+import "@fontsource/montserrat/200.css";
+import "@fontsource/montserrat";
 
 export default createGlobalStyle`
-  @font-face {
-    font-family: '${th('fontInterface')}';
-    src: url(${Monserat}) format('truetype');
-    font-weight: 300;
-    font-style: normal;
-    font-display: auto;
-  }
   
   body {
     font-family: '${th('fontInterface')}';
     line-height: ${th('lineHeightBase')} !important;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow: auto;
 
     .ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector {

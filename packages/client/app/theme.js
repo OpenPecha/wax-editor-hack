@@ -19,7 +19,7 @@ module.exports = {
   fontInterface: 'Montserrat',
   // font sizes
   fontSizeBase: '18px',
-  fontSizeBaseSmall: '14px',
+  fontSizeBaseSmall: '16px',
   fontSizeHeading1: '96px',
   fontSizeHeading2: '81px',
   fontSizeHeading3: '54px',

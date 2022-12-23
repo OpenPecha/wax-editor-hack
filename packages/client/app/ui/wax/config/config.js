@@ -19,6 +19,7 @@ import {
   TextToolGroupService,
   DisplayTextToolGroupService,
   MathService,
+  FindAndReplaceToolGroupService,
   FindAndReplaceService,
   FullScreenService,
   FullScreenToolGroupService,
@@ -82,6 +83,7 @@ const config = docIdentifier => ({
         'Images',
         'SpecialCharacters',
         'Tables',
+        'FindAndReplaceTool',
         'FullScreen'
       ],
     },
@@ -124,6 +126,7 @@ const config = docIdentifier => ({
     new ListToolGroupService(),
     new DisplayTextToolGroupService(),
     new MathService(),
+    new FindAndReplaceToolGroupService(),
     new FindAndReplaceService(),
     new FullScreenService(),
     new FullScreenToolGroupService(),
