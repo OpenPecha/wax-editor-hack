@@ -70,6 +70,11 @@ const WaxSurfaceScroll = styled.div`
   padding: 25px 25% 0 25%;
   position: relative;
   width: 100%;
+
+  @media only screen and (max-device-width: ${th('mediaQueries.small')}) {
+    padding: 0px;
+  }
+
 `;
 
 const EditorContainer = styled.div`
