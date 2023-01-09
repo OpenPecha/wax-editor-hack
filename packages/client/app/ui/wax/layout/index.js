@@ -40,6 +40,10 @@ const TopMenu = styled.div`
   min-height: 40px;
   user-select: none;
 
+  div.Dropdown-placeholder {
+    white-space: nowrap;
+  }
+
   > div:not(:last-child) {
     border-right: ${th('borderWidth')} ${th('borderStyle')}
       ${th('colorFurniture')};
@@ -77,6 +81,16 @@ const WaxSurfaceScroll = styled.div`
 
 `;
 
+const WaxBottomRightInfo = styled.div``;
+
+const InfoContainer = styled.div`
+  display: flex;
+  position: fixed;
+  bottom: 1px;
+  right: 21px;
+  z-index: 999;
+`;
+
 const EditorContainer = styled.div`
   height: 100%;
   position: relative;
@@ -92,7 +106,7 @@ const EditorContainer = styled.div`
 `;
 
 const MainMenuToolBar = ComponentPlugin('mainMenuToolBar')
-// const WaxOverlays = ComponentPlugin('waxOverlays')
+const BottomRightInfo = ComponentPlugin('BottomRightInfo');
 
 /* eslint-disable-next-line react/prop-types */
 const Layout = ({ editor }) => {
@@ -128,6 +142,11 @@ const Layout = ({ editor }) => {
                     </WaxSurfaceScroll>
                 </EditorArea>
             </Main>
+            <WaxBottomRightInfo>
+          <InfoContainer id="info-container">
+            <BottomRightInfo />
+          </InfoContainer>
+        </WaxBottomRightInfo>
         </Wrapper>
     </ThemeProvider>
   )

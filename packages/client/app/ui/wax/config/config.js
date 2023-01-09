@@ -72,8 +72,6 @@ const config = docIdentifier => ({
             'Superscript',
             'Subscript',
             'SmallCaps',
-            'Underline',
-            'StrikeThrough',
           ],
           exclude: ['Code']
         },
