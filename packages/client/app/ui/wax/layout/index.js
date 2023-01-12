@@ -96,7 +96,10 @@ const InfoContainer = styled.div`
 
   div div div div {
     width: 235px;
-    height: 240px;
+    color: #525E76;
+    margin: 0px;
+    height: auto;
+    padding-bottom: 6px;
   }
 
 `;
