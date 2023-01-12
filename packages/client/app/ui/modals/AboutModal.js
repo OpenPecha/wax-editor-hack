@@ -65,7 +65,7 @@ const AboutModal = () => {
         maskClosable
         onCancel={handleCancel}
         open={open}
-        title="About Coko Docs"
+        title="About CokoDocs"
         width="720px"
       >
         <CenteredLogo />
