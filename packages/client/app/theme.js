@@ -1,7 +1,7 @@
 module.exports = {
   colorBackground: 'white',
   colorBackgroundHue: '#e9e9e9',
-  colorBody: 'white', // gray
+  colorBody: 'white', // white
   colorPrimary: '#525E76', // 'cornflowerblue',
   colorSecondary: '#0a5c5f', // 'gainsboro',
   colorTertiary: '#8ac341',

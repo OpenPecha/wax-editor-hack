@@ -71,8 +71,8 @@ const WaxSurfaceScroll = styled.div`
   display: flex;
   height: 100%;
   overflow-y: auto;
-  padding: 25px 25% 0 25%;
-  position: relative;
+  padding-top: 25px;
+  justify-content: center;
   width: 100%;
 
   @media only screen and (max-device-width: ${th('mediaQueries.small')}) {
@@ -89,17 +89,42 @@ const InfoContainer = styled.div`
   bottom: 1px;
   right: 21px;
   z-index: 999;
+
+  span {
+    font-size: 14px;
+  }
+
+  div div div div {
+    width: 235px;
+    height: 240px;
+  }
+
 `;
 
 const EditorContainer = styled.div`
   height: 100%;
   position: relative;
-  width: 100%;
+  width: 800px;
+
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
 
   .ProseMirror {
     box-shadow: 0 0 8px #ecedf1;
     min-height: 100%;
     padding: ${grid(10)};
+
+    table > tbody > tr > th {
+      background-color: #d3d3d3;
+      border: 1px solid ${th('colorBody')};
+      color: ${th('colorTextDark')};
+    } 
+
+    table > tbody > tr > th > p, table > tbody > tr > td > p {
+      margin-bottom: 10px;
+      margin-top: 10px !important;
+    }
   }
 
   ${commonStyles}
