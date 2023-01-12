@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { th } from '@coko/client'
-// import { DownOutlined, UpOutlined } from '@ant-design/icons'
 import logoMobile from '../../../static/cokoDocs-logo-alt.png'
 import logo from '../../../static/cokoDocs-logo-alt.png'
+import AboutModal  from '../modals/AboutModal'
 
 // #region styles
 const StyledHeader = styled.header`
@@ -67,6 +67,7 @@ const Navigation = styled.nav`
 `
 
 const UserMenu = styled.div`
+  display: flex;
   justify-content: flex-end;
 `
 
@@ -94,7 +95,10 @@ const Header = props => {
       <Navigation role="navigation">
         <Title>CokoDocs</Title>
       </Navigation>
-      <UserMenu />
+      <UserMenu>
+        <AboutModal />
+      </UserMenu>
+
     </StyledHeader>
   )
 }
