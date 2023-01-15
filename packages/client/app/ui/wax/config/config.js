@@ -82,7 +82,7 @@ const config = docIdentifier => ({
         'SpecialCharacters',
         'Tables',
         'FindAndReplaceTool',
-        'FullScreen'
+        'FullScreen',
       ],
     },
     {

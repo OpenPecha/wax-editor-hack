@@ -7,6 +7,7 @@ import commonStyles from './commonWaxStyles'
 
 import 'wax-prosemirror-core/dist/index.css'
 import 'wax-prosemirror-services/dist/index.css'
+import MenuComponent from './MenuComponent'
 
 const Wrapper = styled.div`
   background: ${th('colorBackground')};
@@ -17,7 +18,6 @@ const Wrapper = styled.div`
   height: 100%;
   line-height: ${grid(4)};
 
-  overflow: hidden;
   width: 100%;
 
   * {
@@ -107,11 +107,13 @@ const InfoContainer = styled.div`
 const EditorContainer = styled.div`
   height: 100%;
   position: relative;
-  width: 800px;
+  width: 1000px;
 
+  /*
   @media screen and (max-width: 800px) {
     width: 100%;
   }
+  */
 
   .ProseMirror {
     box-shadow: 0 0 8px #ecedf1;
@@ -138,7 +140,8 @@ const BottomRightInfo = ComponentPlugin('BottomRightInfo');
 
 /* eslint-disable-next-line react/prop-types */
 const Layout = ({ editor }) => {
-  const { options } = useContext(WaxContext)
+  const { options  } = useContext(WaxContext)
+  
   const { fullScreen } = options
 
   let fullScreenStyles = {};
@@ -159,10 +162,18 @@ const Layout = ({ editor }) => {
 
   return (
     <ThemeProvider theme={theme}>
-        <Wrapper id="wax-container"  style={fullScreenStyles} >
-            <TopMenu>
+       
+        {/* <TopMenu>
                 <MainMenuToolBar />
-            </TopMenu>
+                
+            </TopMenu> */}
+        <MenuComponent/>
+        <Wrapper id="wax-container"  style={fullScreenStyles} >
+            {/* <TopMenu>
+                <MainMenuToolBar />
+                
+            </TopMenu> */}
+             
             <Main>
                 <EditorArea>
                     <WaxSurfaceScroll>
