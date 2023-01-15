@@ -69,7 +69,7 @@ const MenuComponent = () => {
         
     const Base = app.container.get('Base')
 
-    const BlockDropDown = app.container.get('BlockDropDown')
+    // const BlockDropDown = app.container.get('BlockDropDown')
     const Annotations = app.container.get('Annotations')
     const HighlightToolGroup = app.container.get('HighlightToolGroup')
     const TransformToolGroup = app.container.get('TransformToolGroup')

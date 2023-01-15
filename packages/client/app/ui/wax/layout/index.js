@@ -11,11 +11,10 @@ import MenuComponent from './MenuComponent'
 
 const Wrapper = styled.div`
   background: ${th('colorBackground')};
-  display: flex;
-  flex-direction: column;
+  
   font-family: '${th('fontInterface')}';
   font-size: ${th('fontSizeBase')};
-  height: 100%;
+  height: calc(100% - 42px);
   line-height: ${grid(4)};
 
   width: 100%;
@@ -25,60 +24,11 @@ const Wrapper = styled.div`
   }
 `;
 
-const Main = styled.div`
-  display: flex;
-  flex-grow: 1;
-  height: calc(100% - 40px);
-`;
-
-const TopMenu = styled.div`
-  font-size: ${th('fontSizeBaseSmall')};
-  background: ${th('colorBackgroundToolBar')};
-  border-bottom: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
-  border-top: ${th('borderWidth')} ${th('borderStyle')} ${th('colorBorder')};
-  display: flex;
-  min-height: 40px;
-  user-select: none;
-
-  div.Dropdown-placeholder {
-    white-space: nowrap;
-  }
-
-  > div:not(:last-child) {
-    border-right: ${th('borderWidth')} ${th('borderStyle')}
-      ${th('colorFurniture')};
-  }
-
-  > div:last-child {
-    border-left: ${th('borderWidth')} ${th('borderStyle')}
-      ${th('colorFurniture')};
-    margin-left: auto;
-    margin-right: ${grid(5)};
-  }
-
-  > div[data-name='Matching'] {
-    border-right: none;
-  }
-`;
 
 const EditorArea = styled.div`
-  background: #f4f4f7;
-  flex-grow: 1;
-`;
-
-const WaxSurfaceScroll = styled.div`
-  box-sizing: border-box;
-  display: flex;
   height: 100%;
-  overflow-y: auto;
-  padding-top: 25px;
-  justify-content: center;
-  width: 100%;
-
-  @media only screen and (max-device-width: ${th('mediaQueries.small')}) {
-    padding: 0px;
-  }
-
+  background: #f4f4f7;
+  overflow-x: auto;
 `;
 
 const WaxBottomRightInfo = styled.div``;
@@ -107,13 +57,9 @@ const InfoContainer = styled.div`
 const EditorContainer = styled.div`
   height: 100%;
   position: relative;
-  width: 1000px;
-
-  /*
-  @media screen and (max-width: 800px) {
-    width: 100%;
-  }
-  */
+  width: 1000px;  
+  margin: 0 auto;
+  padding-top: 40px;
 
   .ProseMirror {
     box-shadow: 0 0 8px #ecedf1;
@@ -135,7 +81,6 @@ const EditorContainer = styled.div`
   ${commonStyles}
 `;
 
-const MainMenuToolBar = ComponentPlugin('mainMenuToolBar')
 const BottomRightInfo = ComponentPlugin('BottomRightInfo');
 
 /* eslint-disable-next-line react/prop-types */
@@ -162,31 +107,18 @@ const Layout = ({ editor }) => {
 
   return (
     <ThemeProvider theme={theme}>
-       
-        {/* <TopMenu>
-                <MainMenuToolBar />
-                
-            </TopMenu> */}
-        <MenuComponent/>
-        <Wrapper id="wax-container"  style={fullScreenStyles} >
-            {/* <TopMenu>
-                <MainMenuToolBar />
-                
-            </TopMenu> */}
-             
-            <Main>
-                <EditorArea>
-                    <WaxSurfaceScroll>
-                        <EditorContainer>{editor}</EditorContainer>
-                    </WaxSurfaceScroll>
-                </EditorArea>
-            </Main>
-            <WaxBottomRightInfo>
+      <MenuComponent/>
+      <Wrapper id="wax-container" style={fullScreenStyles}  >
+        {fullScreen && <MenuComponent/>}
+        <EditorArea>
+          <EditorContainer>{editor}</EditorContainer>
+        </EditorArea>
+        <WaxBottomRightInfo>
           <InfoContainer id="info-container">
             <BottomRightInfo />
           </InfoContainer>
         </WaxBottomRightInfo>
-        </Wrapper>
+      </Wrapper>
     </ThemeProvider>
   )
 }
