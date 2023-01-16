@@ -81,7 +81,15 @@ const EditorContainer = styled.div`
   ${commonStyles}
 `;
 
+const CommentsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 35%;
+  height: 100%;
+`;
+
 const BottomRightInfo = ComponentPlugin('BottomRightInfo');
+const RightArea = ComponentPlugin('rightArea');
 
 /* eslint-disable-next-line react/prop-types */
 const Layout = ({ editor }) => {
@@ -112,6 +120,9 @@ const Layout = ({ editor }) => {
         {fullScreen && <MenuComponent/>}
         <EditorArea>
           <EditorContainer>{editor}</EditorContainer>
+          <CommentsContainer>
+            <RightArea area="main" />
+          </CommentsContainer>
         </EditorArea>
         <WaxBottomRightInfo>
           <InfoContainer id="info-container">
