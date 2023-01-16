@@ -37,6 +37,12 @@ const Layout = props => {
 
 const StyledPage = styled(Page)`
   height: calc(100% - 76px - 70px);
+  
+  > div {
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+  }
 
   @media screen and (min-width: 720px) {
     height: calc(100% - 76px - 60px);
@@ -67,16 +73,16 @@ const SiteHeader = () => {
   )
 }
 
-const StyledMain = styled.main`
-  height: 100%;
-`
+// const StyledMain = styled.main`
+//   height: 100%;
+// `
 
 const routes = (
   <Layout>
     <GlobalStyles />
     <SiteHeader />
     <StyledPage fadeInPages={false} padPages={false}>
-      <StyledMain id="main-content" tabIndex="-1">
+      {/* <StyledMain id="main-content" tabIndex="-1"> */}
         <Switch>
           <Route
             exact
@@ -85,7 +91,7 @@ const routes = (
           />
           <Route component={() => <Redirect to="/" />} path="*" />
         </Switch>
-      </StyledMain>
+      {/* </StyledMain> */}
     </StyledPage>
   </Layout>
 )

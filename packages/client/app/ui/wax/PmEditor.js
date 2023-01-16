@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Wax } from 'wax-prosemirror-core'
 
@@ -7,6 +8,11 @@ import { useHistory } from "react-router-dom";
 
 import { config } from './config'
 import layout from "./layout"
+
+
+const WaxStyled = styled(Wax)`
+  
+`
 
 const renderImage = file => {
 
@@ -35,7 +41,7 @@ const PmEditor = props => {
   }
 
   return (
-      <Wax
+      <WaxStyled
         config={config(identifier)}
         fileUpload={file => renderImage(file)}
         layout={layout}
