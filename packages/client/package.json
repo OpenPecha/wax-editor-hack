@@ -19,6 +19,11 @@
         "@storybook/builder-webpack5": "6.4.9",
         "@storybook/manager-webpack5": "6.4.9",
         "@storybook/react": "6.4.9",
+        "prosemirror-model": "1.16.1",
+        "prosemirror-state": "1.3.3",
+        "prosemirror-transform": "1.3.4",
+        "prosemirror-view": "1.23.7",
+        "prosemirror-tables": "1.1.1",
         "css-loader": "^5.0.0",
         "dotenv-webpack": "^6.0.0",
         "html-webpack-plugin": "^5.0.0",
@@ -50,7 +55,10 @@
         "y-prosemirror":  "^1.2.0",
         "yjs": "^13.5.38",
         "y-webrtc": "^10.2.0",
-        "y-websocket": "^1.4.5"
+        "y-websocket": "^1.4.5",
+        "react-custom-scrollbars-2": "^4.5.0",
+        "react-dropdown": "^1.11.0",
+        "uuid": "9.0.0"
     },
     "devDependencies": {
         "@coko/storybook": "^1.6.0",

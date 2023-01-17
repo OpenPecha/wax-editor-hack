@@ -6,13 +6,20 @@ import { Wax } from 'wax-prosemirror-core'
 import { useHistory } from "react-router-dom";
 
 
-import { config } from './config'
+import config from './config/config'
 import layout from "./layout"
 
 
-const WaxStyled = styled(Wax)`
-  
-`
+const WaxStyled = styled(Wax)``
+
+const user = {
+  userId: 'b3cfc28e-0f2e-45b5-b505-e66783d4f946',
+  userColor: {
+    addition: 'royalblue',
+    deletion: 'indianred',
+  },
+  username: 'admin',
+};
 
 const renderImage = file => {
 
@@ -46,6 +53,7 @@ const PmEditor = props => {
         fileUpload={file => renderImage(file)}
         layout={layout}
         placeholder="Type Something ..."
+        user= {user}
       />
   )
 }

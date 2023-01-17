@@ -7,6 +7,7 @@ import {
   BaseService,
   BaseToolGroupService,
   CommentsService,
+  TrackChangeService,
   ImageService,
   ImageToolGroupService,
   LinkService,
@@ -35,11 +36,10 @@ import {
   CustomTagBlockToolGroupService,
   CustomTagService,
   BlockDropDownToolGroupService,
+  YjsService,
 } from 'wax-prosemirror-services';
 
 import { EditoriaSchema } from 'wax-prosemirror-core';
-
-import YjService from '../yjsService/yjsService'
 
 import CharactersList from './characterList'
 
@@ -106,10 +106,11 @@ const config = docIdentifier => ({
    docIdentifier
   },
   services: [
-    new YjService(),
+    new YjsService(),
     new BaseToolGroupService(),
     new BaseService(),
     new BlockDropDownToolGroupService(),
+    new TrackChangeService(),
     new CommentsService(),
     new DisplayBlockLevelService(),
     new DisplayToolGroupService(),

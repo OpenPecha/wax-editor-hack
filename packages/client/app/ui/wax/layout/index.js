@@ -1,7 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { WaxContext, ComponentPlugin } from 'wax-prosemirror-core'
 import { grid, th } from '@coko/client'
+import { EllipsisOutlined } from '@ant-design/icons'
+import { Scrollbars } from 'react-custom-scrollbars-2';
+
 import theme from '../../../theme'
 import commonStyles from './commonWaxStyles'
 
@@ -14,7 +17,7 @@ const Wrapper = styled.div`
   
   font-family: '${th('fontInterface')}';
   font-size: ${th('fontSizeBase')};
-  height: calc(100% - 42px);
+  height: calc(100% - ${props => props.menuHeight}px);
   line-height: ${grid(4)};
 
   width: 100%;
@@ -28,7 +31,7 @@ const Wrapper = styled.div`
 const EditorArea = styled.div`
   height: 100%;
   background: #f4f4f7;
-  overflow-x: auto;
+  width: 100%;
 `;
 
 const WaxBottomRightInfo = styled.div``;
@@ -51,15 +54,14 @@ const InfoContainer = styled.div`
     height: auto;
     padding-bottom: 6px;
   }
-
 `;
 
 const EditorContainer = styled.div`
   height: 100%;
   position: relative;
-  width: 1000px;  
-  margin: 0 auto;
-  padding-top: 40px;
+  float: left;
+  width: 1000px; 
+  padding-top: 20px;
 
   .ProseMirror {
     box-shadow: 0 0 8px #ecedf1;
@@ -81,19 +83,89 @@ const EditorContainer = styled.div`
   ${commonStyles}
 `;
 
+const MenuWrapper = styled.div`
+    display:flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    font-size: 16px;
+    border-bottom: 1px solid gainsboro;
+    border-top: 1px solid gainsboro;
+    
+    div:last-child {
+        margin-left: auto;
+    }
+`
+
+
+const ShowMore = styled(EllipsisOutlined)`
+    display: none;
+    margin-left: auto;
+    font-size: 40px;
+    right: 10px;
+
+    @media screen and (max-width: 1050px) {
+        display: flex;
+        position: relative;
+        right: 10px;
+        top: 0px;
+    }
+`
+
 const CommentsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 35%;
+  width: 300px;
   height: 100%;
+  position: relative;
+
 `;
+
+const WaxSurfaceScroll = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  height: 100%;
+  width: 1350px;
+  position: relative;
+  margin: auto;
+`;
+
+
 
 const BottomRightInfo = ComponentPlugin('BottomRightInfo');
 const RightArea = ComponentPlugin('rightArea');
 
 /* eslint-disable-next-line react/prop-types */
 const Layout = ({ editor }) => {
-  const { options  } = useContext(WaxContext)
+  const {
+    pmViews: { main },
+  } = useContext(WaxContext);
+
+
+  const ref = useRef(null);
+  const [open, toggleMenu] = useState(false)
+  const [menuHeight, setMenuHeight] = useState(42)
+
+  useEffect(()=>{
+      if (ref.current) {
+        setMenuHeight(ref.current.clientHeight + 2)
+      }
+  }, [open])
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (ref.current) {
+        setMenuHeight(ref.current.clientHeight + 2)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+  })
+
+  const showMore = () => {
+    toggleMenu(!open)
+  }
+
+  const { options } = useContext(WaxContext)
   
   const { fullScreen } = options
 
@@ -115,14 +187,21 @@ const Layout = ({ editor }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <MenuComponent/>
-      <Wrapper id="wax-container" style={fullScreenStyles}  >
-        {fullScreen && <MenuComponent/>}
+      
+      <Wrapper id="wax-container" menuHeight={menuHeight} style={fullScreenStyles}>
+        <MenuWrapper>
+          {main && <MenuComponent open={open} ref={ref} />}
+          <ShowMore onClick={showMore} />
+        </MenuWrapper>
         <EditorArea>
-          <EditorContainer>{editor}</EditorContainer>
-          <CommentsContainer>
-            <RightArea area="main" />
-          </CommentsContainer>
+          <Scrollbars style={{overflow: 'hidden'}}>
+          <WaxSurfaceScroll>
+            <EditorContainer>{editor}</EditorContainer>
+            <CommentsContainer>
+              <RightArea area="main" />
+            </CommentsContainer>
+          </WaxSurfaceScroll>
+          </Scrollbars>
         </EditorArea>
         <WaxBottomRightInfo>
           <InfoContainer id="info-container">

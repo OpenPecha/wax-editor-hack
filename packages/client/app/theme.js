@@ -1,4 +1,7 @@
-module.exports = {
+/* eslint-disable import/no-import-module-exports */
+import { css } from 'styled-components'
+
+export default {
   colorBackground: 'white',
   colorBackgroundHue: '#e9e9e9',
   colorBody: 'white', // white
@@ -58,4 +61,16 @@ module.exports = {
     mediumPlus: '1024px',
     large: '1200px',
   },
+  cssOverrides: {
+    Wax: {
+      CreateTableWrapper: css`
+        position: fixed;
+      `,
+      FindReplaceWrapper: css`
+        position: fixed;
+        top: unset;
+        right: 0px;
+      `
+    },
+  }
 }
