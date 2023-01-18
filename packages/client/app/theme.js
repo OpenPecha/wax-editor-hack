@@ -75,7 +75,7 @@ export default {
       FindReplaceWrapper: css`
         position: fixed;
         top: unset;
-        right: 0px;
+        right: unset !important;
       `,
       CommentName: css`
         font-size: 14px
