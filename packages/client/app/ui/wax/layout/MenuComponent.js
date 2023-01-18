@@ -42,6 +42,10 @@ const MenuToolGroup = styled.div`
     }
 `
 
+const MenuToolGroupDropDown = styled(MenuToolGroup) `
+    min-width: 240px;
+`
+
 const MenuLines = styled.div`
     position: absolute;
     left: 0;
@@ -80,7 +84,7 @@ const MenuComponent = forwardRef(({ open, fullScreen }, ref) => {
     return (
         <Menu openMenu={open} ref={ref}>
             <MenuToolGroup>{Base._tools.filter(tool => tool.name !== 'Save').map(tool => tool.renderTool(activeView))}</MenuToolGroup>
-            <MenuToolGroup><BlockDropDownComponent tools={DropDownTools._tools} view={activeView} /></MenuToolGroup>
+            <MenuToolGroupDropDown><BlockDropDownComponent tools={DropDownTools._tools} view={activeView} /></MenuToolGroupDropDown>
             <MenuToolGroup>{Annotations._tools.filter(tool => tool.name !== 'Code').map(tool => tool.renderTool(activeView))}</MenuToolGroup>
             <MenuToolGroup>{HighlightToolGroup._tools.map(tool => tool.renderTool(activeView))}</MenuToolGroup>
             <MenuToolGroup>{TransformToolGroup._tools.map(tool => tool.renderTool(activeView))}</MenuToolGroup>
