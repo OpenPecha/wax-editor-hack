@@ -7,6 +7,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Wrapper = styled.div`
   ${ReactDropDownStyles};
+
+  margin-left: unset !important;
 `;
 
 const DropdownStyled = styled(Dropdown)`
@@ -16,7 +18,7 @@ const DropdownStyled = styled(Dropdown)`
   pointer-events: ${props => (props.select ? 'default' : 'none')};
   .Dropdown-control {
     border: none;
-    padding: 12px 122px 8px 10px;
+    padding: 12px 30px 8px 10px;
     &:hover {
       box-shadow: none;
     }

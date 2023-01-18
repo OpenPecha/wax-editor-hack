@@ -37,13 +37,17 @@ const MenuToolGroup = styled.div`
         margin-left: -40px;
     }
 
+    .Dropdown-control {
+        margin-left: unset !important;
+    }
+
     @media screen and (min-width: 1050px) {
         height: 40px; 
     }
 `
 
 const MenuToolGroupDropDown = styled(MenuToolGroup) `
-    min-width: 240px;
+    min-width: 150px;
 `
 
 const MenuLines = styled.div`
