@@ -40,7 +40,7 @@ export default css`
   }
 
   .ProseMirror ol li:before {
-    content: counters(item, ".") " ";
+    content: counters(item, ".") ". ";
     counter-increment: item
   }
   
