@@ -118,6 +118,16 @@ const CommentsContainer = styled.div`
   height: 100%;
   position: relative;
 
+  div[data-box] {
+    button {
+      font-size: 14px;
+    }
+
+    span {
+      font-size: 11px;
+    }
+  }
+
 `;
 
 const WaxSurfaceScroll = styled.div`
@@ -174,7 +184,6 @@ const Layout = ({ editor }) => {
   if (fullScreen) {
     fullScreenStyles = {
       backgroundColor: '#fff',
-      height: '100%',
       left: '0',
       margin: '0',
       padding: '0',
@@ -190,7 +199,7 @@ const Layout = ({ editor }) => {
       
       <Wrapper id="wax-container" menuHeight={menuHeight} style={fullScreenStyles}>
         <MenuWrapper>
-          {main && <MenuComponent open={open} ref={ref} />}
+          {main && <MenuComponent fullScreen={fullScreen} open={open} ref={ref} />}
           <ShowMore onClick={showMore} />
         </MenuWrapper>
         <EditorArea>
