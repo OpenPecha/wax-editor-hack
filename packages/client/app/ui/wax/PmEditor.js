@@ -53,6 +53,7 @@ const PmEditor = props => {
         fileUpload={file => renderImage(file)}
         layout={layout}
         placeholder="Type Something ..."
+        scrollThreshold={50}
         user= {user}
       />
   )
