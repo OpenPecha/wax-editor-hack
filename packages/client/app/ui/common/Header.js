@@ -80,16 +80,13 @@ const Header = props => {
     canManageTeams,
     currentPath,
     displayName,
-    links: {
-      homepage,
-    },
     onLogout,
     ...rest
   } = props
 
   return (
     <StyledHeader role="banner" {...rest}>
-      <Branding to={homepage}>
+      <Branding to="#">
         <h1>CokoDocs</h1>
       </Branding>
       <Navigation role="navigation">

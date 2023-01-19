@@ -89,8 +89,8 @@ const MenuComponent = forwardRef(({ open, fullScreen }, ref) => {
         Lines = Array.from({length: Math.round(ref.current.clientHeight / 40) }, (_,i) => <MenuLine key={`${i}-line`} />)
     }
 
-    return useMemo(() =>(
-                <Menu openMenu={open} ref={ref}>
+    return useMemo(() => (
+        <Menu openMenu={open} ref={ref}>
             <MenuToolGroup>{Base._tools.filter(tool => tool.name !== 'Save').map(tool => tool.renderTool(activeView))}</MenuToolGroup>
             <MenuToolGroupDropDown><BlockDropDownComponent tools={DropDownTools._tools} view={activeView} /></MenuToolGroupDropDown>
             <MenuToolGroup>{Annotations._tools.filter(tool => tool.name !== 'Code').map(tool => tool.renderTool(activeView))}</MenuToolGroup>
@@ -108,8 +108,8 @@ const MenuComponent = forwardRef(({ open, fullScreen }, ref) => {
                 </MenuLines>
                 )
             }
-        </Menu>
-    ), [])
+        </Menu>)
+    , [open, fullScreen])
 })
 
  export default MenuComponent

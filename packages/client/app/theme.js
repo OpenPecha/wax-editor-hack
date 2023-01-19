@@ -93,6 +93,18 @@ export default {
         font-size: 14px;
       `,
       CommentButtonGroup: css`
+      `,
+      TransformToolWrapper: css`
+        position: fixed;
+        top: unset;
+      `,
+      HighlightToolWrapper: css`
+        position: fixed;
+        top: unset;
+      `,
+      SpecialCharacterToolWrapper: css`
+        position:fixed;
+        top: unset;
       `
     },
   }
