@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
-import React, { useContext, forwardRef } from 'react'
+import React, { useContext, forwardRef, useMemo } from 'react'
 import { WaxContext } from 'wax-prosemirror-core'
 
 import styled from 'styled-components'
@@ -50,6 +50,10 @@ const MenuToolGroupDropDown = styled(MenuToolGroup) `
     min-width: 150px;
 `
 
+const MenuToolSearchAndReplace = styled(MenuToolGroup)`
+    flex-grow: ${props => props.open ? 'unset' : '1'};
+`
+
 const MenuLines = styled.div`
     position: absolute;
     left: 0;
@@ -85,8 +89,8 @@ const MenuComponent = forwardRef(({ open, fullScreen }, ref) => {
         Lines = Array.from({length: Math.round(ref.current.clientHeight / 40) }, (_,i) => <MenuLine key={`${i}-line`} />)
     }
 
-    return (
-        <Menu openMenu={open} ref={ref}>
+    return useMemo(() =>(
+                <Menu openMenu={open} ref={ref}>
             <MenuToolGroup>{Base._tools.filter(tool => tool.name !== 'Save').map(tool => tool.renderTool(activeView))}</MenuToolGroup>
             <MenuToolGroupDropDown><BlockDropDownComponent tools={DropDownTools._tools} view={activeView} /></MenuToolGroupDropDown>
             <MenuToolGroup>{Annotations._tools.filter(tool => tool.name !== 'Code').map(tool => tool.renderTool(activeView))}</MenuToolGroup>
@@ -96,7 +100,7 @@ const MenuComponent = forwardRef(({ open, fullScreen }, ref) => {
             <MenuToolGroup>{Images._tools.map(tool => tool.renderTool(activeView))}</MenuToolGroup>
             <MenuToolGroup>{SpecialCharacters._tools.map(tool => tool.renderTool(activeView))}</MenuToolGroup>
             <MenuToolGroup>{Tables._tools.map(tool => tool.renderTool(activeView))}</MenuToolGroup>
-            <MenuToolGroup>{FindAndReplaceTool._tools.map(tool => tool.renderTool(activeView))}</MenuToolGroup>
+            <MenuToolSearchAndReplace open={open}>{FindAndReplaceTool._tools.map(tool => tool.renderTool(activeView))}</MenuToolSearchAndReplace>
             <MenuToolGroup>{FullScreen._tools.map(tool => tool.renderTool(activeView))}</MenuToolGroup>
             {open && (
                 <MenuLines fullScreen={fullScreen}>
@@ -105,7 +109,7 @@ const MenuComponent = forwardRef(({ open, fullScreen }, ref) => {
                 )
             }
         </Menu>
-    )
+    ), [])
 })
 
  export default MenuComponent
