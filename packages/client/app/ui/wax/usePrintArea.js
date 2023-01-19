@@ -1,30 +1,34 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 
 
-const usePrintArea = ({printRef, beforePrint, afterPrint }) => {
+const usePrintArea = ({beforePrint, afterPrint }) => {
+    const refElement = useRef(null);
 
     const [isPrinting, toggleStatus] = useState(false);
 
     const printMq = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('print');
- 
-    let printRestore = null
+
+    let root
 
     const defaultBeforePrint = () => {
-        if (printRef.current) {
-            const { body } = document;
-            printRestore = body.children;
+        if (refElement.current) { 
+            // eslint-disable-next-line no-underscore-dangle
+            root = [...document.body.children].find(elem => elem._reactRootContainer)
+            root.style.display = "none"
 
-            printRestore.parentElement.removeChild(printRestore)
-            document.body.innerHTML = 
-            body.html(printContent.clone());
+            const divTemp = document.createElement('div')
+            divTemp.id = 'div-Temp'
+            divTemp.innerHTML = refElement.current.innerHTML
+
+            document.body.appendChild(divTemp)
         }
-        
 
     }
 
     const defaultAfterPrint = () => {
-
+        document.getElementById('div-Temp').remove()
+        root.style.display = ''
     }
 
     useEffect(() => {
@@ -40,10 +44,10 @@ const usePrintArea = ({printRef, beforePrint, afterPrint }) => {
 
         printMq.addListener(printFn);
 
-        return () => printMq.removeEventListener(printFn)
+        return () => printMq.removeEventListener('printEvent', printFn)
     }, [])
 
-    return isPrinting
+    return { refElement, isPrinting }
 }
 
 export default usePrintArea

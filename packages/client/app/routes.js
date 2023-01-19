@@ -39,7 +39,7 @@ const StyledPage = styled(Page)`
   height: calc(100% - 76px - 70px);
   
   > div {
-    overflow-x: hidden;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
   }

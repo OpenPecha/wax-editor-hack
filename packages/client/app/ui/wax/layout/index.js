@@ -4,6 +4,7 @@ import { WaxContext, ComponentPlugin } from 'wax-prosemirror-core'
 import { grid, th } from '@coko/client'
 import { EllipsisOutlined } from '@ant-design/icons'
 import { Scrollbars } from 'react-custom-scrollbars-2';
+import usePrintArea from '../usePrintArea'
 
 import theme from '../../../theme'
 import commonStyles from './commonWaxStyles'
@@ -150,6 +151,7 @@ const Layout = ({ editor }) => {
     pmViews: { main },
   } = useContext(WaxContext);
 
+  const { refElement } = usePrintArea({})
 
   const ref = useRef(null);
   const [open, toggleMenu] = useState(false)
@@ -205,7 +207,7 @@ const Layout = ({ editor }) => {
         <EditorArea>
           <Scrollbars style={{overflow: 'hidden'}}>
           <WaxSurfaceScroll>
-            <EditorContainer>{editor}</EditorContainer>
+            <EditorContainer ref={refElement}>{editor}</EditorContainer>
             <CommentsContainer>
               <RightArea area="main" />
             </CommentsContainer>
