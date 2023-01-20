@@ -205,7 +205,7 @@ const Layout = ({ editor }) => {
           <ShowMore onClick={showMore} />
         </MenuWrapper>
         <EditorArea>
-          <Scrollbars style={{overflow: 'hidden'}}>
+          <Scrollbars>
           <WaxSurfaceScroll>
             <EditorContainer ref={refElement}>{editor}</EditorContainer>
             <CommentsContainer>

@@ -8,6 +8,7 @@ import "@fontsource/montserrat";
 export default createGlobalStyle`
   
   body {
+    height: 100%;
     font-family: '${th('fontInterface')}';
     line-height: ${th('lineHeightBase')} !important;
     font-style: normal;
