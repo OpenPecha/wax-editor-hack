@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { th } from '@coko/client'
+import { PlusCircleOutlined } from '@ant-design/icons'
+
 import logoMobile from '../../../static/cokoDocs-logo-alt.png'
 import logo from '../../../static/cokoDocs-logo-alt.png'
 import AboutModal  from '../modals/AboutModal'
@@ -71,6 +73,11 @@ const UserMenu = styled.div`
   justify-content: flex-end;
 `
 
+const CreateNew = styled.span`
+  font-size: 30px;
+  padding-right: 10px;
+`
+
 // #endregion styles
 
 const Header = props => {
@@ -93,6 +100,9 @@ const Header = props => {
         <Title>CokoDocs</Title>
       </Navigation>
       <UserMenu>
+        <CreateNew>
+          <Link target="_blank" to="/"><PlusCircleOutlined /></Link>
+        </CreateNew>
         <AboutModal />
       </UserMenu>
 

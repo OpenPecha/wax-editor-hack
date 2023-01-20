@@ -5,7 +5,6 @@ import { Wax } from 'wax-prosemirror-core'
 
 import { useHistory } from "react-router-dom";
 
-
 import config from './config/config'
 import layout from "./layout"
 

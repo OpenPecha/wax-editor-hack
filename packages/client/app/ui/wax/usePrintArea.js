@@ -20,7 +20,7 @@ const usePrintArea = ({beforePrint, afterPrint }) => {
             const divTemp = document.createElement('div')
             divTemp.id = 'div-Temp'
             divTemp.innerHTML = refElement.current.innerHTML
-
+            divTemp.style.height = '100%'
             document.body.appendChild(divTemp)
         }
 

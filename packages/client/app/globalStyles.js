@@ -6,7 +6,12 @@ import "@fontsource/montserrat/200.css";
 import "@fontsource/montserrat";
 
 export default createGlobalStyle`
-  
+  @media print {  
+    html, body {
+      height: 100%;
+    }
+  }
+
   body {
     height: 100%;
     font-family: '${th('fontInterface')}';
