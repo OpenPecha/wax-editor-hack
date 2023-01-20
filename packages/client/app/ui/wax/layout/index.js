@@ -208,7 +208,7 @@ const Layout = ({ editor }) => {
           <Scrollbars>
           <WaxSurfaceScroll>
             <div ref={refElement} style={{height: '100%'}}>
-            <EditorContainer>{editor}</EditorContainer>
+              <EditorContainer>{editor}</EditorContainer>
             </div>
             <CommentsContainer>
               <RightArea area="main" />
