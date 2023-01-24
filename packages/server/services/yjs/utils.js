@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const syncProtocol = require('y-protocols/dist/sync.cjs')
 const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
 const encoding = require('lib0/encoding')
@@ -5,8 +6,6 @@ const decoding = require('lib0/decoding')
 const Y = require('yjs')
 const { Doc} = require('@pubsweet/models')
 const { db } = require('@coko/server')
-
-const persistenceDir = process.env.YPERSISTENCE || './docDir'
 
 let persistence = null
 
@@ -102,17 +101,27 @@ const closeConn = (doc, conn) => {
 
       if (delta && delta.length > 0 ) {
         if (!docYjs) {
-          await Doc.query().insert({
-            docs_prosemirror_delta: delta,
-            docs_y_doc_state: state,
-            identifier,
-          })
+          try {
+            await Doc.query().insert({
+              docs_prosemirror_delta: delta,
+              docs_y_doc_state: state,
+              identifier,
+            })
+          } catch (e) {
+            console.log(`Insert Query`)
+            console.log(e)
+          }
         } else {
-          await Doc.query().patch({
-            docs_prosemirror_delta: delta,
-            docs_y_doc_state: state,
-            updated: timestamp,
-          }).findOne({ identifier })
+          try {
+            await Doc.query().patch({
+              docs_prosemirror_delta: delta,
+              docs_y_doc_state: state,
+              updated: timestamp,
+            }).findOne({ identifier })
+          } catch (e) {
+            console.log(`Patch Query`)
+            console.log(e)
+          }
         }
       }
     },
