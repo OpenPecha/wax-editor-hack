@@ -7,7 +7,7 @@ import { Scrollbars } from 'react-custom-scrollbars-2';
 import usePrintArea from '../usePrintArea'
 
 import theme from '../../../theme'
-import commonStyles from './commonWaxStyles'
+import commonStyles from './cokoDocsWaxStyles'
 
 import 'wax-prosemirror-core/dist/index.css'
 import 'wax-prosemirror-services/dist/index.css'
@@ -15,12 +15,10 @@ import MenuComponent from './MenuComponent'
 
 const Wrapper = styled.div`
   background: ${th('colorBackground')};
-  
   font-family: '${th('fontInterface')}';
   font-size: ${th('fontSizeBase')};
   height: calc(100% - ${props => props.menuHeight}px);
   line-height: ${grid(4)};
-
   width: 100%;
 
   * {
@@ -31,7 +29,7 @@ const Wrapper = styled.div`
 
 const EditorArea = styled.div`
   height: 100%;
-  background: #f4f4f7;
+  background: ${th('colorBackground')};
   width: 100%;
 `;
 
@@ -61,12 +59,13 @@ const EditorContainer = styled.div`
   height: 100%;
   position: relative;
   float: left;
-  width: 1000px; 
   padding-top: 20px;
 
   .ProseMirror {
+    margin-top:4rem;
     box-shadow: 0 0 8px #ecedf1;
     min-height: 100%;
+    width: unset; 
     padding: ${grid(10)};
 
     table > tbody > tr > th {
@@ -157,10 +156,10 @@ const Layout = ({ editor }) => {
   const [open, toggleMenu] = useState(false)
   const [menuHeight, setMenuHeight] = useState(42)
 
-  useEffect(()=>{
-      if (ref.current) {
-        setMenuHeight(ref.current.clientHeight + 2)
-      }
+  useEffect(() => {
+    if (ref.current) {
+      setMenuHeight(ref.current.clientHeight + 2)
+    }
   }, [open])
 
   useEffect(() => {
@@ -178,7 +177,7 @@ const Layout = ({ editor }) => {
   }
 
   const { options } = useContext(WaxContext)
-  
+
   const { fullScreen } = options
 
   let fullScreenStyles = {};
@@ -198,7 +197,7 @@ const Layout = ({ editor }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      
+
       <Wrapper id="wax-container" menuHeight={menuHeight} style={fullScreenStyles}>
         <MenuWrapper>
           {main && <MenuComponent fullScreen={fullScreen} open={open} ref={ref} />}
@@ -206,14 +205,14 @@ const Layout = ({ editor }) => {
         </MenuWrapper>
         <EditorArea>
           <Scrollbars>
-          <WaxSurfaceScroll>
-            <div ref={refElement} style={{height: '100%'}}>
-              <EditorContainer>{editor}</EditorContainer>
-            </div>
-            <CommentsContainer>
-              <RightArea area="main" />
-            </CommentsContainer>
-          </WaxSurfaceScroll>
+            <WaxSurfaceScroll>
+              <div ref={refElement} style={{ height: '100%' }}>
+                <EditorContainer>{editor}</EditorContainer>
+              </div>
+              <CommentsContainer>
+                <RightArea area="main" />
+              </CommentsContainer>
+            </WaxSurfaceScroll>
           </Scrollbars>
         </EditorArea>
         <WaxBottomRightInfo>

@@ -9,7 +9,7 @@ import { PlusCircleOutlined } from '@ant-design/icons'
 
 import logoMobile from '../../../static/cokoDocs-logo-alt.png'
 import logo from '../../../static/cokoDocs-logo-alt.png'
-import AboutModal  from '../modals/AboutModal'
+import AboutModal from '../modals/AboutModal'
 
 // #region styles
 const StyledHeader = styled.header`
@@ -58,6 +58,8 @@ const Branding = styled(Link)`
 
   h1 {
     height: 0;
+  font-family: ${th('fontBrand')};
+    font-weight: 600;
     overflow: hidden;
     width: 0;
   }
@@ -70,9 +72,10 @@ const Navigation = styled.nav`
   height: ${th('mobileLogoHeight')};
   justify-content: center;
   overflow: visible;
-
+  font-family: ${th('fontBrand')};
   span {
-    font-size: 48px;
+  font-size: 3em;
+  font-weight: 300;
   }
 `
 
