@@ -31,6 +31,14 @@ const Title = styled.span`
   font-weight: 200;
 `
 
+const Beta = styled.span`
+  font-size: 12px !important;
+  font-weight: bold;
+  color: black;
+  position: relative;
+  top: 12px;
+`
+
 const Branding = styled(Link)`
   background-image: ${`url(${logoMobile})`};
   background-position: center center;
@@ -98,6 +106,7 @@ const Header = props => {
       </Branding>
       <Navigation role="navigation">
         <Title>CokoDocs</Title>
+        <Beta>BETA</Beta>
       </Navigation>
       <UserMenu>
         <CreateNew>

@@ -69,7 +69,7 @@ const AboutModal = () => {
         width="720px"
       >
         <CenteredLogo />
-        <p>CokoDocs is a project of <a href="https://coko.foundation/" rel="noreferrer" target="_blank" >Coko</a>.</p>
+        <p><a href="https://gitlab.coko.foundation/cokodocs/cokodocs" rel="noreferrer" target="_blank" >CokoDocs</a> is a project of <a href="https://coko.foundation/" rel="noreferrer" target="_blank" >Coko</a>.</p>
         <p>Coko develops publishing platforms. If you would like to contribute to CokoDocs, or <br />
         want us to build you a platform then drop us a line: <br />
         <a href="mailto:adam@coko.foundation" rel="noreferrer" target="_blank">adam@coko.foundation</a><br /><br /> 
@@ -78,8 +78,7 @@ const AboutModal = () => {
         <a href="https://gitlab.coko.foundation/cokoapps/server" rel="noreferrer" target="_blank">CokoServer</a><br /> 
         <a href="https://waxjs.net/" rel="noreferrer" target="_blank" >Wax</a> <br /> 
         <a href="https://docs.yjs.dev/" rel="noreferrer" target="_blank" >YJS</a></p>
-        <p>CokoDocs Milestones are here:<br/> 
-        <a href='https://gitlab.coko.foundation/cokodocs/cokodocs/-/boards' rel="noreferrer" target='_blank'>https://gitlab.coko.foundation/cokodocs/cokodocs/-/boards</a></p>
+        <p>CokoDocs is currently in beta.</p>
         <CenteredCokoLogo />
       </StyledModal>
       </>)
