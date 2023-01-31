@@ -2,8 +2,12 @@
 /* stylelint-disable declaration-no-important */
 import { createGlobalStyle } from 'styled-components'
 import { th } from '@coko/client'
-import "@fontsource/montserrat/200.css";
 import "@fontsource/montserrat";
+import "@fontsource/recursive";
+import "@fontsource/inter";
+import "@fontsource/montserrat/variable.css";
+import "@fontsource/inter/variable.css";
+import "@fontsource/recursive/variable-full.css";
 
 export default createGlobalStyle`
   @media print {  

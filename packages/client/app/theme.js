@@ -2,8 +2,10 @@
 import { css } from 'styled-components'
 
 export default {
-  colorBackground: 'white',
+  colorBackground: '#eee',
+  colorContentBackground: '#f6f6f6',
   colorPrimary: '#525E76',
+  // colorPrimary: '#36b',
   colorSecondary: '#E7E7E7',
   colorFurniture: '#CCC',
   colorBorder: '#EBEBF0',
@@ -25,7 +27,19 @@ export default {
   colorText: '#525E76',
   colorTextDark: '#222222',
 
-  fontInterface: 'Montserrat',
+  // font for the interface (menu ,button, etc.)
+  fontInterface: 'InterVariable', 
+  fontFallbackInterface: 'Inter', 
+  // font for the branding (coko, text outside the box, etc.)
+  fontBrand: 'MontserratVariable',
+  fontFallbackBrand: 'Montserrat',
+  //  font fot the Content itself (the editable text)
+  // fontContent: 'RecursiveVariable',
+  // fontFallbackContent: 'Recursive',
+
+  fontContent: 'MontserratVariable',
+  fontFallbackContent: 'Montserrat',
+
   // font sizes
   fontSizeBase: '18px',  
   fontSizeBaseSmall: '16px',

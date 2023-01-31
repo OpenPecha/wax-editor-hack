@@ -12,6 +12,7 @@ const InfoCircleOutlinedStyled = styled(InfoCircleOutlined)`
 `
 
 const StyledModal = styled(Modal)`
+  font-family: ${th('fontBrand')};
   p {
     font-size: ${th('fontSizeBaseSmall')}
   }
