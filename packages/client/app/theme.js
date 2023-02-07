@@ -1,12 +1,17 @@
 /* eslint-disable import/no-import-module-exports */
 import { css } from 'styled-components'
+import { th } from '@coko/client'
 
 export default {
+  colorContent: '#111',
   colorBackground: '#eee',
   colorContentBackground: '#f6f6f6',
   colorPrimary: '#525E76',
   // colorPrimary: '#36b',
   colorSecondary: '#E7E7E7',
+  colorLightGrey: '#f7f7f7',
+  colorReserve: 'white',
+  colorLighterGrey: '#f9f9f9',
   colorFurniture: '#CCC',
   colorBorder: '#EBEBF0',
   colorBackgroundHue: '#FFFFFF',
@@ -26,10 +31,11 @@ export default {
   colorWarning: '#a65b00',
   colorText: '#525E76',
   colorTextDark: '#222222',
+  colorAccept: '#27AA85',
 
   // font for the interface (menu ,button, etc.)
-  fontInterface: 'InterVariable', 
-  fontFallbackInterface: 'Inter', 
+  fontInterface: 'InterVariable',
+  fontFallbackInterface: 'Inter',
   // font for the branding (coko, text outside the box, etc.)
   fontBrand: 'MontserratVariable',
   fontFallbackBrand: 'Montserrat',
@@ -41,7 +47,7 @@ export default {
   fontFallbackContent: 'Montserrat',
 
   // font sizes
-  fontSizeBase: '18px',  
+  fontSizeBase: '18px',
   fontSizeBaseSmall: '16px',
   fontSizeHeading1: '96px',
   fontSizeHeading2: '81px',
@@ -90,24 +96,113 @@ export default {
         position: fixed;
         top: unset;
       `,
-      CommentName: css`
-        font-size: 14px
+      CommentOuterBox: css`
+        color: ${th('colorContent')};
+        margin-left: -100px;
+        margin-left: ${props => (props.active ? `-150px` : `30px`)};
+        width: ${props => (props.active ? `400px` : `200px`)};
+        padding: 0;
       `,
+
+      CommentWrapper: css`
+        border-radius: 8px;
+        padding: 0.8em 1.2ch;
+        padding: ${props => (props.active ? `0.8em 1.2ch` : `.3em .5ch`)};
+      `,
+      CommentResolve: css`
+        color: transparent;
+        &:hover {
+          color: ${th('colorPrimary')};
+        }
+        &::after {
+          content: '✓';
+          margin-left: 0.7ch;
+          color: ${th('colorPrimary')};
+          font-size: 1.5em;
+          line-heigth: 1em;
+        }
+      `,
+      CommentResolveWrapper: css`
+        position: absolute;
+        top: 0.5em;
+        right: 0.5em;
+        color: transparent;
+      `,
+      CommentItemWrapper: css`
+        border: none;
+        margin-bottom: 1em;
+        margin-bottom: ${props => (props.active ? `1em` : `0`)};
+      `,
+      CommentInfoWrapper: css`
+        width: max-content;
+        margin-bottom: 0.5em;
+        display: block;
+        border-bottom: 1px solid ${th('colorBackgroundTabs')};
+        font-size: 0.9em;
+      `,
+      CommentName: css`
+        font-size: 1em;
+        display: inline;
+        margin-right: 2ch;
+        /*to hide the name, remove next 4 lines when the user name is setup*/
+        color: transparent;
+        visibility: none;
+        width: 0;
+        margin-left: -4.5ch;
+        /*remove top of here*/
+        &::after {
+          color: ${th('colorPrimary')};
+          content: 'comment';
+          visibility: visible;
+        }
+      `,
+
       CommentTimestamp: css`
-        font-size: 12px;
+        font-size: 0.9em;
+        /* display: inline; */
+        font-style: italic;
+        display: ${props => (props.active ? `inline` : `none`)};
       `,
       CommentContent: css`
-        font-size: 16px;
+        height: ${props => (props.active ? `unset` : `1.2em`)};
+        font-size: 0.8em;
+        line-height: 1.3;
+        margin-top: 0.5em;
+        text-overflow: ${props => (props.active ? `unset` : `ellipsis`)};
+        overflow: ${props => (props.active ? `unset` : `hidden`)};
+        white-space: ${props => (props.active ? `unset` : `nowrap`)};
+        &:nth-of-type(even) {
+          width: auto;
+        }
       `,
+      CommentReplyWrapper: css`
+        border-top: unset;
+      `,
+
       CommentTextArea: css`
-        font-size: 14px;
-        border: 1px solid gainsboro;
+        font-size: 0.9em;
+        border: 3px solid ${th('colorLightGrey')};
+        padding: 0.5em 1ch;
+        margin: 0.5em 0;
+        &:focus {
+          border-color: ${th('colorBorder')};
+          outline: none;
+        }
+        &::before {
+          content: 'Reply';
+          font-style: italic;
+          display: block;
+          margin-bottom: 0.4em;
+        }
       `,
       CommentButtons: css`
         font-size: 14px;
+
+        &:first-of-type {
+          background: ${th('colorAccept')} !important;
+        }
       `,
-      CommentButtonGroup: css`
-      `,
+      CommentButtonGroup: css``,
       TransformToolWrapper: css`
         position: fixed;
         top: unset;
@@ -117,9 +212,9 @@ export default {
         top: unset;
       `,
       SpecialCharacterToolWrapper: css`
-        position:fixed;
+        position: fixed;
         top: unset;
-      `
+      `,
     },
-  }
+  },
 }

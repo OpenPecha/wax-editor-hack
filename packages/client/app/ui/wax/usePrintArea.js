@@ -19,8 +19,8 @@ const usePrintArea = ({beforePrint, afterPrint }) => {
 
             const divTemp = document.createElement('div')
             divTemp.id = 'div-Temp'
-            divTemp.innerHTML = refElement.current.innerHTML
-            divTemp.style.height = '100%'
+            divTemp.innerHTML = refElement.current.getContent()
+          divTemp.classList.add('ProseMirror');
             document.body.appendChild(divTemp)
         }
 

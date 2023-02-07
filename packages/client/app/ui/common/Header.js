@@ -32,11 +32,11 @@ const Title = styled.span`
 `
 
 const Beta = styled.span`
-  font-size: 12px !important;
-  font-weight: bold;
+  font-size: .8em !important;
+  font-weight: 600;
   color: black;
+  top: -1em;
   position: relative;
-  top: 12px;
 `
 
 const Branding = styled(Link)`
@@ -73,9 +73,9 @@ const Navigation = styled.nav`
   justify-content: center;
   overflow: visible;
   font-family: ${th('fontBrand')};
-  span {
+  span:first-of-type {
   font-size: 3em;
-  font-weight: 300;
+  font-weight: 200;
   }
 `
 

@@ -2,19 +2,15 @@
 /* stylelint-disable declaration-no-important */
 import { createGlobalStyle } from 'styled-components'
 import { th } from '@coko/client'
-import "@fontsource/montserrat";
-import "@fontsource/recursive";
-import "@fontsource/inter";
-import "@fontsource/montserrat/variable.css";
-import "@fontsource/inter/variable.css";
-import "@fontsource/recursive/variable-full.css";
+import printstyles from './printStyles'
+import '@fontsource/montserrat'
+import '@fontsource/recursive'
+import '@fontsource/inter'
+import '@fontsource/montserrat/variable.css'
+import '@fontsource/inter/variable.css'
+import '@fontsource/recursive/variable-full.css'
 
 export default createGlobalStyle`
-  @media print {  
-    html, body {
-      height: 100%;
-    }
-  }
 
   body {
     height: 100%;
@@ -65,4 +61,10 @@ export default createGlobalStyle`
       box-shadow: 0 0 0 2px #d4313122;
     }
   }
+
+${printstyles}
+
 `
+
+
+
