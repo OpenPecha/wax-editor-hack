@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Wax } from 'wax-prosemirror-core'
 
 import { useHistory } from 'react-router-dom'
-import usePrintArea from './usePrintArea.js'
+import usePrintArea from './usePrintArea'
 import config from './config/config'
 import layout from './layout'
 
@@ -49,11 +49,11 @@ const PmEditor = props => {
 
   return (
     <WaxStyled
-      ref={refElement}
       config={config(identifier)}
       fileUpload={file => renderImage(file)}
       layout={layout}
       placeholder='Type Something ...'
+      ref={refElement}
       scrollThreshold={50}
       user={user}
     />
