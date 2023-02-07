@@ -1,7 +1,6 @@
 import { css } from 'styled-components'
 import { th } from '@coko/client'
 
-
 export default css`
   *:focus:not(.ProseMirror) {
     outline: 1px solid ${th('colorPrimary')};
@@ -73,7 +72,7 @@ font-weight: 600;
 line-height: 1.2;
 padding-bottom:.4em;
 margin-bottom: 1em;
-border-bottom: 2px solid ${th("colorPrimary")};
+border-bottom: 2px solid ${th('colorPrimary')};
 }
 .ProseMirror h1:first-child {
 margin-top:2em;
@@ -122,7 +121,7 @@ line-height: 1.5 }
     --casl: 1;
   --slnt: 1;
     font-variation-settings:  "MONO" var(--mono), "CASL" var(--casl),  "slnt" var(--slnt), "CSRV" var(--crsv); 
-    color: ${th("colorPrimary")};
+    color: ${th('colorPrimary')};
     text-transform: lowercase;
     position: absolute;
     left: -5ch;
@@ -173,7 +172,7 @@ font-weight: 400;
 
 .ProseMirror blockquote {
 margin: 1em 0 1em 0ch;
-border-left: 4px solid ${th("colorPrimary")};
+border-left: 4px solid ${th('colorPrimary')};
 padding-left: 2ch;
 }
 
@@ -213,4 +212,52 @@ text-underline-offset: 3px;
 color: ${th('colorPrimary')};
 }
 
+
+.ProseMirror {
+
+  table {
+    border: 3px solid ${th('colorContent')};
+    font-size: .9em;
+  }
+
+  table p {
+    margin:0;
+    line-height: 1.2;
+    font-size: 1em;
+    margin-bottom: 0.3ch;
+  }
+
+table tr:nth-of-type(odd) {
+background: ${th('colorLightGrey')}
+
+}
+
+table tr {border-bottom: 2px solid ${th('colorContent')}}
+
+table p:empty {
+margin: 0;
+}
+
+  table td, th {
+    border: 1px solid ${th('colorContent')};
+    padding: 1em 1ch;
+  }
+
+table th {
+text-align:left;
+padding-left: 2ch;
+}
+
+  table > tbody > tr > th {
+    background-color: ${th('colorReserve')};
+    background-color: #e9e9e9;
+    color: ${th('colorContent')};
+    font-size: 0.9em;
+    border:  1px solid  ${th('colorContent')};
+  } 
+
+  table > tbody > tr > th > p, table > tbody > tr > td > p {
+    margin-bottom: .4em;
+  }
+}    
 `

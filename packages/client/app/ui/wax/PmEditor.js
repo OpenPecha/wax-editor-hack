@@ -3,11 +3,10 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Wax } from 'wax-prosemirror-core'
 
-import { useHistory } from "react-router-dom";
-
+import { useHistory } from 'react-router-dom'
+import usePrintArea from './usePrintArea.js'
 import config from './config/config'
-import layout from "./layout"
-
+import layout from './layout'
 
 const WaxStyled = styled(Wax)``
 
@@ -18,10 +17,9 @@ const user = {
     deletion: 'indianred',
   },
   username: 'admin',
-};
+}
 
 const renderImage = file => {
-
   const reader = new FileReader()
 
   return new Promise((resolve, reject) => {
@@ -33,28 +31,32 @@ const renderImage = file => {
 }
 
 const PmEditor = props => {
-  const history = useHistory();
+  const history = useHistory()
 
+  const { refElement } = usePrintArea({})
   const { docIdentifier } = props
 
   let identifier = docIdentifier
 
   if (!docIdentifier) {
-    identifier = Array.from(Array(20), () => Math.floor(Math.random() * 36).toString(36)).join('');
+    identifier = Array.from(Array(20), () =>
+      Math.floor(Math.random() * 36).toString(36),
+    ).join('')
 
-    history.push(`/${identifier}`, { replace: true });
+    history.push(`/${identifier}`, { replace: true })
     return true
   }
 
   return (
-      <WaxStyled
-        config={config(identifier)}
-        fileUpload={file => renderImage(file)}
-        layout={layout}
-        placeholder="Type Something ..."
-        scrollThreshold={50}
-        user= {user}
-      />
+    <WaxStyled
+      ref={refElement}
+      config={config(identifier)}
+      fileUpload={file => renderImage(file)}
+      layout={layout}
+      placeholder='Type Something ...'
+      scrollThreshold={50}
+      user={user}
+    />
   )
 }
 

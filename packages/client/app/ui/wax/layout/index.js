@@ -4,7 +4,6 @@ import { WaxContext, ComponentPlugin } from 'wax-prosemirror-core'
 import { grid, th } from '@coko/client'
 import { EllipsisOutlined } from '@ant-design/icons'
 import { Scrollbars } from 'react-custom-scrollbars-2';
-import usePrintArea from '../usePrintArea'
 
 import theme from '../../../theme'
 import commonStyles from './cokoDocsWaxStyles'
@@ -68,16 +67,6 @@ const EditorContainer = styled.div`
     width: unset; 
     padding: ${grid(10)};
 
-    table > tbody > tr > th {
-      background-color: #d3d3d3;
-      border: 1px solid ${th('colorBody')};
-      color: ${th('colorTextDark')};
-    } 
-
-    table > tbody > tr > th > p, table > tbody > tr > td > p {
-      margin-bottom: 10px;
-      margin-top: 10px !important;
-    }
   }
 
   ${commonStyles}
@@ -150,7 +139,6 @@ const Layout = ({ editor }) => {
     pmViews: { main },
   } = useContext(WaxContext);
 
-  const { refElement } = usePrintArea({})
 
   const ref = useRef(null);
   const [open, toggleMenu] = useState(false)
@@ -206,7 +194,7 @@ const Layout = ({ editor }) => {
         <EditorArea>
           <Scrollbars>
             <WaxSurfaceScroll>
-              <div ref={refElement} style={{ height: '100%' }}>
+              <div style={{ height: '100%' }}>
                 <EditorContainer>{editor}</EditorContainer>
               </div>
               <CommentsContainer>
