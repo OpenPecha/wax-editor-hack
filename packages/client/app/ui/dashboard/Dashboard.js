@@ -3,21 +3,14 @@ import { useParams } from 'react-router-dom'
 
 import PmEditor from '../wax/PmEditor'
 
-
-
 const Dashboard = props => {
+  const { docIdentifier } = useParams()
 
-  const { docIdentifier } = useParams();
-  
-  return (
-    <PmEditor docIdentifier={docIdentifier} />
-  )
+  return <PmEditor docIdentifier={docIdentifier} />
 }
 
-Dashboard.propTypes = {
-}
+Dashboard.propTypes = {}
 
-Dashboard.defaultProps = {
-}
+Dashboard.defaultProps = {}
 
 export default Dashboard

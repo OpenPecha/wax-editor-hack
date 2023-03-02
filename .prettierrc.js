@@ -1,3 +1,3 @@
-const { prettier } = require("@coko/lint");
+const { prettier } = require('@coko/lint')
 
-module.exports = prettier;
+module.exports = prettier

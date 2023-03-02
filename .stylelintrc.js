@@ -1,3 +1,3 @@
-const { stylelint } = require("@coko/lint");
+const { stylelint } = require('@coko/lint')
 
-module.exports = stylelint;
+module.exports = stylelint
