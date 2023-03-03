@@ -9,10 +9,10 @@ module.exports = {
   'password-reset': {
     path: 'password-reset',
   },
-  mailer: {
-    from: 'info@cokodocs.com',
-    path: path.join(__dirname, 'mailer'),
-  },
+  // mailer: {
+  //   from: 'info@cokodocs.com',
+  //   path: path.join(__dirname, 'mailer'),
+  // },
   permissions,
   pubsweet: {
     components,
