@@ -1,5 +1,15 @@
 # CokoDocs!
 
+CokoDocs is a modern web-based word processor. CokoDocs is built on CokoServer and Wax (https://waxjs.net). We received support from NLnet for YJS concurrent editing integration. 
+
+CokoDocs is 100% open source and comes out of Coko (https://coko.foundation).
+
+We are planning to take this a lot further and currently looking for various pathways to develop the app. If you would like to know more contact Adam Hyde - adam@coko.foundation
+
+https://cokodocs.net
+
+Secret squirrels pre-production deployment demo here (sssh!): http://demo.cokodocs.net
+
 ## Start
 
 Make sure docker is running and
