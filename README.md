@@ -10,28 +10,29 @@ https://cokodocs.net
 
 Secret squirrels pre-production deployment demo here (sssh!): http://demo.cokodocs.net
 
-## Start
-
-Make sure docker is running and
-
-`docker compose up`
-
-CokoDocs will be available on [http://localhost:4000](http://localhost:4000)
-
-%% node version? 
-
 ## Development
 
-Docker use node v16 and yarn
+Make sure docker is running and
+```
+docker compose up
+```
 
-To install a depandency, yarn add it and rebuild the docker client, and re up.
+You can simply use the default environment variables (found in the `docker-compose.yml` file), or override them with a `.env` file in the root of your project.
 
-1. `yarn add dependency` 
-2. `cd packages/client/ && yarn install`
-3. `docker compose build --no-cache client`
-4. `docker-compose up`
+## Production
+
+Assuming that you have a database running, add all required environment variables to a `.env` file. You can see the list of required variables in the `docker-compose.production.yml` file.
 
 
-TODO
+Then
+```
+docker compose -f docker-compose.production.yml up
+```
 
-test this color set for the different tools: https://iamkate.com/data/12-bit-rainbow/
+## Testing production locally
+
+Same as the production section, but we'll fake having a running database with a docker container.
+
+```
+docker compose -f docker-compose.production-local.yml -f docker-compose.production.yml up
+```
