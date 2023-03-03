@@ -1,5 +1,4 @@
-
-import { emDash, ellipsis } from 'prosemirror-inputrules';
+import { emDash, ellipsis } from 'prosemirror-inputrules'
 
 import {
   InlineAnnotationsService,
@@ -36,9 +35,9 @@ import {
   CustomTagService,
   BlockDropDownToolGroupService,
   YjsService,
-} from 'wax-prosemirror-services';
+} from 'wax-prosemirror-services'
 
-import { EditoriaSchema } from 'wax-prosemirror-core';
+import { EditoriaSchema } from 'wax-prosemirror-core'
 
 import CharactersList from './characterList'
 
@@ -49,9 +48,7 @@ const config = docIdentifier => ({
       toolGroups: [
         {
           name: 'Base',
-          exclude: [
-            'Save'
-          ]
+          exclude: ['Save'],
         },
         {
           name: 'BlockDropDown',
@@ -64,16 +61,12 @@ const config = docIdentifier => ({
             'ParagraphContinued',
             'ExtractProse',
             'SourceNote',
-          ]
+          ],
         },
         {
           name: 'Annotations',
-          more: [
-            'Superscript',
-            'Subscript',
-            'SmallCaps',
-          ],
-          exclude: ['Code']
+          more: ['Superscript', 'Subscript', 'SmallCaps'],
+          exclude: ['Code'],
         },
         'HighlightToolGroup',
         'TransformToolGroup',
@@ -95,14 +88,13 @@ const config = docIdentifier => ({
     },
   ],
   SchemaService: EditoriaSchema,
-  TitleService: { updateTitle: () => {}, },
+  TitleService: { updateTitle: () => {} },
   SpecialCharactersService: CharactersList,
   RulesService: [emDash, ellipsis],
   ShortCutsService: {},
   YjsService: {
-   // eslint-disable-next-line no-restricted-globals
-   connectionUrl: `ws://${location.hostname}:3000`,
-   docIdentifier
+    connectionUrl: process.env.CLIENT_WEBSOCKET_URL,
+    docIdentifier,
   },
   services: [
     new YjsService(),
@@ -140,7 +132,6 @@ const config = docIdentifier => ({
     new CustomTagBlockToolGroupService(),
     new CustomTagService(),
   ],
-});
-
+})
 
 export default config

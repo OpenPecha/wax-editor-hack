@@ -15,9 +15,8 @@ services:
       - CLIENT_PAGE_TITLE=${CLIENT_PAGE_TITLE:-CokoDocs}
       - CLIENT_LANGUAGE=${CLIENT_LANGUAGE:-"en-US"}
       - CLIENT_FAVICON_PATH=${CLIENT_FAVICON_PATH:-../static/favicon.ico}
-      - SERVER_PROTOCOL=${SERVER_PROTOCOL:-http}
-      - SERVER_HOST=${SERVER_HOST:-localhost}
-      - SERVER_PORT=${SERVER_PORT:-3000}
+      - CLIENT_WEBSOCKET_URL=${CLIENT_WEBSOCKET_URL:-ws://localhost:3001}
+      - SERVER_URL=${SERVER_URL:-http://localhost:3000}
     volumes:
       - ./packages/client/app:/home/node/app/app
       - ./packages/client/static:/home/node/app/static
@@ -58,35 +57,18 @@ services:
         'js, graphql',
       ]
     ports:
-      - ${SERVER_PORT:-3000}:${SERVER_PORT:-3000}
+      - ${SERVER_PORT:-3000}:3000
+      - ${WS_SERVER_PORT:-3001}:${WS_SERVER_PORT:-3001}
     environment:
       - NODE_ENV=development
       - PUBSWEET_SECRET=${PUBSWEET_SECRET:-dev_secret}
-      - EXTERNAL_SERVER_URL=${EXTERNAL_SERVER_URL:-http://server:3000}
-      - SERVER_SERVE_CLIENT=false
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
       - POSTGRES_DB=${POSTGRES_DB:-cokodocs_dev}
       - POSTGRES_USER=${POSTGRES_USER:-dev_user}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-dev_user_password}
-      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-password}
-      - ADMIN_GIVEN_NAME=${ADMIN_GIVEN_NAME:-Admin}
-      - ADMIN_SURNAME=${ADMIN_SURNAME:-Adminius}
-      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@example.com}
-      - SERVER_PORT=${SERVER_PORT:-3000}
-      - SERVER_HOST=${SERVER_HOST:-localhost}
-      - SERVER_PROTOCOL=${SERVER_PROTOCOL:-http}
-      - CLIENT_PROTOCOL=${CLIENT_PROTOCOL:-http}
-      - CLIENT_HOST=${CLIENT_HOST:-0.0.0.0}
-      - CLIENT_PORT=${CLIENT_PORT:-4000}
-      - MAILER_USER=${MAILER_USER}
-      - MAILER_PASSWORD=${MAILER_PASSWORD}
-      - MAILER_SENDER=${MAILER_SENDER:-dev@example.com}
-      - MAILER_HOSTNAME=${MAILER_HOSTNAME}
-      - PASSWORD_RESET_PATH=${PASSWORD_RESET_PATH:-password-reset}
-      - USE_WEB_SOCKETS=${USE_WEB_SOCKETS:-true}
-      - WEB_SOCKET_PATHS=${WEB_SOCKET_PATH:-yjs}
+      - WS_SERVER_PORT=${WS_SERVER_PORT:-3001}
+      - CLIENT_URL=${CLIENT_URL:-http://0.0.0.0:4000}
     volumes:
       - ./packages/server/api:/home/node/cokodocs/api
       - ./packages/server/config:/home/node/cokodocs/config
@@ -95,6 +77,7 @@ services:
       - ./packages/server/scripts:/home/node/cokodocs/scripts
       - ./packages/server/services:/home/node/cokodocs/services
       - ./packages/server/startServer.js:/home/node/cokodocs/startServer.js
+
   db:
     image: postgres:14
     ports:

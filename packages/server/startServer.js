@@ -1,6 +1,9 @@
 /* eslint-disable no-param-reassign */
 const { startServer } = require('@coko/server')
 const map = require('lib0/map')
+const { WebSocketServer } = require('ws')
+const config = require('config')
+
 const { WSSharedDoc, utils } = require('./services')
 
 const pingTimeout = 30000
@@ -38,21 +41,26 @@ const messageListener = (conn, doc, message) => {
 
 const init = async () => {
   try {
-    const { httpServer, createdWS } = await startServer()
+    await startServer()
 
-    createdWS.yjs.on('connection', (injectedWS, request) => {
+    const WSServer = new WebSocketServer({
+      port: config.get('pubsweet-server.wsServerPort'),
+      clientTracking: true,
+    })
+
+    WSServer.on('connection', (injectedWS, request) => {
       injectedWS.binaryType = 'arraybuffer'
       const docName = request.url.slice('1').split('?')[0]
       const gc = true
 
       const doc = getYDoc(docName, gc)
-     
+
       doc.conns.set(injectedWS, new Set())
 
       injectedWS.on('message', message =>
         messageListener(injectedWS, doc, new Uint8Array(message)),
       )
-      
+
       let pingReceived = true
 
       const pingInterval = setInterval(() => {
@@ -74,8 +82,6 @@ const init = async () => {
         }
       }, pingTimeout)
 
-      
-
       injectedWS.on('close', () => {
         utils.closeConn(doc, injectedWS)
         clearInterval(pingInterval)
@@ -93,7 +99,7 @@ const init = async () => {
         const awarenessStates = doc.awareness.getStates()
 
         if (awarenessStates.size > 0) {
-          const encoder1 = utils.encoding.createEncoder();
+          const encoder1 = utils.encoding.createEncoder()
           utils.encoding.writeVarUint(encoder1, utils.messageAwareness)
           utils.encoding.writeVarUint8Array(
             encoder1,
@@ -119,19 +125,6 @@ const init = async () => {
         utils.docs.set(docName, doc)
         return doc
       })
-
-    httpServer.on('upgrade', (request, socket, head) => {
-      // You may check auth of request here..
-      // See https://github.com/websockets/ws#client-authentication
-      /**
-       * @param {any} ws
-       */
-      const handleAuth = ws => {
-        createdWS.yjs.emit('connection', ws, request)
-      }
-
-      createdWS.yjs.handleUpgrade(request, socket, head, handleAuth)
-    })
   } catch (error) {
     throw new Error(error)
   }

@@ -1,32 +1,32 @@
 {
-    "name": "cokodocs",
-    "version": "0.1.0",
-    "private": false,
-    "description": "CokoDocs",
-    "repository": {
-        "type": "git",
-        "url": "git@gitlab.coko.foundation:cokoapps/cokodocs.git"
-    },
-    "license": "MIT",
-    "author": "Kuldeep Upreti",
-    "scripts": {
-        "cz": "git-cz",
-        "prepare": "husky install",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "clean": "sh clean.sh"
-    },
-    "config": {
-        "commitizen": {
-            "path": "cz-customizable"
-        }
-    },
-    "husky": {
-        "hooks": {
-            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS && lint-staged"
-        }
-    },
-    "dependencies": {},
-    "devDependencies": {
-        "@coko/lint": "^2.0.0"
+  "name": "cokodocs",
+  "version": "0.1.0",
+  "private": false,
+  "description": "CokoDocs",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.coko.foundation:cokoapps/cokodocs.git"
+  },
+  "license": "MIT",
+  "author": "Kuldeep Upreti",
+  "scripts": {
+    "cz": "git-cz",
+    "prepare": "husky install",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "sh clean.sh"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
     }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS && lint-staged"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@coko/lint": "^2.0.0"
+  }
 }

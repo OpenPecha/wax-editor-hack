@@ -1,33 +1,33 @@
 {
-    "name": "server",
-    "version": "0.0.1",
-    "description": "CokoDocs backend",
-    "repository": {
-        "type": "git",
-        "url": "git@gitlab.coko.foundation:cokoapps/cokodocs.git"
-    },
-    "license": "MIT",
-    "author": "Kuldeep Upreti",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "resolutions": {
-        "pg": "8"
-    },
-    "dependencies": {
-        "@coko/server": "https://gitlab.coko.foundation/cokoapps/server.git#9374f3bba86899c388764a5467c0ae6fe92cd373",
-        "@pubsweet/models": "^0.3.26",
-        "config": "^3.3.6",
-        "knex": "^2.3.0",
-        "lib0": "^0.2.54",
-        "lodash": "^4.17.21",
-        "uuid": "^9.0.0",
-        "y-protocols": "^1.0.5",
-        "yjs": "^13.5.42"
-    },
-    "devDependencies": {
-        "jest": "^27.5.1",
-        "node-wait-for-it": "^0.2.0",
-        "nodemon": "^2.0.13"
-    }
+  "name": "server",
+  "version": "0.0.1",
+  "description": "CokoDocs backend",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.coko.foundation:cokoapps/cokodocs.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "resolutions": {
+    "pg": "8"
+  },
+  "dependencies": {
+    "@coko/server": "3.0.0-beta.4",
+    "@pubsweet/models": "^0.3.26",
+    "config": "^3.3.6",
+    "knex": "^2.3.0",
+    "lib0": "^0.2.54",
+    "lodash": "^4.17.21",
+    "uuid": "^9.0.0",
+    "ws": "^8.12.1",
+    "y-protocols": "^1.0.5",
+    "yjs": "^13.5.42"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "node-wait-for-it": "^0.2.0",
+    "nodemon": "^2.0.13"
+  }
 }
