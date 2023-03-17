@@ -8,6 +8,8 @@ services:
       args:
         - server_url=${SERVER_URL}
         - client_websocket_url=${CLIENT_WEBSOCKET_URL}
+        - chatgpt_url=${chatgpt_url}
+        - chatgpt_key=${chatgpt_key}
     command: ['npx', 'serve', '-p', '8080', '--single', './_build']
     ports:
       - ${CLIENT_PORT}:8080

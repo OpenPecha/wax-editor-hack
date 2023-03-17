@@ -17,6 +17,8 @@ services:
       - CLIENT_FAVICON_PATH=${CLIENT_FAVICON_PATH:-../static/favicon.ico}
       - CLIENT_WEBSOCKET_URL=${CLIENT_WEBSOCKET_URL:-ws://localhost:3001}
       - SERVER_URL=${SERVER_URL:-http://localhost:3000}
+      - CHATGPT_URL=${CHATGPT_URL}
+      - CHATGPT_KEY=${CHATGPT_KEY}
     volumes:
       - ./packages/client/app:/home/node/app/app
       - ./packages/client/static:/home/node/app/static

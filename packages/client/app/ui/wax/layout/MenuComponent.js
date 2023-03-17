@@ -83,6 +83,7 @@ const MenuComponent = forwardRef(({ open, fullScreen }, ref) => {
   const Images = app.container.get('Images')
   const SpecialCharacters = app.container.get('SpecialCharacters')
   const Tables = app.container.get('Tables')
+  const ExternalAPIContent = app.container.get('ExternalAPIContent')
   const FindAndReplaceTool = app.container.get('FindAndReplaceTool')
   const FullScreen = app.container.get('FullScreen')
 
@@ -103,6 +104,7 @@ const MenuComponent = forwardRef(({ open, fullScreen }, ref) => {
       <MenuToolGroup>{Images._tools.map(tool => tool.renderTool(activeView))}</MenuToolGroup>
       <MenuToolGroup>{SpecialCharacters._tools.map(tool => tool.renderTool(activeView))}</MenuToolGroup>
       <MenuToolGroup>{Tables._tools.map(tool => tool.renderTool(activeView))}</MenuToolGroup>
+      <MenuToolGroup>{ExternalAPIContent._tools.map(tool => tool.renderTool(activeView))}</MenuToolGroup>
       <MenuToolSearchAndReplace open={open}>{FindAndReplaceTool._tools.map(tool => tool.renderTool(activeView))}</MenuToolSearchAndReplace>
       <MenuToolGroup>{FullScreen._tools.map(tool => tool.renderTool(activeView))}</MenuToolGroup>
       {open && (

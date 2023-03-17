@@ -16,6 +16,8 @@ COPY . .
 
 ARG server_url
 ARG client_websocket_url
+ARG chatgpt_url
+ARG chatgpt_key
 
 ENV NODE_ENV='production'
 ENV CLIENT_PAGE_TITLE='Coko docs'
@@ -24,6 +26,8 @@ ENV CLIENT_LANGUAGE='en-US'
 
 ENV SERVER_URL=$server_url
 ENV CLIENT_WEBSOCKET_URL=$client_websocket_url
+ENV CHATGPT_URL=$chatgpt_url
+ENV CHATGPT_KEY=$chatgpt_key
 
 RUN yarn coko-client-build
 

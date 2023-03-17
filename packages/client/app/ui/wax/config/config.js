@@ -35,11 +35,52 @@ import {
   CustomTagService,
   BlockDropDownToolGroupService,
   YjsService,
+  ExternalAPIContentService,
 } from 'wax-prosemirror-services'
 
 import { EditoriaSchema } from 'wax-prosemirror-core'
 
 import CharactersList from './characterList'
+
+const CHATGPT_URL = process.env.CHATGPT_URL;
+const CHATGPT_KEY = process.env.CHATGPT_KEY;
+
+async function ExternalAPIContentTransformation(prompt) {
+  const response = await fetch(CHATGPT_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${CHATGPT_KEY}`,
+    },
+    body: JSON.stringify({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+      temperature: 0,
+      // max_tokens: 400,
+      // n: 1,
+      // stop: null,
+    }),
+  });
+
+  try {
+    const data = await response.json();
+    console.log(data);
+    return data.choices[0].message.content;
+  } catch (e) {
+    console.error(e);
+    alert(
+      'That model is currently overloaded with other requests. You can retry your request.',
+    );
+  } finally {
+  }
+  return prompt;
+}
+
 
 const config = docIdentifier => ({
   MenuService: [
@@ -87,6 +128,9 @@ const config = docIdentifier => ({
       toolGroups: ['InfoToolGroup'],
     },
   ],
+  ExternalAPIContentService: {
+    ExternalAPIContentTransformation: ExternalAPIContentTransformation,
+  },
   SchemaService: EditoriaSchema,
   TitleService: { updateTitle: () => {} },
   SpecialCharactersService: CharactersList,
@@ -97,6 +141,7 @@ const config = docIdentifier => ({
     docIdentifier,
   },
   services: [
+    new ExternalAPIContentService(),
     new YjsService(),
     new BaseToolGroupService(),
     new BaseService(),
