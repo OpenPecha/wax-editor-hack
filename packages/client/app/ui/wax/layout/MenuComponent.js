@@ -6,7 +6,6 @@ import { WaxContext } from 'wax-prosemirror-core'
 import styled from 'styled-components'
 import BlockDropDownComponent from './BlockDropDownComponent'
 
-
 const Menu = styled.div`
     font-family: ${th('fontInterface')};
     background: white;

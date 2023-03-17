@@ -42,15 +42,16 @@ import { EditoriaSchema } from 'wax-prosemirror-core'
 
 import CharactersList from './characterList'
 
-const CHATGPT_URL = process.env.CHATGPT_URL;
-const CHATGPT_KEY = process.env.CHATGPT_KEY;
+const {CLIENT_CHATGPT_URL, CLIENT_CHATGPT_KEY, CLIENT_WEBSOCKET_URL } = process.env;
 
 async function ExternalAPIContentTransformation(prompt) {
-  const response = await fetch(CHATGPT_URL, {
+
+
+  const response = await fetch(CLIENT_CHATGPT_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${CHATGPT_KEY}`,
+      Authorization: `Bearer ${CLIENT_CHATGPT_KEY}`,
     },
     body: JSON.stringify({
       model: 'gpt-3.5-turbo',
@@ -69,18 +70,17 @@ async function ExternalAPIContentTransformation(prompt) {
 
   try {
     const data = await response.json();
-    console.log(data);
     return data.choices[0].message.content;
   } catch (e) {
     console.error(e);
+    // eslint-disable-next-line no-alert
     alert(
       'That model is currently overloaded with other requests. You can retry your request.',
     );
-  } finally {
-  }
+  } finally { /* empty */ }
+
   return prompt;
 }
-
 
 const config = docIdentifier => ({
   MenuService: [
@@ -115,6 +115,7 @@ const config = docIdentifier => ({
         'Images',
         'SpecialCharacters',
         'Tables',
+        'ExternalAPIContent',
         'FindAndReplaceTool',
         'FullScreen',
       ],
@@ -129,7 +130,7 @@ const config = docIdentifier => ({
     },
   ],
   ExternalAPIContentService: {
-    ExternalAPIContentTransformation: ExternalAPIContentTransformation,
+    ExternalAPIContentTransformation,
   },
   SchemaService: EditoriaSchema,
   TitleService: { updateTitle: () => {} },
@@ -137,7 +138,7 @@ const config = docIdentifier => ({
   RulesService: [emDash, ellipsis],
   ShortCutsService: {},
   YjsService: {
-    connectionUrl: process.env.CLIENT_WEBSOCKET_URL,
+    connectionUrl: CLIENT_WEBSOCKET_URL,
     docIdentifier,
   },
   services: [
