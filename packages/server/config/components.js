@@ -18,5 +18,5 @@ module.exports = [
 
   // local api
   './api',
-  //   './rest',
+  './api/rest/chatgpt',
 ]

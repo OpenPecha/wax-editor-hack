@@ -42,35 +42,19 @@ import { EditoriaSchema } from 'wax-prosemirror-core'
 
 import CharactersList from './characterList'
 
-const { CLIENT_CHATGPT_URL, CLIENT_CHATGPT_KEY, CLIENT_WEBSOCKET_URL } = process.env;
+const { CLIENT_WEBSOCKET_URL, SERVER_URL  } = process.env;
 
 async function ExternalAPIContentTransformation(prompt) {
-
-
-  const response = await fetch(CLIENT_CHATGPT_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${CLIENT_CHATGPT_KEY}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      temperature: 0,
-      // max_tokens: 400,
-      // n: 1,
-      // stop: null,
-    }),
-  });
-
   try {
-    const data = await response.json();
-    return data.choices[0].message.content;
+    const response = await fetch(`${SERVER_URL}/api/askChatGpt`, {
+      method: 'POST',
+      body: new URLSearchParams({ prompt }),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      } 
+    });
+
+    return  await response.text()
   } catch (e) {
     console.error(e);
     // eslint-disable-next-line no-alert
