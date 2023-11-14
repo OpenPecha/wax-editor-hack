@@ -9,6 +9,7 @@ import cokoLogo from '../../../static/cokoLogo.png'
 
 const InfoCircleOutlinedStyled = styled(InfoCircleOutlined)`
   font-size: 30px;
+  padding-right: 10px;
 `
 
 const StyledModal = styled(Modal)`

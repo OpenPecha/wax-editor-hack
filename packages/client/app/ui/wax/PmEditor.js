@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Wax } from 'wax-prosemirror-core'
@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom'
 import usePrintArea from './usePrintArea'
 import config from './config/config'
 import layout from './layout'
+import YjsContext from '../../yjsProvider'
 
 const WaxStyled = styled(Wax)``
 
@@ -32,8 +33,12 @@ const renderImage = file => {
 
 const PmEditor = props => {
   const history = useHistory()
+  const { createYjsProvider, yjsProvider, ydoc } = useContext(YjsContext)
 
   const { refElement } = usePrintArea({})
+
+  useEffect(() => {createYjsProvider(docIdentifier)}, [])
+
   const { docIdentifier } = props
 
   let identifier = docIdentifier
@@ -46,17 +51,20 @@ const PmEditor = props => {
     history.push(`/${identifier}`, { replace: true })
     return true
   }
+  
+
+  if (!yjsProvider || !ydoc ) return null
 
   return (
-    <WaxStyled
-      config={config(identifier)}
-      fileUpload={file => renderImage(file)}
-      layout={layout}
-      placeholder='Type Something ...'
-      ref={refElement}
-      scrollThreshold={50}
-      user={user}
-    />
+      <WaxStyled
+        config={config(yjsProvider, ydoc)}
+        fileUpload={file => renderImage(file)}
+        layout={layout}
+        placeholder="Type Something ..."
+        ref={refElement}
+        scrollThreshold={50}
+        user= {user}
+      />
   )
 }
 

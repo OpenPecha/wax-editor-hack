@@ -51,6 +51,7 @@
     "react-custom-scrollbars-2": "^4.5.0",
     "react-dropdown": "^1.11.0",
     "react-router-dom": "^5.2.0",
+    "react-color": "^2.19.3",
     "styled-components": "^5.3.0",
     "uuid": "9.0.0",
     "wax-prosemirror-core": "^0.7.33",
