@@ -54,6 +54,10 @@ const MenuToolGroupDropDown = styled(MenuToolGroup)`
 
 const MenuToolSearchAndReplace = styled(MenuToolGroup)`
     flex-grow: ${props => props.open ? 'unset' : '1'};
+
+    div:first-child {
+        z-index: 1;
+    }
 `
 
 const MenuLines = styled.div`

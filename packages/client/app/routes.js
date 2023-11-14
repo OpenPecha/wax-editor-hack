@@ -7,6 +7,8 @@ import { PageLayout as Page } from '@coko/client'
 import GlobalStyles from './globalStyles'
 import { Header, VisuallyHiddenElement } from './ui/common'
 
+import { YjsProvider } from './yjsProvider'
+
 import { Dashboard } from './pages'
 
 const LayoutWrapper = styled.div`
@@ -73,16 +75,12 @@ const SiteHeader = () => {
   )
 }
 
-// const StyledMain = styled.main`
-//   height: 100%;
-// `
-
 const routes = (
   <Layout>
     <GlobalStyles />
-    <SiteHeader />
-    <StyledPage fadeInPages={false} padPages={false}>
-      {/* <StyledMain id="main-content" tabIndex="-1"> */}
+    <YjsProvider>
+      <SiteHeader />
+      <StyledPage fadeInPages={false} padPages={false}>
         <Switch>
           <Route
             exact
@@ -91,9 +89,10 @@ const routes = (
           />
           <Route component={() => <Redirect to="/" />} path="*" />
         </Switch>
-      {/* </StyledMain> */}
-    </StyledPage>
+      </StyledPage>
+    </YjsProvider>
   </Layout>
 )
+
 
 export default routes

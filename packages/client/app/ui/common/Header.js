@@ -9,7 +9,8 @@ import { PlusCircleOutlined } from '@ant-design/icons'
 
 import logoMobile from '../../../static/cokoDocs-logo-alt.png'
 import logo from '../../../static/cokoDocs-logo-alt.png'
-import AboutModal from '../modals/AboutModal'
+import AboutModal  from '../modals/AboutModal'
+import TeamPopup from './TeamPopup'
 
 // #region styles
 const StyledHeader = styled.header`
@@ -116,6 +117,7 @@ const Header = props => {
           <Link target="_blank" to="/"><PlusCircleOutlined /></Link>
         </CreateNew>
         <AboutModal />
+        <TeamPopup />
       </UserMenu>
 
     </StyledHeader>

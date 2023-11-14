@@ -1,4 +1,6 @@
-import { emDash, ellipsis } from 'prosemirror-inputrules'
+/* eslint-disable no-restricted-globals */
+
+import { emDash, ellipsis } from 'prosemirror-inputrules';
 
 import {
   InlineAnnotationsService,
@@ -34,7 +36,7 @@ import {
   CustomTagBlockToolGroupService,
   CustomTagService,
   BlockDropDownToolGroupService,
-  YjsService,
+  // YjsService,
   ExternalAPIContentService,
 } from 'wax-prosemirror-services'
 
@@ -42,7 +44,9 @@ import { EditoriaSchema } from 'wax-prosemirror-core'
 
 import CharactersList from './characterList'
 
-const { CLIENT_WEBSOCKET_URL, SERVER_URL  } = process.env;
+import YjsService from './yjsService';
+
+const { SERVER_URL  } = process.env;
 
 async function ExternalAPIContentTransformation(prompt) {
   try {
@@ -66,7 +70,7 @@ async function ExternalAPIContentTransformation(prompt) {
   return prompt;
 }
 
-const config = docIdentifier => ({
+const config = (yjsProvider, ydoc) => ({
   MenuService: [
     {
       templateArea: 'mainMenuToolBar',
@@ -122,9 +126,24 @@ const config = docIdentifier => ({
   RulesService: [emDash, ellipsis],
   ShortCutsService: {},
   YjsService: {
-    connectionUrl: CLIENT_WEBSOCKET_URL,
-    docIdentifier,
+    provider: () => {
+      return yjsProvider
+    },
+    ydoc: () => {
+      return ydoc
+    },
+    cursorBuilder: (user) => {
+      const cursor = document.createElement('span')
+      cursor.classList.add('ProseMirror-yjs-cursor')
+      cursor.setAttribute('style', `border-color: ${user.color}`)
+      const userDiv = document.createElement('div')
+      userDiv.setAttribute('style', `background-color: ${user.color}`)
+      userDiv.insertBefore(document.createTextNode(user.name), null)
+      cursor.insertBefore(userDiv, null)
+      return cursor
+    }
   },
+
   services: [
     new ExternalAPIContentService(),
     new YjsService(),
