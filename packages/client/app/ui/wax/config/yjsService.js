@@ -6,15 +6,18 @@ import * as Y from 'yjs'
 class YjsService extends Service {
     name = 'YjsService'
     boot () {
-        const { connectionUrl, docIdentifier, cursorBuilder } = this.config  
+        const { 
+            connectionUrl,
+            docIdentifier,
+            cursorBuilder,
+            provider: configProvider,
+            ydoc: configYdoc,
+        } = this.config  
         
-        let provider = null
-        let ydoc = null
+        let provider = configProvider ? configProvider() : null
+        let ydoc = configYdoc ? configYdoc() : null
 
-        if (this.config.provider) {
-            provider = this.config.provider()
-            ydoc = this.config.ydoc()
-        } else {
+        if (!configProvider || !configYdoc) {
             ydoc = new Y.Doc()
             provider = new WebsocketProvider(
                 connectionUrl,
