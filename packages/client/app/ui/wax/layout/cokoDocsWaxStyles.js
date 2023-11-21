@@ -1,5 +1,5 @@
 import { css } from 'styled-components'
-import { th } from '@coko/client'
+import { th, override } from '@coko/client'
 
 export default css`
   *:focus:not(.ProseMirror) {
@@ -17,6 +17,8 @@ export default css`
     font-family: '${th('fontContent')}';
     font-size: ${th('fontSizeBase')};
     font-weight: 400;
+
+    ${override('Wax.ProseMirror')}
 
   }
   .ProseMirror-selectednode {
@@ -48,15 +50,11 @@ export default css`
     counter-increment: item
   }
 
-
-
-
   /*custom styles for the text*/
 
 .ProseMirror > * {
     position: relative;
     line-height: 1.4;
-
 }
 
 .ProseMirror {

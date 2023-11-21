@@ -13,15 +13,12 @@ import {
   LinkService,
   ListsService,
   ListToolGroupService,
-  TablesService,
-  TableToolGroupService,
   DisplayBlockLevelService,
   DisplayToolGroupService,
   TextBlockLevelService,
   TextToolGroupService,
   DisplayTextToolGroupService,
   MathService,
-  FindAndReplaceToolGroupService,
   FindAndReplaceService,
   FullScreenService,
   FullScreenToolGroupService,
@@ -36,15 +33,17 @@ import {
   CustomTagBlockToolGroupService,
   CustomTagService,
   BlockDropDownToolGroupService,
-  // YjsService,
+  YjsService,
   ExternalAPIContentService,
 } from 'wax-prosemirror-services'
+
+import { TablesService, columnResizing } from 'wax-table-service'
 
 import { EditoriaSchema } from 'wax-prosemirror-core'
 
 import CharactersList from './characterList'
 
-import YjsService from './yjsService';
+// import YjsService from './yjsService';
 
 const { SERVER_URL  } = process.env;
 
@@ -125,6 +124,9 @@ const config = (yjsProvider, ydoc) => ({
   SpecialCharactersService: CharactersList,
   RulesService: [emDash, ellipsis],
   ShortCutsService: {},
+  CommentsService: {
+    showTitle: true,
+  },
   YjsService: {
     provider: () => {
       return yjsProvider
@@ -160,13 +162,11 @@ const config = (yjsProvider, ydoc) => ({
     new InlineAnnotationsService(),
     new ImageService(),
     new TablesService(),
-    new TableToolGroupService(),
     new ImageToolGroupService(),
     new AnnotationToolGroupService(),
     new ListToolGroupService(),
     new DisplayTextToolGroupService(),
     new MathService(),
-    new FindAndReplaceToolGroupService(),
     new FindAndReplaceService(),
     new FullScreenService(),
     new FullScreenToolGroupService(),
@@ -181,6 +181,11 @@ const config = (yjsProvider, ydoc) => ({
     new CustomTagBlockToolGroupService(),
     new CustomTagService(),
   ],
+
+  PmPlugins: [
+    columnResizing(),
+  ],
+
 })
 
 export default config

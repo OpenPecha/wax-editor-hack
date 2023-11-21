@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { WaxContext, ComponentPlugin } from 'wax-prosemirror-core'
-import { grid, th } from '@coko/client'
+import { grid, th, override } from '@coko/client'
 import { EllipsisOutlined } from '@ant-design/icons'
 import { Scrollbars } from 'react-custom-scrollbars-2';
 
 import theme from '../../../theme'
 import commonStyles from './cokoDocsWaxStyles'
 
+import 'wax-table-service/dist/index.css'
 import 'wax-prosemirror-core/dist/index.css'
 import 'wax-prosemirror-services/dist/index.css'
 import MenuComponent from './MenuComponent'
@@ -126,6 +127,8 @@ const WaxSurfaceScroll = styled.div`
   width: 1350px;
   position: relative;
   margin: auto;
+
+  ${override('Wax.WaxSurfaceScroll')}
 `;
 
 
