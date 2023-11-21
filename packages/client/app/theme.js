@@ -1,8 +1,11 @@
 /* eslint-disable import/no-import-module-exports */
 import { css } from 'styled-components'
 import { th } from '@coko/client'
+import osiTheme from './osiTheme'
 
-export default {
+const { CLIENT_LOAD_EXTRA_THEME } = process.env;
+
+const theme = {
   colorContent: '#111',
   colorBackground: '#eee',
   colorContentBackground: '#f6f6f6',
@@ -98,7 +101,6 @@ export default {
       `,
       CommentOuterBox: css`
         color: ${th('colorContent')};
-        margin-left: -100px;
         margin-left: ${props => (props.active ? `-150px` : `30px`)};
         width: ${props => (props.active ? `400px` : `200px`)};
         padding: 0;
@@ -218,3 +220,8 @@ export default {
     },
   },
 }
+
+
+export default (CLIENT_LOAD_EXTRA_THEME === 'osiTheme.css') ? osiTheme(theme) : theme
+
+
