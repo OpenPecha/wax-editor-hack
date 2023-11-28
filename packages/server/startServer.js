@@ -54,7 +54,7 @@ const init = async () => {
     WSServer.on('connection', async (injectedWS, request) => {
       injectedWS.binaryType = 'arraybuffer'
       const [identifier, params] = request.url.slice('1').split('?')
-      const token = params.split('=')[1]
+      const token = params?.split('=')[1] || ''
 
       let userId = null
 
