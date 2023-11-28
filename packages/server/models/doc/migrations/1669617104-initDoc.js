@@ -7,7 +7,7 @@ exports.up = async knex => {
       table.uuid('id').primary()
       table.string('type')
       table.string('identifier').notNullable()
-      table.json('docs_prosemirror_delta').notNullable()
+      table.json('docs_prosemirror_delta').defaultTo(null)
       table.binary('docs_y_doc_state').notNullable()
       table
         .timestamp('created', { useTz: true })

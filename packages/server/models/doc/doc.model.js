@@ -5,7 +5,7 @@ const config = require('config')
 const AUTHOR_TEAM = config.teams.nonGlobal.author
 const VIEWER_TEAM = config.teams.nonGlobal.viewer
 
-const { stringNotEmpty, arrayOfObjects } = modelTypes
+const { stringNotEmpty, arrayOfObjectsNullable } = modelTypes
 
 class Doc extends BaseModel {
 
@@ -23,7 +23,7 @@ class Doc extends BaseModel {
       type: 'object',
       properties: {
         identifier: stringNotEmpty,
-        docs_prosemirror_delta: arrayOfObjects, 
+        docs_prosemirror_delta: arrayOfObjectsNullable, 
         docs_y_doc_state: {
           type: "binary",
         },

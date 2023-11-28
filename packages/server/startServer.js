@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 const { startServer, verifyJWT } = require('@coko/server')
 const map = require('lib0/map')
+const Y = require('yjs')
 const { WebSocketServer } = require('ws')
 const { Doc } = require('@pubsweet/models')
 const config = require('config')
@@ -71,15 +72,17 @@ const init = async () => {
         throw new Error('Connection failed')
       }
 
+      const doc = getYDoc(identifier)
+
         const docObject = await Doc.query().findOne({ identifier })
 
         if (docObject) {
           await docObject.addMemberAsViewer(userId)
         } else {
-          await Doc.createDoc({state: {}, delta: '', identifier, userId })
+          const state = Y.encodeStateAsUpdate(doc)
+          const delta = doc.getText('prosemirror').toDelta()
+          await Doc.createDoc({state, delta, identifier, userId })
         }
-
-        const doc = getYDoc(identifier)
 
         doc.conns.set(injectedWS, new Set())
 
