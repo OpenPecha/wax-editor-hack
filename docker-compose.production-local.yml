@@ -11,3 +11,8 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-dev_user_password}
     volumes:
       - ./scripts/init-pgboss.sql:/docker-entrypoint-initdb.d/init-pgboss.sql
+
+networks:
+  default:
+    external:
+      name: cokodocs_develop_default

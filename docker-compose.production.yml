@@ -41,3 +41,8 @@ services:
       - MAILER_USER=${MAILER_USER}
       - MAILER_PASSWORD=${MAILER_PASSWORD}
       - PASSWORD_RESET_PATH=${PASSWORD_RESET_PATH:-password-reset}
+
+networks:
+  default:
+    external:
+      name: cokodocs_develop_default
