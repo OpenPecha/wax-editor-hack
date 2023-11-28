@@ -18,6 +18,7 @@ services:
       - CLIENT_WEBSOCKET_URL=${CLIENT_WEBSOCKET_URL:-ws://localhost:3001}
       - SERVER_URL=${SERVER_URL:-http://localhost:3000}
       - CLIENT_LOAD_EXTRA_THEME=${CLIENT_LOAD_EXTRA_THEME}
+      - CLIENT_SHOW_EMAIL_LOGIN_OPTION={CLIENT_SHOW_EMAIL_LOGIN_OPTION:true}
     volumes:
       - ./packages/client/app:/home/node/app/app
       - ./packages/client/static:/home/node/app/static
@@ -72,6 +73,12 @@ services:
       - CLIENT_URL=${CLIENT_URL:-http://0.0.0.0:4000}
       - CHATGPT_URL=${CHATGPT_URL}
       - CHATGPT_KEY=${CHATGPT_KEY}
+      - MAILER_SENDER=${MAILER_SENDER:-dev@example.com}
+      - MAILER_HOSTNAME=${MAILER_HOSTNAME}
+      - MAILER_PORT=${MAILER_PORT}
+      - MAILER_USER=${MAILER_USER}
+      - MAILER_PASSWORD=${MAILER_PASSWORD}
+      - PASSWORD_RESET_PATH=${PASSWORD_RESET_PATH:-password-reset}
     volumes:
       - ./packages/server/api:/home/node/cokodocs/api
       - ./packages/server/config:/home/node/cokodocs/config

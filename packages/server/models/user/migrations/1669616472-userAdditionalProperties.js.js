@@ -5,6 +5,7 @@ exports.up = knex => {
     return knex.schema.table('users', table => {
       table.string('displayName').nullable()
       table.string('email').nullable()
+      table.string('color').nullable()
     })
   } catch (e) {
     logger.error('UserAdditionalProperties: Migration failed!')

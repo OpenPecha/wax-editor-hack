@@ -9,10 +9,10 @@ module.exports = {
   'password-reset': {
     path: 'password-reset',
   },
-  // mailer: {
-  //   from: 'info@cokodocs.com',
-  //   path: path.join(__dirname, 'mailer'),
-  // },
+  mailer: {
+    from: 'info@cokodocs.net',
+    path: path.join(__dirname, 'mailer'),
+  },
   permissions,
   pubsweet: {
     components,
@@ -22,11 +22,11 @@ module.exports = {
   },
   'pubsweet-server': {
     db: {},
-    useGraphQLServer: false,
+    useGraphQLServer: true,
     useJobQueue: false,
     serveClient: false,
     useFileStorage: false,
-    graphiql: false,
+    graphiql: true,
     emailVerificationTokenExpiry: {
       amount: 24,
       unit: 'hours',
@@ -35,12 +35,29 @@ module.exports = {
       amount: 24,
       unit: 'hours',
     },
+    port: 3000,
+    protocol: 'http',
+    host: 'localhost',
     uploads: 'uploads',
     pool: { min: 0, max: 10, idleTimeoutMillis: 1000 },
   },
   teams: {
-    global: {},
-    nonGlobal: {},
+    global: {
+      admin: {
+        displayName: 'Admin',
+        role: 'admin',
+      },
+    },
+    nonGlobal: {
+      author: {
+        displayName: 'Author',
+        role: 'author',
+      },
+      viewer: {
+        displayName: 'Viewer',
+        role: 'viewer',
+      }
+    },
   },
 
   schema: {},

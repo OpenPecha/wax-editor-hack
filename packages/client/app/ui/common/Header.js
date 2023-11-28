@@ -4,7 +4,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { th } from '@coko/client'
+import { th, useCurrentUser } from '@coko/client'
 import { PlusCircleOutlined } from '@ant-design/icons'
 
 import logoMobile from '../../../static/cokoDocs-logo-alt.png'
@@ -59,7 +59,7 @@ const Branding = styled(Link)`
 
   h1 {
     height: 0;
-  font-family: ${th('fontBrand')};
+    font-family: ${th('fontBrand')};
     font-weight: 600;
     overflow: hidden;
     width: 0;
@@ -103,6 +103,9 @@ const Header = props => {
     ...rest
   } = props
 
+  const { currentUser } = useCurrentUser()
+
+
   return (
     <StyledHeader role="banner" {...rest}>
       <Branding to="#">
@@ -113,13 +116,18 @@ const Header = props => {
         <Beta>BETA</Beta>
       </Navigation>
       <UserMenu>
-        <CreateNew>
-          <Link target="_blank" to="/"><PlusCircleOutlined /></Link>
-        </CreateNew>
+      {currentUser ? (
+        <>
+          <CreateNew>
+            <Link target="_blank" to="/"><PlusCircleOutlined /></Link>
+          </CreateNew>
+          <AboutModal />
+          <TeamPopup onLogout={onLogout} />
+        </>    
+      ): (
         <AboutModal />
-        <TeamPopup />
+      )}
       </UserMenu>
-
     </StyledHeader>
   )
 }

@@ -34,7 +34,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
-    "@coko/client": "0.0.34",
+    "@apollo/client": "^3.6.8",
+    "@coko/client": "0.0.41",
     "@fontsource/inter": "^4.5.15",
     "@fontsource/montserrat": "^4.5.13",
     "@fontsource/recursive": "^4.5.13",
@@ -62,6 +63,7 @@
     "yjs": "^13.5.38"
   },
   "devDependencies": {
+    "@coko/lint": "^2.0.1",
     "@coko/storybook": "^1.6.0",
     "@storybook/manager-webpack5": "^6.4.9",
     "faker": "^5.5.3"

@@ -1,8 +1,44 @@
 import React, { useState, useContext } from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { TeamOutlined } from '@ant-design/icons'
 import { BlockPicker } from 'react-color'
+import { th } from '@coko/client'
 import YjsContext from '../../yjsProvider'
+import Button from './Button'
+
+const StyledButton = styled(Button)`
+  background: none;
+  border: none;
+  color: ${th('colorText')};
+  display: inline-block;
+  font-size: inherit;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-x: hidden;
+  padding: 10px 0;
+  transition: none;
+
+  &:hover,
+  &:focus {
+    span {
+      color: ${th('colorText')};
+
+      &::after {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  @media screen and (min-width: ${th('mediaQueries.large')}) {
+    line-height: 1.5;
+    padding: 0;
+
+    span::after {
+      background-color: ${th('colorText')};
+    }
+  }
+`
 
 const TeamOutlinedStyled = styled(TeamOutlined)`
   font-size: 30px;
@@ -65,12 +101,14 @@ const ColorBlock = styled.div`
   left: -50px;
 `
 
-const TeamPopup = () => {
+const TeamPopup = ({
+  onLogout
+}) => {
 
   const [open, toggle] = useState(false)
   const [openColorPicker, toggleColorPicker ] = useState(false)
 
-  const { sharedUsers, updateLocalUser, currentUser } = useContext(YjsContext)
+  const { sharedUsers, updateLocalUser, yjsCurrentUser } = useContext(YjsContext)
 
   return (
     <>
@@ -79,17 +117,25 @@ const TeamPopup = () => {
         {open && (
           <Popup>
             <MyUser>
+              <StyledButton
+                data-testid="logout-btn"
+                onClick={() => {
+                  onLogout()
+                }}
+              >
+                Logout
+              </StyledButton>
               <UsernameText 
                 onChange={(current) => {
-                  updateLocalUser({ name: current.target.value, color: currentUser.color })
+                  updateLocalUser({ displayName: current.target.value, color: yjsCurrentUser.color })
                 }}
-                type="text" value={currentUser.name}
+                type="text" value={yjsCurrentUser.displayName}
               />
-              <ColoredCircle color={currentUser.color} onClick={() => toggleColorPicker(!openColorPicker)} size="35px" /> 
+              <ColoredCircle color={yjsCurrentUser.color} onClick={() => toggleColorPicker(!openColorPicker)} size="35px" /> 
               {openColorPicker && (
                 <ColorBlock>
-                  <BlockPicker  color={currentUser.color} onChangeComplete={(color) => {
-                    updateLocalUser({ name: currentUser.name, color: color.hex })
+                  <BlockPicker  color={yjsCurrentUser.color} onChangeComplete={(color) => {
+                    updateLocalUser({ displayName: yjsCurrentUser.displayName, color: color.hex })
                   }} />
                 </ColorBlock>
               )}
@@ -97,8 +143,8 @@ const TeamPopup = () => {
             <OtherUsers>
               <ul>
                 {sharedUsers
-                  .filter(([id, {user}]) => user.id !== currentUser.id)
-                  .map(([id, {user}]) => <li key={user.id}><ColoredCircle color={user.color} size="35px" /> <span>{user.name}</span> </li>)}
+                  .filter(([id, {user}]) => user.id !== yjsCurrentUser.id)
+                  .map(([id, {user}]) => <li key={user.id}><ColoredCircle color={user.color} size="35px" /> <span>{user.displayName}</span> </li>)}
               </ul>
               </OtherUsers>
           </Popup>
@@ -108,8 +154,12 @@ const TeamPopup = () => {
   )
 }
 
-TeamPopup.propTypes = {}
+TeamPopup.propTypes = {
+  onLogout: PropTypes.func,
+}
 
-TeamPopup.defaultProps = {}
+TeamPopup.defaultProps = {
+  onLogout: () => {},
+}
 
 export default TeamPopup

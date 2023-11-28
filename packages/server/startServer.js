@@ -1,8 +1,10 @@
 /* eslint-disable no-param-reassign */
-const { startServer } = require('@coko/server')
+const { startServer, verifyJWT } = require('@coko/server')
 const map = require('lib0/map')
 const { WebSocketServer } = require('ws')
+const { Doc } = require('@pubsweet/models')
 const config = require('config')
+
 
 const { WSSharedDoc, utils } = require('./services')
 
@@ -48,75 +50,99 @@ const init = async () => {
       clientTracking: true,
     })
 
-    WSServer.on('connection', (injectedWS, request) => {
+    WSServer.on('connection', async (injectedWS, request) => {
       injectedWS.binaryType = 'arraybuffer'
-      const docName = request.url.slice('1').split('?')[0]
-      const gc = true
+      const [identifier, params] = request.url.slice('1').split('?')
+      const token = params.split('=')[1]
 
-      const doc = getYDoc(docName, gc)
+      let userId = null
 
-      doc.conns.set(injectedWS, new Set())
-
-      injectedWS.on('message', message =>
-        messageListener(injectedWS, doc, new Uint8Array(message)),
-      )
-
-      let pingReceived = true
-
-      const pingInterval = setInterval(() => {
-        if (!pingReceived) {
-          if (doc.conns.has(injectedWS)) {
-            utils.closeConn(doc, injectedWS)
-          }
-
-          clearInterval(pingInterval)
-        } else if (doc.conns.has(injectedWS)) {
-          pingReceived = false
-
-          try {
-            injectedWS.ping()
-          } catch (error) {
-            utils.closeConn(doc, injectedWS)
-            clearInterval(pingInterval)
-          }
-        }
-      }, pingTimeout)
-
-      injectedWS.on('close', () => {
-        utils.closeConn(doc, injectedWS)
-        clearInterval(pingInterval)
-      })
-
-      injectedWS.on('ping', () => {
-        pingReceived = true
-      })
-
-      {
-        const encoder = utils.encoding.createEncoder()
-        utils.encoding.writeVarUint(encoder, utils.messageSync)
-        utils.syncProtocol.writeSyncStep1(encoder, doc)
-        utils.send(doc, injectedWS, utils.encoding.toUint8Array(encoder))
-        const awarenessStates = doc.awareness.getStates()
-
-        if (awarenessStates.size > 0) {
-          const encoder1 = utils.encoding.createEncoder()
-          utils.encoding.writeVarUint(encoder1, utils.messageAwareness)
-          utils.encoding.writeVarUint8Array(
-            encoder1,
-            utils.awarenessProtocol.encodeAwarenessUpdate(
-              doc.awareness,
-              Array.from(awarenessStates.keys()),
-            ),
-          )
-          utils.send(doc, injectedWS, utils.encoding.toUint8Array(encoder1))
-        }
+      try {
+        userId = await new Promise((resolve, reject) => {
+          verifyJWT(token, (_, usr) => {
+            if (usr) {
+              resolve(usr)
+            } else {
+              reject()
+            }
+          })
+        })
+      } catch (e) {
+        throw new Error('Connection failed')
       }
+
+        const docObject = await Doc.query().findOne({ identifier })
+
+        if (docObject) {
+          await docObject.addMemberAsViewer(userId)
+        } else {
+          await Doc.createDoc({state: {}, delta: '', identifier, userId })
+        }
+
+        const doc = getYDoc(identifier)
+
+        doc.conns.set(injectedWS, new Set())
+
+        injectedWS.on('message', message =>
+          messageListener(injectedWS, doc, new Uint8Array(message)),
+        )
+
+        let pingReceived = true
+
+        const pingInterval = setInterval(() => {
+          if (!pingReceived) {
+            if (doc.conns.has(injectedWS)) {
+              utils.closeConn(doc, injectedWS)
+            }
+
+            clearInterval(pingInterval)
+          } else if (doc.conns.has(injectedWS)) {
+            pingReceived = false
+
+            try {
+              injectedWS.ping()
+            } catch (error) {
+              utils.closeConn(doc, injectedWS)
+              clearInterval(pingInterval)
+            }
+          }
+        }, pingTimeout)
+
+        injectedWS.on('close', () => {
+          utils.closeConn(doc, injectedWS)
+          clearInterval(pingInterval)
+        })
+
+        injectedWS.on('ping', () => {
+          pingReceived = true
+        })
+
+        {
+          const encoder = utils.encoding.createEncoder()
+          utils.encoding.writeVarUint(encoder, utils.messageSync)
+          utils.syncProtocol.writeSyncStep1(encoder, doc)
+          utils.send(doc, injectedWS, utils.encoding.toUint8Array(encoder))
+          const awarenessStates = doc.awareness.getStates()
+
+          if (awarenessStates.size > 0) {
+            const encoder1 = utils.encoding.createEncoder()
+            utils.encoding.writeVarUint(encoder1, utils.messageAwareness)
+            utils.encoding.writeVarUint8Array(
+              encoder1,
+              utils.awarenessProtocol.encodeAwarenessUpdate(
+                doc.awareness,
+                Array.from(awarenessStates.keys()),
+              ),
+            )
+            utils.send(doc, injectedWS, utils.encoding.toUint8Array(encoder1))
+          }
+        }
     })
 
-    const getYDoc = (docName, gc = true) =>
+    const getYDoc = (docName, userId) =>
       map.setIfUndefined(utils.docs, docName, () => {
-        const doc = new WSSharedDoc(docName)
-        doc.gc = gc
+        const doc = new WSSharedDoc(docName, userId)
+        doc.gc = true
 
         if (utils.persistence !== null) {
           utils.persistence.bindState(docName, doc)

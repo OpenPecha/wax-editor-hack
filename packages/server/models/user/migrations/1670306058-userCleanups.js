@@ -13,6 +13,7 @@ exports.up = async knex => {
       table.dropColumn('title_pre')
       table.dropColumn('title_post')
       table.dropColumn('type')
+      table.dropColumn('color')
       table.renameColumn('created', 'created_at')
       table.renameColumn('updated', 'updated_at')
     })

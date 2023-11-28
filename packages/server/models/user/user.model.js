@@ -11,6 +11,8 @@ class User extends UserModel {
       properties: {
         email: stringNullable,
         userName: stringNullable,
+        displayName: stringNullable,
+        color: stringNullable,
       },
     }
   }

@@ -140,7 +140,7 @@ const config = (yjsProvider, ydoc) => ({
       cursor.setAttribute('style', `border-color: ${user.color}`)
       const userDiv = document.createElement('div')
       userDiv.setAttribute('style', `background-color: ${user.color}`)
-      userDiv.insertBefore(document.createTextNode(user.name), null)
+      userDiv.insertBefore(document.createTextNode(user.displayName), null)
       cursor.insertBefore(userDiv, null)
       return cursor
     }
