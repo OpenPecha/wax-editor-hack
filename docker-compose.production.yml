@@ -30,6 +30,8 @@ services:
       context: ./packages/server
       dockerfile: ./Dockerfile-production
     entrypoint: ['sh', 'scripts/setupDevServer.sh']
+    depends_on:
+      - db
     command: ['node', 'startServer.js']
     ports:
       - ${SERVER_PORT}:3000
