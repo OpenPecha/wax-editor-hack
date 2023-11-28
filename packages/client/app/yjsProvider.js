@@ -64,7 +64,7 @@ const YjsProvider = ({ children }) => {
       }
 
       // eslint-disable-next-line no-restricted-globals
-      const provider = new WebsocketProvider(CLIENT_WEBSOCKET_URL, identifier, ydocInstance, {params: { token: localStorage.getItem('token') || null }})
+      const provider = new WebsocketProvider(CLIENT_WEBSOCKET_URL, identifier, ydocInstance, {params: { token: localStorage.getItem('token') || '' }})
 
       provider.awareness.on('change', () => {
         setSharedUsers([...provider.awareness.getStates()])
