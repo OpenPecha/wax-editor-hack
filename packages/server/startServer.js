@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-const { startServer, verifyJWT } = require('@coko/server')
+const { startServer, verifyJWT, logger } = require('@coko/server')
 const map = require('lib0/map')
 const Y = require('yjs')
 const { WebSocketServer } = require('ws')
@@ -51,6 +51,7 @@ const init = async () => {
       clientTracking: true,
     })
 
+    // eslint-disable-next-line consistent-return
     WSServer.on('connection', async (injectedWS, request) => {
       injectedWS.binaryType = 'arraybuffer'
       const [identifier, params] = request.url.slice('1').split('?')
@@ -69,7 +70,8 @@ const init = async () => {
           })
         })
       } catch (e) {
-        throw new Error('Connection failed')
+        logger.error('failed to Connect')
+        return false
       }
 
       const doc = getYDoc(identifier)
