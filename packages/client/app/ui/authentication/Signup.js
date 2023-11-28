@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import AuthenticationForm from './AuthenticationForm'
-import AuthenticationHeader from './AuthenticationHeader'
+import AuthenticationHeader from "./AuthenticationHeader"
 import AuthenticationWrapper from './AuthenticationWrapper'
 // import SuccessSubTitle from './SuccessSubTitle'
 import {
