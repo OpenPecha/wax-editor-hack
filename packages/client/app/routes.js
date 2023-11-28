@@ -1,15 +1,39 @@
 import React, { useEffect, useState } from 'react'
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
+import { useApolloClient } from '@apollo/client'
+import {
+  Route,
+  Switch,
+  Redirect,
+  useLocation,
+  useHistory,
+} from 'react-router-dom'
+
 import styled from 'styled-components'
 
-import { PageLayout as Page } from '@coko/client'
+import { 
+  Authenticate, 
+  PageLayout as Page,
+  RequireAuth,
+  useCurrentUser,
+} from '@coko/client'
 
 import GlobalStyles from './globalStyles'
-import { Header, VisuallyHiddenElement } from './ui/common'
+import { Header, VisuallyHiddenElement, Spin } from './ui/common'
 
 import { YjsProvider } from './yjsProvider'
 
-import { Dashboard } from './pages'
+import { 
+  Dashboard,
+  Login,
+  Signup,
+  VerifyEmail,
+  RequestPasswordReset,
+  ResetPassword,
+  VerifyCheck,
+ } from './pages'
+
+ import { CURRENT_USER } from './graphql'
+
 
 const LayoutWrapper = styled.div`
   display: flex;
@@ -17,11 +41,61 @@ const LayoutWrapper = styled.div`
   height: 100%;
 `
 
+const regexPaths = [
+  {
+    path: /^\/dashboard$/,
+    name: 'Dashboard page',
+  },
+  {
+    path: /^\/login+/,
+    name: 'Login page',
+  },
+  {
+    path: /^\/signup$/,
+    name: 'Signup page',
+  },
+  {
+    path: /^\/email-verification\/[A-Za-z0-9-]+$/,
+    name: 'Verify email',
+  },
+  {
+    path: /^\/request-password-reset$/,
+    name: 'Request Password Reset page',
+  },
+  {
+    path: /^\/password-reset\/[A-Za-z0-9-]+$/,
+    name: 'Reset Password page',
+  },
+  {
+    path: /^\/ensure-verified-login$/,
+    name: 'Email Not Verified page',
+  },
+]
+
 const Layout = props => {
   const { children } = props
+  const history = useHistory()
 
   useEffect(() => {
-    document.title = `CokoDocs`
+    const path = history.location.pathname
+    const title = regexPaths.find(p => p.path.test(path))
+
+    if (title) {
+      document.title = `${title?.name} - Coko Docs`
+    }
+
+    const unlisten = history.listen(val => {
+      const pathName = val.pathname
+      const pathTitle = regexPaths.find(p => p.path.test(pathName))
+
+      if (pathTitle) {
+        document.getElementById('page-announcement').innerHTML = pathTitle?.name
+
+        document.title = `${pathTitle?.name} - Coko Docs`
+      }
+    })
+
+    return unlisten
   }, [])
 
   return (
@@ -51,12 +125,25 @@ const StyledPage = styled(Page)`
   }
 `
 
+const StyledSpin = styled(Spin)`
+  display: grid;
+  height: 100vh;
+  place-content: center;
+`
+
+const Loader = () => <StyledSpin spinning />
+
+
 const SiteHeader = () => {
   const headerLinks = {
     homepage: '/',
+    login: '/login',
   }
 
   const history = useHistory()
+
+  const { currentUser, setCurrentUser } = useCurrentUser()
+  const client = useApolloClient()
   const [currentPath, setCurrentPath] = useState(history.location.pathname)
 
   useEffect(() => {
@@ -65,33 +152,87 @@ const SiteHeader = () => {
     return unlisten
   }, [])
 
+  const logout = () => {
+    setCurrentUser(null)
+    client.cache.reset()
+
+    localStorage.removeItem('token')
+    history.push('/login')
+  }
+
   return (
     <Header
       currentPath={currentPath}
-      displayName="Anonymous"
+      displayName={currentUser?.displayName}
       links={headerLinks}
-      loggedin
+      loggedin={!!currentUser}
+      onLogout={logout}
     />
   )
 }
 
+const RequireProfile = ({ children }) => {
+  const { pathname } = useLocation()
+  const { currentUser } = useCurrentUser()
+
+  if (!currentUser) return null
+
+  if (!currentUser.isActive && pathname !== '/deactivated-user') {
+    return <Redirect to="/deactivated-user" />
+  }
+
+  return children
+}
+
+const Authenticated = ({ children }) => {
+  return (
+    <RequireAuth notAuthenticatedRedirectTo="/login">
+      <RequireProfile>{children}</RequireProfile>
+    </RequireAuth>
+  )
+}
+
 const routes = (
+  <Authenticate currentUserQuery={CURRENT_USER} loadingComponent={<Loader />}>
   <Layout>
     <GlobalStyles />
     <YjsProvider>
       <SiteHeader />
       <StyledPage fadeInPages={false} padPages={false}>
         <Switch>
+          <Route component={Login} exact path="/login" />
+          <Route component={Signup} exact path="/signup" />
+          <Route
+            component={VerifyEmail}
+            exact
+            path="/email-verification/:token"
+          />
+          <Route
+            component={RequestPasswordReset}
+            exact
+            path="/request-password-reset"
+          />
+          <Route
+            component={ResetPassword}
+            exact
+            path="/password-reset/:token"
+          />
+          <Route
+            component={VerifyCheck}
+            exact
+            path="/ensure-verified-login"
+          />
           <Route
             exact
             path={['/', '/:docIdentifier']}
-            render={() => <Dashboard />}
+            render={() =>  <Authenticated><Dashboard /></Authenticated>}
           />
           <Route component={() => <Redirect to="/" />} path="*" />
         </Switch>
       </StyledPage>
     </YjsProvider>
   </Layout>
+  </Authenticate>
 )
 
 

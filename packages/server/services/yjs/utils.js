@@ -4,7 +4,7 @@ const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
 const encoding = require('lib0/encoding')
 const decoding = require('lib0/decoding')
 const Y = require('yjs')
-const { Doc} = require('@pubsweet/models')
+const { Doc } = require('@pubsweet/models')
 const { db } = require('@coko/server')
 
 let persistence = null
@@ -73,7 +73,7 @@ const closeConn = (doc, conn) => {
 
     if (doc.conns.size === 0 && persistence !== null) {
       // if persisted, we store state and destroy ydocument
-      persistence.writeState(doc.name, doc).then(() => {
+      persistence.writeState(doc).then(() => {
         doc.destroy()
       })
       docs.delete(doc.name)
@@ -92,7 +92,8 @@ const closeConn = (doc, conn) => {
         Y.applyUpdate(doc, docInstance.docsYDocState);
       }
     },
-    writeState: async (identifier, ydoc) => {
+    writeState: async (ydoc) => {
+      const identifier = ydoc.name
       const state = Y.encodeStateAsUpdate(ydoc)
       const delta = ydoc.getText('prosemirror').toDelta()
       const timestamp = db.fn.now()
@@ -100,18 +101,7 @@ const closeConn = (doc, conn) => {
       const docYjs = await Doc.query().findOne({ identifier })
 
       if (delta && delta.length > 0 ) {
-        if (!docYjs) {
-          try {
-            await Doc.query().insert({
-              docs_prosemirror_delta: delta,
-              docs_y_doc_state: state,
-              identifier,
-            })
-          } catch (e) {
-            console.log(`Insert Query`)
-            console.log(e)
-          }
-        } else {
+        if (docYjs) {
           try {
             await Doc.query().patch({
               docs_prosemirror_delta: delta,

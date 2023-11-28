@@ -143,16 +143,11 @@ const theme = {
         font-size: 0.9em;
       `,
       CommentName: css`
-        font-size: 1em;
+        font-size: 0.9em;
         display: inline;
         margin-right: 2ch;
-        /*to hide the name, remove next 4 lines when the user name is setup*/
-        color: transparent;
-        visibility: none;
-        width: 0;
-        margin-left: -4.5ch;
-        /*remove top of here*/
         &::after {
+          padding-left: 10px;
           color: ${th('colorPrimary')};
           content: 'comment';
           visibility: visible;

@@ -11,15 +11,6 @@ import YjsContext from '../../yjsProvider'
 
 const WaxStyled = styled(Wax)``
 
-const user = {
-  userId: 'b3cfc28e-0f2e-45b5-b505-e66783d4f946',
-  userColor: {
-    addition: 'royalblue',
-    deletion: 'indianred',
-  },
-  username: 'admin',
-}
-
 const renderImage = file => {
   const reader = new FileReader()
 
@@ -33,11 +24,20 @@ const renderImage = file => {
 
 const PmEditor = props => {
   const history = useHistory()
-  const { createYjsProvider, yjsProvider, ydoc } = useContext(YjsContext)
+  const { createYjsProvider, yjsProvider, ydoc, yjsCurrentUser } = useContext(YjsContext)
 
   const { refElement } = usePrintArea({})
 
   useEffect(() => {createYjsProvider(docIdentifier)}, [])
+
+  const user = {
+    userId: yjsCurrentUser.id,
+    userColor: {
+      addition: 'royalblue',
+      deletion: 'indianred',
+    },
+    username: yjsCurrentUser.displayName,
+  }
 
   const { docIdentifier } = props
 

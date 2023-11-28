@@ -17,6 +17,7 @@ COPY . .
 ARG server_url
 ARG client_websocket_url
 ARG client_load_extra_theme
+ARG client_show_email_login_option
 
 ENV NODE_ENV='production'
 ENV CLIENT_PAGE_TITLE='Coko docs'
@@ -26,6 +27,7 @@ ENV CLIENT_LANGUAGE='en-US'
 ENV SERVER_URL=$server_url
 ENV CLIENT_WEBSOCKET_URL=$client_websocket_url
 ENV CLIENT_LOAD_EXTRA_THEME=$client_load_extra_theme
+ENV CLIENT_SHOW_EMAIL_LOGIN_OPTION=$client_show_email_login_option
 
 RUN yarn coko-client-build
 

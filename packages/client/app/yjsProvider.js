@@ -2,7 +2,12 @@
 
 import React, { useState } from 'react'
 import { WebsocketProvider } from 'y-websocket'
+import { useMutation } from '@apollo/client'
 import * as Y from 'yjs'
+
+import { useCurrentUser } from '@coko/client'
+
+import { UPDATE_PROFILE } from './graphql'
 
 const YjsContext = React.createContext({})
 
@@ -22,13 +27,23 @@ const withYjs = Component => {
 
 const YjsProvider = ({ children }) => {
     const [yjsProvider, setYjsProvider] = useState(null)
+    const { currentUser, setCurrentUser } = useCurrentUser()
     const [ydoc, setYDoc] = useState(null)
     const [sharedUsers, setSharedUsers] = useState([])
 
-    let currentUser = null
+    const [updateProfileMutation] = useMutation(UPDATE_PROFILE, {
+      onCompleted({ updateUserProfile }) {
+        setCurrentUser({
+          ...currentUser,
+          ...updateUserProfile,
+        })
+      },
+    })
+
+    let localCurrentUser = null
 
     if (localStorage.getItem('YjsCurrentUser')) {
-      currentUser = JSON.parse(localStorage.getItem('YjsCurrentUser'))
+      localCurrentUser = JSON.parse(localStorage.getItem('YjsCurrentUser'))
     }
 
     const createYjsProvider = (docIdentifier) => {
@@ -49,43 +64,61 @@ const YjsProvider = ({ children }) => {
       }
 
       // eslint-disable-next-line no-restricted-globals
-      const provider = new WebsocketProvider(CLIENT_WEBSOCKET_URL, identifier, ydocInstance)
+      const provider = new WebsocketProvider(CLIENT_WEBSOCKET_URL, identifier, ydocInstance, {params: { token: localStorage.getItem('token') }})
 
       provider.awareness.on('change', () => {
         setSharedUsers([...provider.awareness.getStates()])
       })
 
-
       if (currentUser) {
-        provider.awareness.setLocalStateField('user', currentUser)
+        provider.awareness.setLocalStateField('user', { 
+          id: currentUser.id,
+          color: currentUser.color, 
+          displayName: currentUser.displayName || currentUser.email
+        })
+      } else if (localCurrentUser) {
+        provider.awareness.setLocalStateField('user', localCurrentUser)
       } else {
         const arrayColor = ['#D9E3F0', '#F47373', '#697689', '#37D67A', '#2CCCE4', '#555555', '#dce775', '#ff8a65', '#ba68c8']
 
         const color = arrayColor[(Math.floor(Math.random() * arrayColor.length))]
   
-        provider.awareness.setLocalStateField('user', { id: provider.awareness.clientID, color, name: 'Anonymous' })
+        provider.awareness.setLocalStateField('user', { id: provider.awareness.clientID, color, displayName: 'Anonymous' })
 
         localStorage.setItem('YjsCurrentUser', JSON.stringify(provider.awareness.getLocalState().user))
       }
 
-
-
       setYjsProvider(provider)
     }
 
-    const updateLocalUser = (user) => {
-      localStorage.setItem('YjsCurrentUser', JSON.stringify({ ...user, id: yjsProvider.awareness.clientID }))
-      yjsProvider.awareness.setLocalStateField('user', { ...user, id: yjsProvider.awareness.clientID })
+    const updateLocalUser = async (user) => {
+      if (!currentUser) {
+        localStorage.setItem('YjsCurrentUser', JSON.stringify({ ...user, id: yjsProvider.awareness.clientID }))
+        yjsProvider.awareness.setLocalStateField('user', { ...user, id: yjsProvider.awareness.clientID })
+      } else {
+        await updateProfileMutation({
+          variables: {
+            input: {
+              email: currentUser.defaultIdentity.email,
+              color: user.color,
+              displayName: user.displayName,
+            }
+          }
+        })
+
+        yjsProvider.awareness.setLocalStateField('user', { ...user, id: currentUser.id })
+      }
     }
 
+    const yjsCurrentUser = currentUser || localCurrentUser
+
     return (
-        <Provider value={{ yjsProvider, ydoc, sharedUsers, currentUser, createYjsProvider, updateLocalUser }}>
+        <Provider value={{ yjsProvider, ydoc, sharedUsers, yjsCurrentUser, createYjsProvider, updateLocalUser }}>
             {children}  
         </Provider>
 
     )
   }
-  
 
 export {
   Consumer as YjsConsumer,
