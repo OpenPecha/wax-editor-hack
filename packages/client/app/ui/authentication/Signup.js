@@ -1,10 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
 import AuthenticationForm from './AuthenticationForm'
 import AuthenticationHeader from "./AuthenticationHeader"
 import AuthenticationWrapper from './AuthenticationWrapper'
 // import SuccessSubTitle from './SuccessSubTitle'
+
 import {
   Button,
   Form,
@@ -16,6 +18,14 @@ import {
   Paragraph,
   Page,
 } from '../common'
+
+const StyledPage = styled(Page)`
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+height: unset;
+`
 
 const ModalContext = React.createContext(null)
 const ModalHeader = Modal.header
@@ -92,7 +102,7 @@ const Signup = props => {
   }
 
   return (
-    <Page maxWidth={600}>
+    <StyledPage maxWidth={600}>
       <AuthenticationWrapper className={className}>
         <AuthenticationHeader>Sign up</AuthenticationHeader>
 
@@ -243,7 +253,7 @@ const Signup = props => {
           </AuthenticationForm>
         )}
       </AuthenticationWrapper>
-    </Page>
+    </StyledPage>
   )
 }
 

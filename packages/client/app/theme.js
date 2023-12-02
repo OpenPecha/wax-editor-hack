@@ -10,7 +10,6 @@ const theme = {
   colorBackground: '#eee',
   colorContentBackground: '#f6f6f6',
   colorPrimary: '#525E76',
-  // colorPrimary: '#36b',
   colorSecondary: '#E7E7E7',
   colorLightGrey: '#f7f7f7',
   colorReserve: 'white',
@@ -19,7 +18,6 @@ const theme = {
   colorBorder: '#EBEBF0',
   colorBackgroundHue: '#FFFFFF',
   colorBackgroundTabs: 'gainsboro',
-  // colorSuccess: '#008800',
   // colorError: 'indianred',
   colorTextReverse: '#FFF',
   colorTextPlaceholder: '#595959',
@@ -29,7 +27,7 @@ const theme = {
   colorBackgroundButton: '#0042C7',
   colorBody: 'white', // white
   colorTertiary: '#8ac341',
-  colorSuccess: '#00763a',
+  colorSuccess: '#27AA85',
   colorError: '#d43131',
   colorWarning: '#a65b00',
   colorText: '#525E76',
@@ -37,7 +35,7 @@ const theme = {
   colorAccept: '#27AA85',
 
   // font for the interface (menu ,button, etc.)
-  fontInterface: 'InterVariable',
+  fontInterface: 'MontserratVariable',
   fontFallbackInterface: 'Inter',
   // font for the branding (coko, text outside the box, etc.)
   fontBrand: 'MontserratVariable',
@@ -50,8 +48,8 @@ const theme = {
   fontFallbackContent: 'Montserrat',
 
   // font sizes
-  fontSizeBase: '18px',
-  fontSizeBaseSmall: '16px',
+  fontSizeBase: '16px',
+  fontSizeBaseSmall: '14px',
   fontSizeHeading1: '96px',
   fontSizeHeading2: '81px',
   fontSizeHeading3: '54px',

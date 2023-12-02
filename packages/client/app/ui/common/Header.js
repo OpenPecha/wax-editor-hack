@@ -100,11 +100,11 @@ const Header = props => {
     currentPath,
     displayName,
     onLogout,
+    enableLogin,
     ...rest
   } = props
 
   const { currentUser } = useCurrentUser()
-
 
   return (
     <StyledHeader role="banner" {...rest}>
@@ -116,13 +116,13 @@ const Header = props => {
         <Beta>BETA</Beta>
       </Navigation>
       <UserMenu>
-      {currentUser ? (
+      {currentUser || enableLogin === false ? (
         <>
           <CreateNew>
             <Link target="_blank" to="/"><PlusCircleOutlined /></Link>
           </CreateNew>
           <AboutModal />
-          <TeamPopup onLogout={onLogout} />
+          <TeamPopup enableLogin={enableLogin} onLogout={onLogout} />
         </>    
       ): (
         <AboutModal />
@@ -139,6 +139,7 @@ Header.propTypes = {
   canManageUsers: PropTypes.bool,
   canManageTeams: PropTypes.bool,
   displayName: PropTypes.string,
+  enableLogin: PropTypes.bool,
   links: PropTypes.shape({
     homepage: PropTypes.string,
     questions: PropTypes.string,
@@ -160,6 +161,7 @@ Header.defaultProps = {
   canManageUsers: false,
   canManageTeams: false,
   displayName: 'User',
+  enableLogin: false,
   onLogout: () => {},
   links: {
     homepage: '#',

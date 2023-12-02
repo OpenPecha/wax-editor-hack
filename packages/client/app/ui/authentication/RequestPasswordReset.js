@@ -2,11 +2,21 @@ import React from 'react'
 import PropTypes from 'prop-types'
 // import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+
 import AuthenticationForm from './AuthenticationForm'
 import AuthenticationHeader from './AuthenticationHeader'
 import AuthenticationWrapper from './AuthenticationWrapper'
 import SuccessSubTitle from './SuccessSubTitle'
 import { Form, Input, Paragraph, Result, Page } from '../common'
+
+const StyledPage = styled(Page)`
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+height: unset;
+`
 
 const RequestPasswordResetForm = props => {
   // disable prop types that will be checked in the exported component anyway
@@ -46,7 +56,7 @@ const RequestPasswordReset = props => {
     props
 
   return (
-    <Page maxWidth={600}>
+    <StyledPage maxWidth={600}>
       <AuthenticationWrapper className={className}>
         <AuthenticationHeader>Request password reset</AuthenticationHeader>
 
@@ -74,7 +84,7 @@ const RequestPasswordReset = props => {
           />
         )}
       </AuthenticationWrapper>
-    </Page>
+    </StyledPage>
   )
 }
 

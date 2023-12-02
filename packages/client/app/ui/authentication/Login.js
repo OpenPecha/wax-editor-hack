@@ -7,12 +7,20 @@ import AuthenticationWrapper from './AuthenticationWrapper'
 import logoVertical from '../../../static/logoVertical.png'
 
 const CenteredLogo = styled.div`
-  height: 300px;
+  height: 200px;
   background-image: ${`url(${logoVertical})`};
   background-position: center center;
   background-repeat: no-repeat;
   background-size: 520px 142px;
   margin-bottom: 10px;
+`
+
+const StyledPage = styled(Page)`
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+height: unset;
 `
 
 const Login = props => {
@@ -25,7 +33,7 @@ const Login = props => {
   } = props
 
   return (
-    <Page maxWidth={600}>
+    <StyledPage maxWidth={600}>
       <AuthenticationWrapper className={className}>
         <CenteredLogo />
         <AuthenticationForm
@@ -73,7 +81,7 @@ const Login = props => {
               </Form.Item>
         </AuthenticationForm>
       </AuthenticationWrapper>
-    </Page>
+    </StyledPage>
   )
 }
 

@@ -24,20 +24,11 @@ const renderImage = file => {
 
 const PmEditor = props => {
   const history = useHistory()
-  const { createYjsProvider, yjsProvider, ydoc, yjsCurrentUser } = useContext(YjsContext)
+  const { createYjsProvider, yjsProvider, ydoc } = useContext(YjsContext)
 
   const { refElement } = usePrintArea({})
 
   useEffect(() => {createYjsProvider(docIdentifier)}, [])
-
-  const user = {
-    userId: yjsCurrentUser.id,
-    userColor: {
-      addition: 'royalblue',
-      deletion: 'indianred',
-    },
-    username: yjsCurrentUser.displayName,
-  }
 
   const { docIdentifier } = props
 
@@ -51,7 +42,6 @@ const PmEditor = props => {
     history.push(`/${identifier}`, { replace: true })
     return true
   }
-  
 
   if (!yjsProvider || !ydoc ) return null
 
@@ -63,7 +53,6 @@ const PmEditor = props => {
         placeholder="Type Something ..."
         ref={refElement}
         scrollThreshold={50}
-        user= {user}
       />
   )
 }

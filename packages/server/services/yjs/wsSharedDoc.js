@@ -9,8 +9,9 @@ class WSSharedDoc extends Y.Doc {
   /**
    * @param {string} name
    */
-  constructor(name) {
+  constructor(name, userId) {
     super({ gc: gcEnabled })
+    this.userId = userId
     this.name = name
     /**
      * Maps from conn to set of controlled user ids. Delete all user ids from awareness when this conn is closed

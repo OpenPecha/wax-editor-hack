@@ -71,11 +71,12 @@ const init = async () => {
         })
       } catch (e) {
         logger.error('failed to Connect')
-        return false
+        userId = null
       }
 
-      const doc = getYDoc(identifier)
+      const doc = getYDoc(identifier, userId)
 
+      if (userId) {
         const docObject = await Doc.query().findOne({ identifier })
 
         if (docObject) {
@@ -85,6 +86,7 @@ const init = async () => {
           const delta = doc.getText('prosemirror').toDelta()
           await Doc.createDoc({state, delta, identifier, userId })
         }
+      }
 
         doc.conns.set(injectedWS, new Set())
 

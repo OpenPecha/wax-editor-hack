@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { grid } from '@coko/client'
+import { grid, th } from '@coko/client'
 
 import { Link } from 'react-router-dom'
+
 
 import { Form, Button } from '../common'
 
@@ -12,6 +13,12 @@ const Wrapper = styled.div``
 
 const SubmitButton = styled(Button)`
   width: 100%;
+  background-color: ${th('colorAccept')};
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: ${th('colorAccept')}!important;
+  }
 `
 
 const Footer = styled.div`
@@ -19,6 +26,9 @@ const Footer = styled.div`
   justify-content: ${props =>
     props.showForgotPassword ? 'space-between' : 'flex-end'};
   margin-top: ${grid(4)};
+  div:first-child {
+    padding-right: 20px;
+  }
 `
 
 const ForgotPassword = styled.div`

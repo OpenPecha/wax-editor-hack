@@ -102,7 +102,8 @@ const ColorBlock = styled.div`
 `
 
 const TeamPopup = ({
-  onLogout
+  onLogout,
+  enableLogin,
 }) => {
 
   const [open, toggle] = useState(false)
@@ -117,14 +118,14 @@ const TeamPopup = ({
         {open && (
           <Popup>
             <MyUser>
-              <StyledButton
+              {enableLogin && <StyledButton
                 data-testid="logout-btn"
                 onClick={() => {
                   onLogout()
                 }}
               >
                 Logout
-              </StyledButton>
+              </StyledButton>}
               <UsernameText 
                 onChange={(current) => {
                   updateLocalUser({ displayName: current.target.value, color: yjsCurrentUser.color })
@@ -156,10 +157,12 @@ const TeamPopup = ({
 
 TeamPopup.propTypes = {
   onLogout: PropTypes.func,
+  enableLogin: PropTypes.bool,
 }
 
 TeamPopup.defaultProps = {
   onLogout: () => {},
+  enableLogin: false,
 }
 
 export default TeamPopup

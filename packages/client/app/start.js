@@ -8,4 +8,6 @@ const options = {
   // makeApolloConfig,
 }
 
-startClient(routes, theme, options)
+const { CLIENT_SHOW_EMAIL_LOGIN_OPTION } = process.env
+
+startClient(routes(CLIENT_SHOW_EMAIL_LOGIN_OPTION), theme, options)

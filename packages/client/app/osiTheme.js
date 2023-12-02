@@ -7,7 +7,7 @@ export default (theme) => {
   theme.cssOverrides.Wax = {
     ...theme.cssOverrides.Wax,
     ProseMirror: css`
-      padding: 3em 8ch 3em;
+      padding: 3em 2ch 2em;
     `,
     WaxSurfaceScroll: css`
       margin-left: 2%;
@@ -16,8 +16,27 @@ export default (theme) => {
       color: ${th('colorContent')};
       margin-left: -100px;
       padding: 0;
+      margin-right: 10px;
       margin-left: 20px;
       width: 600px;
+      > div {
+        margin-right: 20px;
+      }
+    `,
+    CommentName: css`
+        font-size: 11px;
+        display: inline;
+        margin-right: 2ch;
+        &::after {
+          padding-left: 10px;
+          color: ${th('colorPrimary')};
+          content: '';
+          visibility: visible;
+        }
+      `,
+    CommentItemTitle: css`
+        font-size: 0.9em!important;
+      }
     `,
     CommentItemWrapper: css`
       border: none;

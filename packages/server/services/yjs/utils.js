@@ -101,7 +101,18 @@ const closeConn = (doc, conn) => {
       const docYjs = await Doc.query().findOne({ identifier })
 
       if (delta && delta.length > 0 ) {
-        if (docYjs) {
+        if (!docYjs) {
+          try {
+            await Doc.query().insert({
+              docs_prosemirror_delta: delta,
+              docs_y_doc_state: state,
+              identifier,
+            })
+          } catch (e) {
+            console.log(`Insert Query`)
+            console.log(e)
+          }
+        } else {
           try {
             await Doc.query().patch({
               docs_prosemirror_delta: delta,
