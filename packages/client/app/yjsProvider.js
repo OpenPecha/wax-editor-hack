@@ -25,7 +25,7 @@ const withYjs = Component => {
   return C
 }
 
-const YjsProvider = ({ children }) => {
+const YjsProvider = ({ enableLogin, children }) => {
     const [yjsProvider, setYjsProvider] = useState(null)
     const { currentUser, setCurrentUser } = useCurrentUser()
     const [ydoc, setYDoc] = useState(null)

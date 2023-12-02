@@ -1,3 +1,4 @@
+/* eslint-disable react/function-component-definition */
 import React, { useEffect, useState } from 'react'
 import { useApolloClient } from '@apollo/client'
 import {
@@ -134,7 +135,8 @@ const StyledSpin = styled(Spin)`
 const Loader = () => <StyledSpin spinning />
 
 
-const SiteHeader = () => {
+// eslint-disable-next-line react/prop-types
+const SiteHeader = ({ enableLogin }) => {
   const headerLinks = {
     homepage: '/',
     login: '/login',
@@ -160,15 +162,16 @@ const SiteHeader = () => {
     history.push('/login')
   }
 
-  return (
+  return currentUser || enableLogin === false ? (
     <Header
       currentPath={currentPath}
       displayName={currentUser?.displayName}
+      enableLogin={!!enableLogin}
       links={headerLinks}
       loggedin={!!currentUser}
       onLogout={logout}
     />
-  )
+  ) : null
 }
 
 const RequireProfile = ({ children }) => {
@@ -192,12 +195,11 @@ const Authenticated = ({ children }) => {
   )
 }
 
-const routes = (
-  <Authenticate currentUserQuery={CURRENT_USER} loadingComponent={<Loader />}>
+const routes = (enableLogin) => (
   <Layout>
     <GlobalStyles />
-    <YjsProvider>
-      <SiteHeader />
+    <YjsProvider enableLogin={!!enableLogin}>
+      <SiteHeader enableLogin={!!enableLogin} />
       <StyledPage fadeInPages={false} padPages={false}>
         <Switch>
           <Route component={Login} exact path="/login" />
@@ -225,15 +227,16 @@ const routes = (
           <Route
             exact
             path={['/', '/:docIdentifier']}
-            render={() =>  <Authenticated><Dashboard /></Authenticated>}
+            render={() =>  enableLogin ? <Authenticated><Dashboard /></Authenticated> : <Dashboard/>}
           />
           <Route component={() => <Redirect to="/" />} path="*" />
         </Switch>
       </StyledPage>
     </YjsProvider>
   </Layout>
-  </Authenticate>
 )
 
 
-export default routes
+export default (enableLogin) => {
+  return enableLogin ? (<Authenticate currentUserQuery={CURRENT_USER} loadingComponent={<Loader />}>{routes(enableLogin)}</Authenticate>) : routes(enableLogin)
+}

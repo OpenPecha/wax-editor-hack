@@ -4,6 +4,7 @@ import { WaxContext, ComponentPlugin } from 'wax-prosemirror-core'
 import { grid, th, override } from '@coko/client'
 import { EllipsisOutlined } from '@ant-design/icons'
 import { Scrollbars } from 'react-custom-scrollbars-2';
+import YjsContext from '../../../yjsProvider'
 
 import theme from '../../../theme'
 import commonStyles from './cokoDocsWaxStyles'
@@ -80,6 +81,7 @@ const MenuWrapper = styled.div`
     font-size: 16px;
     border-bottom: 1px solid gainsboro;
     border-top: 1px solid gainsboro;
+    background-color: white;
     
     div:last-child {
         margin-left: auto;
@@ -142,6 +144,7 @@ const Layout = ({ editor }) => {
     pmViews: { main },
   } = useContext(WaxContext);
 
+  const { sharedUsers, yjsCurrentUser } = useContext(YjsContext)
 
   const ref = useRef(null);
   const [open, toggleMenu] = useState(false)
@@ -169,6 +172,13 @@ const Layout = ({ editor }) => {
 
   const { options } = useContext(WaxContext)
 
+  const users = sharedUsers.map(([id, {user}]) => ({
+      id: user.id,
+      username: user.displayName,
+      currentUser: user.id === yjsCurrentUser.id
+    }
+  ))
+
   const { fullScreen } = options
 
   let fullScreenStyles = {};
@@ -188,7 +198,6 @@ const Layout = ({ editor }) => {
 
   return (
     <ThemeProvider theme={theme}>
-
       <Wrapper id="wax-container" menuHeight={menuHeight} style={fullScreenStyles}>
         <MenuWrapper>
           {main && <MenuComponent fullScreen={fullScreen} open={open} ref={ref} />}
@@ -201,7 +210,7 @@ const Layout = ({ editor }) => {
                 <EditorContainer>{editor}</EditorContainer>
               </div>
               <CommentsContainer>
-                <RightArea area="main" />
+                <RightArea area="main" users={users} />
               </CommentsContainer>
             </WaxSurfaceScroll>
           </Scrollbars>

@@ -18,7 +18,7 @@ services:
       - CLIENT_WEBSOCKET_URL=${CLIENT_WEBSOCKET_URL:-ws://localhost:3001}
       - SERVER_URL=${SERVER_URL:-http://localhost:3000}
       - CLIENT_LOAD_EXTRA_THEME=${CLIENT_LOAD_EXTRA_THEME}
-      - CLIENT_SHOW_EMAIL_LOGIN_OPTION={CLIENT_SHOW_EMAIL_LOGIN_OPTION:true}
+      - CLIENT_SHOW_EMAIL_LOGIN_OPTION=${CLIENT_SHOW_EMAIL_LOGIN_OPTION:-true}
     volumes:
       - ./packages/client/app:/home/node/app/app
       - ./packages/client/static:/home/node/app/static

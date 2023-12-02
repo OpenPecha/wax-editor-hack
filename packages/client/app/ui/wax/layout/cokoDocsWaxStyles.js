@@ -111,8 +111,8 @@ line-height: 1.3;
 
 .ProseMirror p { 
 font-size: 1.05em;
-max-width: 80ch;
-line-height: 1.5 }
+line-height: 1.5 
+}
 
 
 .ProseMirror :is(h1,h2,h3,h4,h5,h6):before {
