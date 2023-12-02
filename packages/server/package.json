@@ -26,7 +26,7 @@
     "uuid": "^9.0.0",
     "ws": "^8.12.1",
     "y-protocols": "^1.0.5",
-    "yjs": "^13.5.42"
+    "yjs": "13.5.38"
   },
   "devDependencies": {
     "@coko/lint": "^2.0.0",
