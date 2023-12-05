@@ -14,7 +14,9 @@ const LoginPage = () => {
   const [emailLoginMutation, { data, loading, error }] =
     useMutation(EMAIL_LOGIN)
 
-  const redirectUrl = new URLSearchParams(search).get('next') || '/dashboard'
+  const redirectUrl = new URLSearchParams(search).get('next') || '/'
+
+  localStorage.setItem('nextDocument', redirectUrl)
 
   const login = formData => {
     const mutationData = {

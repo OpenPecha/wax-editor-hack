@@ -6,6 +6,8 @@ import PmEditor from '../wax/PmEditor'
 const Dashboard = props => {
   const { docIdentifier } = useParams()
 
+  localStorage.removeItem("nextDocument")
+
   return <PmEditor docIdentifier={docIdentifier} />
 }
 

@@ -8,7 +8,9 @@ import { RESEND_VERIFICATION_EMAIL, VERIFY_EMAIL } from '../graphql'
 const VerifyEmailPage = props => {
   const { token } = useParams()
   const history = useHistory()
-  const redirectToLogin = () => history.push('/login')
+  
+  const sharedDocument = localStorage.getItem('nextDocument') || '/'
+  const redirectToLogin = () => history.push(`/login?next=${sharedDocument}`)
   const loaderDelay = 2000
 
   // add a small delay on purpose to keep ui transitions smooth
