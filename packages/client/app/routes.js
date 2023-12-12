@@ -198,8 +198,8 @@ const Authenticated = ({ children }) => {
 const routes = (enableLogin) => (
   <Layout>
     <GlobalStyles />
-    <YjsProvider enableLogin={!!enableLogin}>
-      <SiteHeader enableLogin={!!enableLogin} />
+    <YjsProvider enableLogin={enableLogin}>
+      <SiteHeader enableLogin={enableLogin} />
       <StyledPage fadeInPages={false} padPages={false}>
         <Switch>
           <Route component={Login} exact path="/login" />

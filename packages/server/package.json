@@ -26,10 +26,10 @@
     "uuid": "^9.0.0",
     "ws": "^8.12.1",
     "y-protocols": "^1.0.5",
-    "yjs": "13.5.38"
+    "yjs": "^13.5.42"
   },
   "devDependencies": {
-    "@coko/lint": "^2.0.0",
+    "@coko/lint": "^2.0.1",
     "jest": "^27.5.1",
     "node-wait-for-it": "^0.2.0",
     "nodemon": "^2.0.13"

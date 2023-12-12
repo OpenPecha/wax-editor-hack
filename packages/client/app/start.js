@@ -10,4 +10,4 @@ const options = {
 
 const { CLIENT_SHOW_EMAIL_LOGIN_OPTION } = process.env
 
-startClient(routes(CLIENT_SHOW_EMAIL_LOGIN_OPTION), theme, options)
+startClient(routes(CLIENT_SHOW_EMAIL_LOGIN_OPTION === 'true'), theme, options)

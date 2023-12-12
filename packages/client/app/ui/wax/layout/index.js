@@ -173,8 +173,8 @@ const Layout = ({ editor }) => {
   const { options } = useContext(WaxContext)
 
   const users = sharedUsers.map(([id, {user}]) => ({
-      id: user.id,
-      username: user.displayName,
+      userId: user.id,
+      displayName: user.displayName,
       currentUser: user.id === yjsCurrentUser.id
     }
   ))
