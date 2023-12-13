@@ -1,4 +1,5 @@
 const { logger, useTransaction } = require('@coko/server')
+const { Team, TeamMember, Doc } = require('@pubsweet/models')
 const { User } = require('../models')
 
 const updateUserProfile = async (userId, profileData) => {
@@ -40,8 +41,19 @@ const filterUsers = async (params, options = {}) => {
   }
 }
 
+const getDocuments = async user => {
+  const teams = await TeamMember.query().where({ userId: user.id })
+
+  const objects = await Team.query().whereIn('id', teams.map(team => team.teamId)).andWhere(builder => {
+    builder.where({ objectType: 'doc', role: 'author' })
+  })
+
+  return Doc.query().whereIn('id', objects.map(obj => obj.objectId))
+}
+
 module.exports = {
   updateUserProfile,
   filterUsers,
   getDisplayName,
+  getDocuments,
 }

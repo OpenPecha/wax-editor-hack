@@ -19,11 +19,9 @@ export const USER_FIELDS = gql`
       isVerified
     }
 
-    teams {
+    documents {
       id
-      role
-      global
-      objectId
+      identifier
     }
   }
 `

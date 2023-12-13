@@ -1,5 +1,11 @@
+type Doc {
+  id: ID!
+  identifier: String!
+}
+
 extend type User {
   color: String
+  documents: [Doc]
 }
 
 input UserProfileInput {

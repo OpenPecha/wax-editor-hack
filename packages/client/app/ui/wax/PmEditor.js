@@ -24,7 +24,7 @@ const renderImage = file => {
 
 const PmEditor = props => {
   const history = useHistory()
-  const { createYjsProvider, yjsProvider, ydoc } = useContext(YjsContext)
+  const { createYjsProvider, yjsProvider, ydoc, yjsCurrentUser } = useContext(YjsContext)
 
   const { refElement } = usePrintArea({})
 
@@ -45,12 +45,20 @@ const PmEditor = props => {
 
   if (!yjsProvider || !ydoc ) return null
 
+  let readonly = false
+
+  if (yjsCurrentUser.documents) {
+    readonly = !yjsCurrentUser.documents.find(doc => doc.identifier === identifier)
+  }
+
+
   return (
       <WaxStyled
         config={config(yjsProvider, ydoc)}
         fileUpload={file => renderImage(file)}
         layout={layout}
         placeholder="Type Something ..."
+        readonly= {readonly}
         ref={refElement}
         scrollThreshold={50}
       />
