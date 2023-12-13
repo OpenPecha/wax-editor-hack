@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useLazyQuery , gql } from '@apollo/client'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Wax } from 'wax-prosemirror-core'
@@ -11,6 +12,18 @@ import YjsContext from '../../yjsProvider'
 
 const WaxStyled = styled(Wax)``
 
+const GET_DOCUMENT = gql`
+  query GetDocument($identifier: ID!) {
+    getDocument(identifier: $identifier) {
+      id
+      identifier
+      owner {
+        id
+      }
+    }
+  }
+`
+
 const renderImage = file => {
   const reader = new FileReader()
 
@@ -22,15 +35,27 @@ const renderImage = file => {
   })
 }
 
-const PmEditor = props => {
+const PmEditor = ({ docIdentifier }) => {
   const history = useHistory()
   const { createYjsProvider, yjsProvider, ydoc, yjsCurrentUser } = useContext(YjsContext)
-
+  const [readonly, setReadOnly] = useState(false)
+ 
   const { refElement } = usePrintArea({})
 
-  useEffect(() => {createYjsProvider(docIdentifier)}, [])
+  const [ getDocument ] = useLazyQuery(GET_DOCUMENT, {
+    variables: {
+      identifier: docIdentifier ,
+    },
+    onCompleted: ({ getDocument: doc }) => {
+      setReadOnly(doc.owner ? !(doc.owner.id === yjsCurrentUser.id) : false)
+    },
+    fetchPolicy: 'no-cache',
+  })
 
-  const { docIdentifier } = props
+  useEffect(() => {
+    createYjsProvider(docIdentifier)
+    getDocument({variables: { identifier }})
+  }, [])
 
   let identifier = docIdentifier
 
@@ -45,20 +70,13 @@ const PmEditor = props => {
 
   if (!yjsProvider || !ydoc ) return null
 
-  let readonly = false
-
-  if (yjsCurrentUser.documents) {
-    readonly = !yjsCurrentUser.documents.find(doc => doc.identifier === identifier)
-  }
-
-
   return (
       <WaxStyled
         config={config(yjsProvider, ydoc)}
         fileUpload={file => renderImage(file)}
         layout={layout}
         placeholder="Type Something ..."
-        readonly= {readonly}
+        readonly={readonly}
         ref={refElement}
         scrollThreshold={50}
       />
