@@ -1,3 +1,34 @@
+# To setup and start hacking:
+
+- run `docker compose up`
+
+- Wait a bit, go to http://localhost:4000/signup
+
+- Signup with some random data, everything is local and no signup data is sent anywhere
+    > Password has to be at least 8 characters
+
+- Go to http://localhost:8080/?pgsql=db&username=dev_user&db=cokodocs_dev&ns=public&select=identities
+
+    - Select System as `PostgreSQL`
+    - Server is `db`
+    - Username is `dev_user`
+    - **Password is `dev_user_password`**
+    - Database is `cokodocs_dev`
+
+- On the left sidemenu click "select" next to "identities"
+- Click "edit" on first row
+- Check "is_verified", so it becomes `true`
+- Click on Save
+- Go to http://localhost:4000/login
+- Login with credentials used at signup
+- Happy hacking!
+
+## Setup guide video
+<video src='./setup_guide.mp4' width=720/>
+
+
+# Original Readme below
+
 # CokoDocs!
 
 CokoDocs is a modern web-based word processor. CokoDocs is built on CokoServer and Wax (https://waxjs.net). We received support from NLnet for YJS concurrent editing integration. 
