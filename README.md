@@ -24,7 +24,8 @@
 - Happy hacking!
 
 ## Setup guide video
-<video src='./setup_guide.mp4' width=720/>
+https://github.com/OpenPecha/wax-editor-hack/raw/main/setup_guide.mp4
+<video src='https://github.com/OpenPecha/wax-editor-hack/raw/main/setup_guide.mp4' width=720/>
 
 
 # Original Readme below
