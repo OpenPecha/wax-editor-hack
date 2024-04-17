@@ -1,153 +1,69 @@
-# README
+# To setup and start hacking:
 
-> **Note:** This readme template is based on one from the [Good Docs Project](https://thegooddocsproject.dev). You can find it and a guide to filling it out [here](https://gitlab.com/tgdp/templates/-/tree/main/readme). (_Erase this note after filling out the readme._)
+- run `docker compose up`
 
-<h1 align="center">
-  <br>
-  <a href="https://openpecha.org"><img src="https://avatars.githubusercontent.com/u/82142807?s=400&u=19e108a15566f3a1449bafb03b8dd706a72aebcd&v=4" alt="OpenPecha" width="150"></a>
-  <br>
-</h1>
+- Wait a bit, go to http://localhost:4000/signup
 
-## _Project Name_
-_The project name should match its code's capability so that new users can easily understand what it does._
+- Signup with some random data, everything is local and no signup data is sent anywhere
+    > Password has to be at least 8 characters
 
-## Owner(s)
+- Go to http://localhost:8080/?pgsql=db&username=dev_user&db=cokodocs_dev&ns=public&select=identities
 
-_Change to the owner(s) of the new repo. (This template's owners are:)_
-- [@ngawangtrinley](https://github.com/ngawangtrinley)
-- [@mikkokotila](https://github.com/mikkokotila)
-- [@evanyerburgh](https://github.com/evanyerburgh)
+    - Select System as `PostgreSQL`
+    - Server is `db`
+    - Username is `dev_user`
+    - **Password is `dev_user_password`**
+    - Database is `cokodocs_dev`
 
-## RFXs
-Requests for work (RFWs) and requests for comments (RFCs) associated with this project:
-* [RFX name](#)
-* [RFX name](#)
-* [RFX name](#)
+- On the left sidemenu click "select" next to "identities"
+- Click "edit" on first row
+- Check "is_verified", so it becomes `true`
+- Click on Save
+- Go to http://localhost:4000/login
+- Login with credentials used at signup
+- Happy hacking!
 
-## Table of contents
-<p align="center">
-  <a href="#project-description">Project description</a> •
-  <a href="#who-this-project-is-for">Who this project is for</a> •
-  <a href="#project-dependencies">Project dependencies</a> •
-  <a href="#instructions-for-use">Instructions for use</a> •
-  <a href="#contributing-guidelines">Contributing guidelines</a> •
-  <a href="#additional-documentation">Additional documentation</a> •
-  <a href="#how-to-get-help">How to get help</a> •
-  <a href="#terms-of-use">Terms of use</a>
-</p>
-<hr>
-
-## Project description
-_Use one of these:_
-
-With _Project Name_ you can _verb_ _noun_...
-
-_Project Name_ helps you _verb_ _noun_...
+## Setup guide video
+<video src='./setup_guide.mp4' width=720/>
 
 
-## Who this project is for
-This project is intended for _target user_ who wants to _user objective_.
+# Original Readme below
+
+# CokoDocs!
+
+CokoDocs is a modern web-based word processor. CokoDocs is built on CokoServer and Wax (https://waxjs.net). We received support from NLnet for YJS concurrent editing integration. 
+
+CokoDocs is 100% open source and comes out of Coko (https://coko.foundation).
+
+We are planning to take this a lot further and currently looking for various pathways to develop the app. If you would like to know more contact Adam Hyde - adam@coko.foundation
+
+https://cokodocs.net
+
+Secret squirrels pre-production deployment demo here (sssh!): http://demo.cokodocs.net
+
+## Development
+
+Make sure docker is running and
+```
+docker compose up
+```
+
+You can simply use the default environment variables (found in the `docker-compose.yml` file), or override them with a `.env` file in the root of your project.
+
+## Production
+
+Assuming that you have a database running, add all required environment variables to a `.env` file. You can see the list of required variables in the `docker-compose.production.yml` file.
 
 
-## Project dependencies
-Before using _Project Name_, ensure you have:
-* _Prerequisite 1_
-* _Prerequisite 2_
-* _Prerequisite 3..._
+Then
+```
+docker compose -f docker-compose.production.yml up
+```
 
+## Testing production locally
 
-## Instructions for use
-Get started with _Project Name_ by _(write the first step a user needs to start using the project. Use a verb to start.)_.
+Same as the production section, but we'll fake having a running database with a docker container.
 
-
-### Install _Project Name_
-1. _Write the step here._ 
-
-    _Explanatory text here_ 
-    
-    _(Optional: Include a code sample or screenshot that helps your users complete this step.)_
-
-2. _Write the step here._
- 
-    a. _Substep 1_ 
-    
-    b. _Substep 2_
-
-
-### Configure _Project Name_
-1. _Write the step here._
-2. _Write the step here._
-
-
-### Run _Project Name_
-1. _Write the step here._
-2. _Write the step here._
-
-
-### Troubleshoot _Project Name_
-1. _Write the step here._
-2. _Write the step here._
-
-<table>
-  <tr>
-   <td>
-    Issue
-   </td>
-   <td>
-    Solution
-   </td>
-  </tr>
-  <tr>
-   <td>
-    _Describe the issue here_
-   </td>
-   <td>
-    _Write solution here_
-   </td>
-  </tr>
-  <tr>
-   <td>
-    _Describe the issue here_
-   </td>
-   <td>
-    _Write solution here_
-   </td>
-  </tr>
-  <tr>
-   <td>
-    _Describe the issue here_
-   </td>
-   <td>
-    _Write solution here_
-   </td>
-  </tr>
-</table>
-
-
-Other troubleshooting supports:
-* _Link to FAQs_
-* _Link to runbooks_
-* _Link to other relevant support information_
-
-
-## Contributing guidelines
-If you'd like to help out, check out our [contributing guidelines](/CONTRIBUTING.md).
-
-
-## Additional documentation
-_Include links and brief descriptions to additional documentation._
-
-For more information:
-* [Reference link 1](#)
-* [Reference link 2](#)
-* [Reference link 3](#)
-
-
-## How to get help
-* File an issue.
-* Email us at openpecha[at]gmail.com.
-* Join our [discord](https://discord.com/invite/7GFpPFSTeA).
-
-
-## Terms of use
-_Project Name_ is licensed under the [MIT License](/LICENSE.md).
+```
+docker compose -f docker-compose.production-local.yml -f docker-compose.production.yml up
+```
