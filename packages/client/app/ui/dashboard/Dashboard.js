@@ -8,7 +8,16 @@ const Dashboard = props => {
 
   localStorage.removeItem("nextDocument")
 
-  return <PmEditor docIdentifier={docIdentifier} />
+  return <>
+  <div style={{height: '40vh', border: '5px solid green', margin: '10px' }}>
+    one
+    <PmEditor docIdentifier={docIdentifier} primary={true} />
+  </div>  
+  <div style={{height: '40vh', border: '5px solid blue', margin: '10px' }}>
+    two
+    <PmEditor docIdentifier={docIdentifier} />
+  </div>
+  </>
 }
 
 Dashboard.propTypes = {}

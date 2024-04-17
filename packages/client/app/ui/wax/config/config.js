@@ -25,6 +25,8 @@ import {
   ExternalAPIContentService,
 } from 'wax-prosemirror-services'
 
+import DummyService from '../../../DummyService'
+
 import { TablesService, columnResizing } from 'wax-table-service'
 
 import { EditoriaSchema } from 'wax-prosemirror-core'
@@ -57,7 +59,7 @@ async function ExternalAPIContentTransformation(prompt) {
   return prompt;
 }
 
-const config = (yjsProvider, ydoc) => ({
+const config = (yjsProvider, ydoc, primary) => ({
   MenuService: [
     {
       templateArea: 'mainMenuToolBar',
@@ -109,6 +111,11 @@ const config = (yjsProvider, ydoc) => ({
   },
   SchemaService: EditoriaSchema,
   TitleService: { updateTitle: () => {} },
+  // ScrollService: {
+  //   provider: () => {
+  //     console.log('Custom provider called');
+  //   }
+  // },
   SpecialCharactersService: CharactersList,
   RulesService: [emDash, ellipsis],
   ShortCutsService: {},
@@ -131,8 +138,9 @@ const config = (yjsProvider, ydoc) => ({
       userDiv.insertBefore(document.createTextNode(user.displayName), null)
       cursor.insertBefore(userDiv, null)
       return cursor
-    }
+    },
   },
+  DummyService: {primary: primary, value2: 'another one'},
 
   services: [
     new ExternalAPIContentService(),
@@ -156,6 +164,7 @@ const config = (yjsProvider, ydoc) => ({
     new BottomInfoService(),
     new TransformService(),
     new CustomTagService(),
+    new DummyService(),
   ],
 
   PmPlugins: [

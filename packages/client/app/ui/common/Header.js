@@ -108,20 +108,20 @@ const Header = props => {
 
   return (
     <StyledHeader role="banner" {...rest}>
-      <Branding to="#">
+      {/* <Branding to="#">
         <h1>CokoDocs</h1>
       </Branding>
       <Navigation role="navigation">
         <Title>CokoDocs</Title>
         <Beta>BETA</Beta>
-      </Navigation>
+      </Navigation> */}
       <UserMenu>
       {currentUser || enableLogin === false ? (
         <>
           <CreateNew>
             <Link target="_blank" to="/"><PlusCircleOutlined /></Link>
           </CreateNew>
-          <AboutModal />
+          {/* <AboutModal /> */}
           <TeamPopup enableLogin={enableLogin} onLogout={onLogout} />
         </>    
       ): (

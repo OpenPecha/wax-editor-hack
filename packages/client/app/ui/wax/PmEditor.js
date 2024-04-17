@@ -9,6 +9,7 @@ import usePrintArea from './usePrintArea'
 import config from './config/config'
 import layout from './layout'
 import YjsContext from '../../yjsProvider'
+import ScrollContext from '../../scrollProvider'
 
 const WaxStyled = styled(Wax)``
 
@@ -35,11 +36,12 @@ const renderImage = file => {
   })
 }
 
-const PmEditor = ({ docIdentifier }) => {
+const PmEditor = ({ docIdentifier, primary }) => {
   const history = useHistory()
   const { createYjsProvider, yjsProvider, ydoc, yjsCurrentUser } = useContext(YjsContext)
+  const { createScrollProvider, scrollProvider } = useContext(ScrollContext)
   const [readonly, setReadOnly] = useState(false)
- 
+
   const { refElement } = usePrintArea({})
 
   const [ getDocument ] = useLazyQuery(GET_DOCUMENT, {
@@ -54,6 +56,7 @@ const PmEditor = ({ docIdentifier }) => {
 
   useEffect(() => {
     createYjsProvider(docIdentifier)
+    // createScrollProvider()
     getDocument({variables: { identifier }})
   }, [])
 
@@ -70,9 +73,10 @@ const PmEditor = ({ docIdentifier }) => {
 
   if (!yjsProvider || !ydoc ) return null
 
+
   return (
       <WaxStyled
-        config={config(yjsProvider, ydoc)}
+        config={config(yjsProvider, ydoc, primary)}
         fileUpload={file => renderImage(file)}
         layout={layout}
         placeholder="Type Something ..."

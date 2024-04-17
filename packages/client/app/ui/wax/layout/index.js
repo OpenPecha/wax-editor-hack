@@ -144,6 +144,8 @@ const Layout = ({ editor }) => {
     pmViews: { main },
   } = useContext(WaxContext);
 
+  // console.log('selection', main?.state?.selection.from);
+
   const { sharedUsers, yjsCurrentUser } = useContext(YjsContext)
 
   const ref = useRef(null);
@@ -164,6 +166,12 @@ const Layout = ({ editor }) => {
     }
 
     window.addEventListener('resize', handleResize)
+  })
+
+  useEffect(() => {
+    console.log('CUSTOM STUFF!');
+    console.log(main?.setSelection);
+    console.log('CUSTOM STUFF!');
   })
 
   const showMore = () => {
