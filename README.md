@@ -27,6 +27,12 @@
 https://github.com/OpenPecha/wax-editor-hack/raw/main/setup_guide.mp4
 <video src='https://github.com/OpenPecha/wax-editor-hack/raw/main/setup_guide.mp4' width=720/>
 
+### TerminusDB connection
+
+- Create team and database at https://dashboard.terminusdb.com/
+- Get API keys from your profile view
+- In `package/server` copy `.env.example` to `.env`
+- Update tokens in `.env`
 
 # Original Readme below
 

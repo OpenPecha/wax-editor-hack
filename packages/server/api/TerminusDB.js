@@ -36,6 +36,7 @@ const addDocs = async (objects = []) => {
     console.warn('No TerminusDB token');
     return
   }
+
   const result = await client.addDocument(objects);
   console.log("the documents have been added", result)
 }
@@ -45,6 +46,7 @@ const getDoc = (id) => {
     console.warn('No TerminusDB token');
     return {}
   }
+
   return client.getDocument({ id });
 }
 
@@ -53,6 +55,7 @@ const updateDocs = async (docs) => {
     console.warn('No TerminusDB token');
     return
   }
+
   const result = await client.updateDocument(docs);
   console.log("updated document", result)
 }

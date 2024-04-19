@@ -7,7 +7,7 @@ RUN apt-get update \
 WORKDIR /home/node/cokodocs
 
 COPY package.json .
-COPY yarn.lock .
+# COPY yarn.lock .
 
 RUN chown -R node:node .
 USER node
