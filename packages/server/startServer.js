@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+require('dotenv').config()
 const { startServer, verifyJWT, logger } = require('@coko/server')
 const map = require('lib0/map')
 const Y = require('yjs')

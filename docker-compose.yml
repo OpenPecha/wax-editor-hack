@@ -87,6 +87,7 @@ services:
       - ./packages/server/scripts:/home/node/cokodocs/scripts
       - ./packages/server/services:/home/node/cokodocs/services
       - ./packages/server/startServer.js:/home/node/cokodocs/startServer.js
+      - ./packages/server/.env:/home/node/cokodocs/.env
 
   db:
     image: postgres:14
