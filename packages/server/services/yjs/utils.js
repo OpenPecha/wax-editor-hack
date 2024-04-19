@@ -6,6 +6,7 @@ const decoding = require('lib0/decoding')
 const Y = require('yjs')
 const { Doc } = require('@pubsweet/models')
 const { db } = require('@coko/server')
+const TerminusDB = require('../../api/TerminusDB')
 
 let persistence = null
 
@@ -99,6 +100,7 @@ const closeConn = (doc, conn) => {
       const timestamp = db.fn.now()
 
       const docYjs = await Doc.query().findOne({ identifier })
+      const terminusDoc = await TerminusDB.getDoc(`Book/${identifier}`)
 
       if (delta && delta.length > 0 ) {
         if (!docYjs) {
@@ -107,6 +109,10 @@ const closeConn = (doc, conn) => {
               docs_prosemirror_delta: delta,
               docs_y_doc_state: state,
               identifier,
+            })
+            await TerminusDB.updateDocs({
+              ...terminusDoc,
+              content: {editorContent: delta}
             })
           } catch (e) {
             console.log(`Insert Query`)
@@ -119,6 +125,11 @@ const closeConn = (doc, conn) => {
               docs_y_doc_state: state,
               updated: timestamp,
             }).findOne({ identifier })
+            
+            await TerminusDB.updateDocs({
+              ...terminusDoc,
+              content: {editorContent: delta}
+            })
           } catch (e) {
             console.log(`Patch Query`)
             console.log(e)

@@ -1,6 +1,7 @@
 const { modelTypes, BaseModel } = require('@coko/server')
 const { Team, TeamMember } = require('@pubsweet/models')
 const config = require('config')
+const TerminusDB = require('../../api/TerminusDB')
 
 const AUTHOR_TEAM = config.teams.nonGlobal.author
 const VIEWER_TEAM = config.teams.nonGlobal.viewer
@@ -23,7 +24,7 @@ class Doc extends BaseModel {
       type: 'object',
       properties: {
         identifier: stringNotEmpty,
-        docs_prosemirror_delta: arrayOfObjectsNullable, 
+        docs_prosemirror_delta: arrayOfObjectsNullable,
         docs_y_doc_state: {
           type: "binary",
         },
@@ -58,8 +59,8 @@ class Doc extends BaseModel {
           objectType: 'doc',
           role: VIEWER_TEAM.role,
           displayName: VIEWER_TEAM.displayName,
-        }) 
-        
+        })
+
       }
 
       const isViewer = await TeamMember.query().findOne({
@@ -90,10 +91,17 @@ class Doc extends BaseModel {
         objectType: 'doc',
         role: AUTHOR_TEAM.role,
         displayName: AUTHOR_TEAM.displayName,
-      } 
+      }
     )
 
     await Team.addMember(authorTeam.id, userId)
+
+
+    await TerminusDB.addDocs([{
+      '@type': 'Book',
+      name: doc.identifier,
+      content: { editorContent: doc.docs_prosemirror_delta }
+    }])
 
     return doc
   }
