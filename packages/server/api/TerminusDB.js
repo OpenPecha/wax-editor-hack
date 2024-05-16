@@ -4,12 +4,14 @@ const TerminusClient = require("@terminusdb/terminusdb-client")
 const user = process.env.TERMINUSDB_USER
 const organization = process.env.TERMINUSDB_ORGANIZATION
 const token = process.env.TERMINUSDB_ACCESS_TOKEN
+const db = process.env.TERMINUSDB_DB_NAME
 
 // Assign your key to environment variable TERMINUSDB_ACCESS_TOKEN
 const client = new TerminusClient.WOQLClient(`https://cloud.terminusdb.com/${organization}`, {
   user,
   organization,
-  token
+  token,
+  db
 })
 
 const schema = {
@@ -21,7 +23,6 @@ const schema = {
 };
 
 async function getSchema() {
-  client.db("books_test")
   const schema = await client.getSchema()
   console.log(schema);
 }
