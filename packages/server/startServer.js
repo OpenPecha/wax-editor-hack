@@ -46,9 +46,10 @@ const messageListener = (conn, doc, message) => {
 const init = async () => {
   try {
     await startServer()
-
+    //port default to 8000
+    const port = config.get('pubsweet-server.wsServerPort') || 8000
     const WSServer = new WebSocketServer({
-      port: config.get('pubsweet-server.wsServerPort'),
+      port: port,
       clientTracking: true,
     })
 
