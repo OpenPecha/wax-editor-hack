@@ -19,7 +19,7 @@ services:
       context: ./packages/server
       dockerfile: ./Dockerfile-production
     entrypoint: ['bash', 'scripts/setupDevServer.sh']
-    command: ['node', 'startServer.js']
+    command: [ "sh", "-c", "npx pubsweet migrate up && node startServer.js" ]
     ports:
       - ${SERVER_PORT}:3000
       - ${WS_SERVER_PORT}:${WS_SERVER_PORT}

@@ -36,8 +36,7 @@ services:
         'db:5432',
         '--',
         'bash',
-        '-c',
-        'npx pubsweet migrate up && bash scripts/setupDevServer.sh',
+        'scripts/setupDevServer.sh',
       ]
     command:
       [
