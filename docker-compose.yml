@@ -22,6 +22,8 @@ services:
     volumes:
       - ./packages/client/app:/home/node/app/app
       - ./packages/client/static:/home/node/app/static
+      - ./packages/client:/home/node/app
+      - /home/node/app/node_modules
     tty: true
 
   server:
