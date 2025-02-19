@@ -1,7 +1,7 @@
 # To setup and start hacking:
 
 - run `docker compose up`
-
+- run `npx pubsweet migrate up` at server for data migrations after db is ready, if the tables are not created on the database
 - Wait a bit, go to http://localhost:4000/signup
 
 - Signup with some random data, everything is local and no signup data is sent anywhere

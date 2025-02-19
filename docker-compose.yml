@@ -35,8 +35,9 @@ services:
         'node_modules/.bin/wait-for-it',
         'db:5432',
         '--',
-        'sh',
-        'scripts/setupDevServer.sh',
+        'bash',
+        '-c',
+        'npx pubsweet migrate up && bash scripts/setupDevServer.sh',
       ]
     command:
       [

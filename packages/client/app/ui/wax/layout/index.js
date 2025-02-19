@@ -168,11 +168,7 @@ const Layout = ({ editor }) => {
     window.addEventListener('resize', handleResize)
   })
 
-  useEffect(() => {
-    console.log('CUSTOM STUFF!');
-    console.log(main?.setSelection);
-    console.log('CUSTOM STUFF!');
-  })
+  
 
   const showMore = () => {
     toggleMenu(!open)
