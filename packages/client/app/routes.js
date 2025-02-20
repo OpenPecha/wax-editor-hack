@@ -177,7 +177,7 @@ const SiteHeader = ({ enableLogin }) => {
 const RequireProfile = ({ children }) => {
   const { pathname } = useLocation()
   const { currentUser } = useCurrentUser()
-
+  console.log('current',currentUser)
   if (!currentUser) return null
 
   if (!currentUser.isActive && pathname !== '/deactivated-user') {
