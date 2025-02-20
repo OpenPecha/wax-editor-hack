@@ -9,11 +9,11 @@ const Dashboard = props => {
   localStorage.removeItem("nextDocument")
 
   return <>
-  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}> 
-    <div>
+  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between',minHeight: '80dvh'}}> 
+    <div style={{width: '50%',borderRight:"2px solid black"}}>
     <PmEditor docIdentifier={docIdentifier} primary={true} />
     </div>
-    <div>
+    <div style={{width: '50%'}}>
     <PmEditor docIdentifier={docIdentifier}  />
     </div>
   </div>
