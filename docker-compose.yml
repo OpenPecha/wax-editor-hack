@@ -27,6 +27,7 @@ services:
     tty: true
 
   server:
+    restart: always
     build:
       context: ./packages/server
       dockerfile: ./Dockerfile-development
