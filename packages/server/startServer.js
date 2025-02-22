@@ -76,21 +76,26 @@ const init = async () => {
       }
 
       const doc = getYDoc(identifier, userId)
-
+      try{
       if (userId) {
         const docObject = await Doc.query().findOne({ identifier })
 
         if (docObject) {
-          await docObject.addMemberAsViewer(userId)
+          try {
+            await docObject.addMemberAsViewer(userId);
+          } catch (err) {
+            logger.error(`Error adding user ${userId} to document ${identifier}: ${err.message}`);
+          }
         } else {
           const state = Y.encodeStateAsUpdate(doc)
           const delta = doc.getText('prosemirror').toDelta()
           await Doc.createDoc({state, delta, identifier, userId })
         }
       }
-
-        doc.conns.set(injectedWS, new Set())
-
+    } catch (error) {
+      console.error(error)
+    }
+    doc.conns.set(injectedWS, new Set())
         injectedWS.on('message', message =>
           messageListener(injectedWS, doc, new Uint8Array(message)),
         )
@@ -108,7 +113,9 @@ const init = async () => {
             pingReceived = false
 
             try {
-              injectedWS.ping()
+              if (injectedWS.readyState === WebSocket.OPEN) {
+                injectedWS.ping();
+              }
             } catch (error) {
               utils.closeConn(doc, injectedWS)
               clearInterval(pingInterval)
@@ -125,6 +132,9 @@ const init = async () => {
           pingReceived = true
         })
 
+        injectedWS.on('error', (err) => {
+          console.error('WebSocket Error:', err);
+        });
         {
           const encoder = utils.encoding.createEncoder()
           utils.encoding.writeVarUint(encoder, utils.messageSync)
@@ -160,7 +170,7 @@ const init = async () => {
         return doc
       })
   } catch (error) {
-    throw new Error(error)
+   console.log(error)
   }
 }
 
